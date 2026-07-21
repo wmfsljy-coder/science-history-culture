@@ -76,12 +76,9 @@
       </div>
       <div class="stage-card">
         <div class="controls">
-          <div class="ctrl-group">
-            <div class="ctrl-label">인공지능을 보는 두 시선</div>
-            <div class="seg" id="c3-view">
-              <button class="on" data-v="cautious">인간의 뇌와 같지 않다</button>
-              <button data-v="calm">초지능을 걱정할 필요는 없다</button>
-            </div>
+          <div class="ctrl-group" style="min-width:100%">
+            <div class="ctrl-label">인공지능을 보는 시선 — 신중론 ↔ 낙관론<span class="val" id="c3-view-val">중도적 시각</span></div>
+            <input type="range" id="c3-view-slider" min="0" max="100" step="1" value="50">
           </div>
         </div>
         <div class="info-card" id="c3-view-info"></div>
@@ -192,18 +189,24 @@ function buildCardGrid(gridId, detailId, items) {
   ];
   buildCardGrid("c3-grid", "c3-detail", items);
 
-  var views = {
-    cautious: "인공지능은 방대한 데이터에서 <b>통계적 패턴</b>을 찾아낼 뿐, 인간처럼 의미를 이해하거나 스스로 목표를 세우지 않습니다. 인간의 뇌가 가진 감정·직관·상식적 추론과는 근본적으로 다른 방식으로 작동한다는 신중한 입장입니다.",
-    calm: "인공지능의 능력은 특정 작업에 한정되어 있으며, 자율적 의지를 갖는 '초지능'은 아직 현실적인 근거가 부족하다는 입장입니다. 오히려 지금 필요한 것은 막연한 공포보다 <b>현재 기술의 오남용을 관리하는 일</b>이라고 봅니다."
-  };
+  var views = [
+    { max: 20, label: "강한 신중론", html: "인공지능은 방대한 데이터에서 <b>통계적 패턴</b>을 찾아낼 뿐, 인간처럼 의미를 이해하거나 스스로 목표를 세우지 않는다는 입장입니다. 인간의 뇌가 가진 감정·직관·상식적 추론과는 근본적으로 다른 방식으로 작동한다고 봅니다." },
+    { max: 40, label: "신중한 시각", html: "특정 영역에서는 인상적인 성과를 보이지만, 학습 데이터의 범위를 벗어난 상황에서는 여전히 오류를 자주 일으킨다는 점에서 인공지능의 능력에는 <b>뚜렷한 한계</b>가 있다고 보는 시각입니다." },
+    { max: 60, label: "중도적 시각", html: "인공지능은 특정 작업에서는 이미 인간을 능가하는 성과를 내지만, 인간 수준의 범용 지능과는 거리가 있다는 절충적 시각입니다. <b>어떤 영역에서 얼마나 신뢰할 수 있는지</b>를 구체적으로 따져 보아야 한다는 입장입니다." },
+    { max: 80, label: "낙관에 가까운 시각", html: "인공지능의 능력은 이미 여러 분야에서 인간의 업무를 효과적으로 보조하고 있으며, 앞으로도 <b>도구로서 활용 범위가 계속 넓어질 것</b>이라고 보는 시각입니다." },
+    { max: 100, label: "강한 낙관론", html: "인공지능의 능력은 특정 작업에 한정되어 있으며, 자율적 의지를 갖는 '초지능'은 아직 현실적인 근거가 부족하다는 입장입니다. 오히려 지금 필요한 것은 막연한 공포보다 <b>현재 기술의 오남용을 관리하는 일</b>이라고 봅니다." }
+  ];
   var info = document.getElementById("c3-view-info");
-  document.querySelectorAll("#c3-view button").forEach(function (b) {
-    b.addEventListener("click", function () {
-      document.querySelectorAll("#c3-view button").forEach(function (x) { x.classList.toggle("on", x === b); });
-      info.innerHTML = views[b.getAttribute("data-v")];
-    });
-  });
-  info.innerHTML = views.cautious;
+  var valEl = document.getElementById("c3-view-val");
+  var slider = document.getElementById("c3-view-slider");
+  function renderView(pct) {
+    var v = views[views.length - 1];
+    for (var i = 0; i < views.length; i++) { if (pct <= views[i].max) { v = views[i]; break; } }
+    valEl.textContent = v.label;
+    info.innerHTML = v.html;
+  }
+  slider.addEventListener("input", function () { renderView(+slider.value); });
+  renderView(50);
 })();
 
 /* TAB4 가상 현실과 증강 현실 */
