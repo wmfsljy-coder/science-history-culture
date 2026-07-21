@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>과학과 인류의 미래 — 과학사 스테이션</title>
+<link rel="stylesheet" href="../assets/theme.css">
+</head>
+<body>
+
+<div class="app">
+  <nav class="rail" id="rail">
+    <div class="brand">
+      <a class="home" href="../">← 과학의 역사와 문화</a>
+      <div class="eyebrow" style="margin-top:8px">Ⅲ · 과학과 인류의 미래</div>
+      <h1 class="display">기술이 그리는<br>다음 세계</h1>
+    </div>
+    <button class="tab-btn active" data-tab="0"><span class="num">01</span> 새로운 문화의 등장</button>
+    <button class="tab-btn" data-tab="1"><span class="num">02</span> 과학 용어의 사회 확산</button>
+    <button class="tab-btn" data-tab="2"><span class="num">03</span> 과학기술과 결합한 음악</button>
+    <button class="tab-btn" data-tab="3"><span class="num">04</span> 인간과 기계, 사물의 연결</button>
+    <button class="tab-btn" data-tab="4"><span class="num">05</span> 가상 현실과 증강 현실</button>
+    <button class="tab-btn" data-tab="5"><span class="num">06</span> 과학기술과 시민 참여</button>
+  </nav>
+
+  <main>
+    <!-- TAB0 새로운 문화의 등장 -->
+    <section class="tab-panel" data-panel="0">
+      <div class="stage-head">
+        <div class="eyebrow">01 · 기술이 만든 새로운 생활 방식</div>
+        <h2 class="display">과학기술의 발전과 새로운 문화의 등장</h2>
+        <p>디지털 기술은 우리가 소통하고 소비하는 방식 자체를 바꾸어 놓았습니다. 카드를 눌러 각각의 문화 현상을 살펴보세요.</p>
+      </div>
+      <div class="stage-card">
+        <div class="card-grid" id="c0-grid"></div>
+        <div class="detail-panel" id="c0-detail"></div>
+      </div>
+    </section>
+
+    <!-- TAB1 과학 용어의 사회 확산 -->
+    <section class="tab-panel" data-panel="1" hidden>
+      <div class="stage-head">
+        <div class="eyebrow">02 · 실험실을 벗어난 과학 용어</div>
+        <h2 class="display">과학 용어의 사회 확산</h2>
+        <p>과학 용어는 종종 일상어로 퍼지면서 원래 의미가 비유적으로 확장됩니다. 용어를 눌러 두 가지 의미를 비교해 보세요.</p>
+      </div>
+      <div class="stage-card">
+        <div class="card-grid" id="c1-grid"></div>
+        <div class="compare-wrap" id="c1-compare"></div>
+      </div>
+    </section>
+
+    <!-- TAB2 과학기술과 결합한 음악 -->
+    <section class="tab-panel" data-panel="2" hidden>
+      <div class="stage-head">
+        <div class="eyebrow">03 · 소리를 재구성하는 기술</div>
+        <h2 class="display">과학기술과 결합한 음악</h2>
+        <p>전자공학과 컴퓨터 기술은 음악을 만들고 듣는 방식을 근본적으로 바꾸었습니다.</p>
+      </div>
+      <div class="stage-card">
+        <div class="card-grid" id="c2-grid"></div>
+        <div class="detail-panel" id="c2-detail"></div>
+      </div>
+    </section>
+
+    <!-- TAB3 인간과 기계, 사물의 연결 -->
+    <section class="tab-panel" data-panel="3" hidden>
+      <div class="stage-head">
+        <div class="eyebrow">04 · 연결되는 몸, 생각하는 사물</div>
+        <h2 class="display">인간과 기계, 사물의 연결</h2>
+        <p>웨어러블 기기와 사물인터넷(IoT), 인공지능은 인간과 기계의 경계를 점점 흐리게 만들고 있습니다. 인공지능을 둘러싼 두 가지 시선도 비교해 보세요.</p>
+      </div>
+      <div class="stage-card">
+        <div class="card-grid" id="c3-grid"></div>
+        <div class="detail-panel" id="c3-detail"></div>
+      </div>
+      <div class="stage-card">
+        <div class="controls">
+          <div class="ctrl-group">
+            <div class="ctrl-label">인공지능을 보는 두 시선</div>
+            <div class="seg" id="c3-view">
+              <button class="on" data-v="cautious">인간의 뇌와 같지 않다</button>
+              <button data-v="calm">초지능을 걱정할 필요는 없다</button>
+            </div>
+          </div>
+        </div>
+        <div class="info-card" id="c3-view-info"></div>
+      </div>
+    </section>
+
+    <!-- TAB4 가상 현실과 증강 현실 -->
+    <section class="tab-panel" data-panel="4" hidden>
+      <div class="stage-head">
+        <div class="eyebrow">05 · 현실을 확장하는 기술</div>
+        <h2 class="display">가상 현실과 증강 현실의 세계</h2>
+        <p>VR은 새로운 세계를 만들고, AR은 현실 위에 정보를 더합니다. 두 기술의 차이와 활용 분야를 비교해 보세요.</p>
+      </div>
+      <div class="stage-card">
+        <div class="compare-wrap" id="c4-compare"></div>
+        <div class="card-grid" id="c4-grid"></div>
+        <div class="detail-panel" id="c4-detail"></div>
+      </div>
+    </section>
+
+    <!-- TAB5 과학기술과 시민 참여 -->
+    <section class="tab-panel" data-panel="5" hidden>
+      <div class="stage-head">
+        <div class="eyebrow">06 · 시민이 과학의 방향을 함께 정하다</div>
+        <h2 class="display">과학기술과 시민 참여</h2>
+        <p>오늘날 과학기술의 방향은 전문가만이 아니라 시민 사회와 함께 정해집니다. 참여 방식을 눌러 살펴보세요.</p>
+      </div>
+      <div class="stage-card">
+        <div class="card-grid" id="c5-grid"></div>
+        <div class="detail-panel" id="c5-detail"></div>
+        <div class="info-card">생각해 보기 — 과학기술, 이대로 괜찮은가? 편리함과 효율을 앞세운 기술 발전이 자칫 소홀히 할 수 있는 가치는 무엇인지 토론해 볼 수 있습니다.</div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<button class="theme-toggle" id="themeToggle">라이트 모드</button>
+
+<script src="../assets/theme.js"></script>
+<script>
+(function () {
+"use strict";
+
+function buildCardGrid(gridId, detailId, items) {
+  var grid = document.getElementById(gridId);
+  var detail = detailId ? document.getElementById(detailId) : null;
+  grid.innerHTML = "";
+  items.forEach(function (c, i) {
+    var btn = document.createElement("button");
+    btn.className = "pick-card" + (i === 0 ? " on" : "");
+    btn.innerHTML = '<div class="pc-ico">' + c.ico + '</div><div class="pc-name">' + c.name + '</div><div class="pc-sub">' + (c.sub || "") + '</div>';
+    btn.addEventListener("click", function () {
+      grid.querySelectorAll(".pick-card").forEach(function (b) { b.classList.toggle("on", b === btn); });
+      if (c.onSelect) c.onSelect(c);
+      else if (detail) detail.innerHTML = "<h4>" + c.ico + " " + c.name + "</h4>" + c.detail;
+    });
+    grid.appendChild(btn);
+  });
+  if (items.length) { if (items[0].onSelect) items[0].onSelect(items[0]); else if (detail) detail.innerHTML = "<h4>" + items[0].ico + " " + items[0].name + "</h4>" + items[0].detail; }
+}
+
+/* TAB0 새로운 문화의 등장 */
+(function () {
+  var items = [
+    { ico: "📱", name: "1인 미디어", sub: "누구나 채널이 되는 시대", detail: "스마트폰과 영상 편집·스트리밍 기술의 발달로 <b>개인이 직접 콘텐츠를 만들고 방송</b>할 수 있게 되었습니다. 유튜브·SNS는 기존 방송사 없이도 대중과 소통하는 새로운 통로가 되었습니다." },
+    { ico: "🔁", name: "구독 경제", sub: "소유 대신 이용", detail: "클라우드·스트리밍 기술 덕분에 음악·영상·소프트웨어를 <b>소유하지 않고 구독</b>해서 이용하는 방식이 널리 퍼졌습니다." },
+    { ico: "🤝", name: "공유 경제", sub: "연결 플랫폼의 등장", detail: "GPS·모바일 결제 등의 기술은 차량·숙박 등 <b>자원을 나누어 쓰는 플랫폼</b>을 가능하게 했고, 소유보다 접근이 중요한 문화를 만들었습니다." },
+    { ico: "🌐", name: "온라인 커뮤니티", sub: "국경 없는 관계망", detail: "인터넷은 지리적 거리와 무관하게 관심사로 묶인 <b>온라인 커뮤니티</b>를 만들어 냈고, 이는 새로운 정체성과 문화 형성의 장이 되었습니다." }
+  ];
+  buildCardGrid("c0-grid", "c0-detail", items);
+})();
+
+/* TAB1 과학 용어의 사회 확산 */
+(function () {
+  var items = [
+    { ico: "🕳️", name: "블랙홀", sci: "빛조차 빠져나올 수 없을 만큼 강한 중력을 가진 천체입니다.", social: "\"예산이 블랙홀처럼 사라진다\"처럼, <b>무엇이든 끝없이 빨아들이고 사라지게 하는 대상</b>을 비유할 때 쓰입니다." },
+    { ico: "📈", name: "임계점", sci: "물질의 상태가 급격히 변하는 온도·압력 등의 경계값입니다.", social: "\"사회적 갈등이 임계점에 다다랐다\"처럼, <b>더 이상 참을 수 없어 상황이 급변하기 직전의 한계점</b>을 뜻하는 말로 쓰입니다." },
+    { ico: "🌀", name: "관성", sci: "물체가 운동 상태를 계속 유지하려는 성질입니다(뉴턴 운동 제1법칙).", social: "\"습관의 관성\"처럼, <b>하던 대로 계속하려는 심리적·사회적 경향</b>을 뜻하는 말로 널리 쓰입니다." },
+    { ico: "🛡️", name: "면역", sci: "몸이 병원체를 인식하고 방어하는 생물학적 시스템입니다.", social: "\"비판에 면역이 되었다\"처럼, <b>어떤 자극에 무뎌지거나 영향을 받지 않게 된 상태</b>를 표현할 때 쓰입니다." }
+  ];
+  var grid = document.getElementById("c1-grid"), compare = document.getElementById("c1-compare");
+  function render(it) {
+    compare.innerHTML =
+      '<div class="compare-col"><h4>🔬 과학적 의미</h4><p>' + it.sci + '</p></div>' +
+      '<div class="compare-col"><h4>💬 사회적 확산 의미</h4><p>' + it.social + '</p></div>';
+  }
+  items.forEach(function (it) { it.onSelect = render; });
+  buildCardGrid("c1-grid", null, items);
+})();
+
+/* TAB2 과학기술과 결합한 음악 */
+(function () {
+  var items = [
+    { ico: "🎹", name: "신디사이저·전자음악", sub: "전기로 만드는 소리", detail: "전자 회로로 파형을 직접 만들어내는 신디사이저는 기존 악기에 없던 <b>새로운 음색</b>을 가능하게 했고, 전자음악이라는 장르를 탄생시켰습니다." },
+    { ico: "🎤", name: "오토튠", sub: "음정을 보정하는 기술", detail: "본래 음정을 미세하게 보정하는 기술이었던 오토튠은 이제 <b>독특한 보컬 효과</b>를 내는 표현 도구로도 널리 쓰입니다." },
+    { ico: "🤖", name: "AI 작곡", sub: "알고리즘이 만드는 멜로디", detail: "인공지능이 방대한 곡을 학습해 새로운 멜로디나 반주를 만들어내는 <b>AI 작곡</b> 도구가 등장해 창작의 방식을 넓히고 있습니다." },
+    { ico: "📻", name: "추천 알고리즘", sub: "취향을 읽는 스트리밍", detail: "스트리밍 서비스는 청취 데이터를 분석하는 알고리즘으로 <b>개인 맞춤형 추천</b>을 제공하며 음악을 소비하는 방식을 바꾸었습니다." }
+  ];
+  buildCardGrid("c2-grid", "c2-detail", items);
+})();
+
+/* TAB3 인간과 기계, 사물의 연결 */
+(function () {
+  var items = [
+    { ico: "⌚", name: "웨어러블 기기", sub: "몸에 착용하는 컴퓨터", detail: "스마트워치·밴드 등은 심박수, 수면, 활동량 같은 <b>몸의 데이터를 실시간으로 기록</b>해 건강 관리를 돕습니다." },
+    { ico: "📡", name: "사물인터넷(IoT)", sub: "서로 연결된 사물들", detail: "가전제품, 자동차, 도시 시설물이 인터넷으로 연결되어 데이터를 주고받으며, <b>스스로 판단하고 반응하는 환경</b>을 만들어 갑니다." },
+    { ico: "🦾", name: "생체 공학 기기", sub: "몸과 결합하는 기계", detail: "의수·의족, 인공 장기처럼 신체 기능을 대신하거나 보완하는 기기들은 인간과 기계의 <b>물리적 경계</b>를 점점 흐리게 만듭니다." }
+  ];
+  buildCardGrid("c3-grid", "c3-detail", items);
+
+  var views = {
+    cautious: "인공지능은 방대한 데이터에서 <b>통계적 패턴</b>을 찾아낼 뿐, 인간처럼 의미를 이해하거나 스스로 목표를 세우지 않습니다. 인간의 뇌가 가진 감정·직관·상식적 추론과는 근본적으로 다른 방식으로 작동한다는 신중한 입장입니다.",
+    calm: "인공지능의 능력은 특정 작업에 한정되어 있으며, 자율적 의지를 갖는 '초지능'은 아직 현실적인 근거가 부족하다는 입장입니다. 오히려 지금 필요한 것은 막연한 공포보다 <b>현재 기술의 오남용을 관리하는 일</b>이라고 봅니다."
+  };
+  var info = document.getElementById("c3-view-info");
+  document.querySelectorAll("#c3-view button").forEach(function (b) {
+    b.addEventListener("click", function () {
+      document.querySelectorAll("#c3-view button").forEach(function (x) { x.classList.toggle("on", x === b); });
+      info.innerHTML = views[b.getAttribute("data-v")];
+    });
+  });
+  info.innerHTML = views.cautious;
+})();
+
+/* TAB4 가상 현실과 증강 현실 */
+(function () {
+  document.getElementById("c4-compare").innerHTML =
+    '<div class="compare-col"><h4>🕶️ 가상 현실(VR)</h4><p>헤드셋을 착용해 <b>완전히 새로운 가상의 공간</b>에 몰입합니다. 현실 세계는 시야에서 차단됩니다.</p></div>' +
+    '<div class="compare-col"><h4>📷 증강 현실(AR)</h4><p>카메라로 보는 <b>현실 위에 디지털 정보를 겹쳐</b> 보여줍니다. 현실과 가상이 함께 보입니다.</p></div>';
+
+  var items = [
+    { ico: "🎮", name: "게임·엔터테인먼트", sub: "", detail: "VR 게임은 플레이어를 게임 속 세계에 완전히 몰입시키고, AR 게임은 현실 공간 위에 캐릭터나 아이템을 겹쳐 보여줍니다." },
+    { ico: "🎓", name: "교육·훈련", sub: "", detail: "위험하거나 비용이 큰 실습(수술, 항공 조종 등)을 VR로 안전하게 반복 훈련할 수 있습니다." },
+    { ico: "🏥", name: "의료", sub: "", detail: "수술 시뮬레이션, 통증 완화 치료, 재활 훈련 등 다양한 의료 현장에서 VR·AR이 활용되고 있습니다." },
+    { ico: "🗺️", name: "관광·내비게이션", sub: "", detail: "AR 내비게이션은 실제 거리 위에 길 안내 화살표를 겹쳐 보여주고, VR 관광은 가 보지 못한 장소를 미리 체험하게 해 줍니다." }
+  ];
+  buildCardGrid("c4-grid", "c4-detail", items);
+})();
+
+/* TAB5 과학기술과 시민 참여 */
+(function () {
+  var items = [
+    { ico: "🔭", name: "시민 과학(citizen science)", sub: "누구나 연구자가 되는 방식", detail: "일반 시민이 별을 관측하거나 새를 관찰해 데이터를 수집·제공하는 등, <b>전문 연구자가 아니어도 과학 연구에 직접 기여</b>할 수 있는 참여 방식입니다." },
+    { ico: "💻", name: "크라우드소싱 연구", sub: "대중의 계산력을 모으다", detail: "수많은 사람들의 컴퓨터 자원이나 문제 해결 능력을 인터넷으로 모아 <b>단백질 구조 분석</b> 같은 복잡한 과학 문제를 함께 푸는 방식입니다." },
+    { ico: "🗳️", name: "공론화위원회", sub: "시민이 정책을 논의하다", detail: "원자력 발전소 건설처럼 사회적으로 민감한 과학기술 정책을 두고, 시민 대표단이 학습과 토론을 거쳐 <b>정책 방향에 의견을 내는 제도</b>입니다." },
+    { ico: "📋", name: "과학기술영향평가", sub: "미리 살펴보는 미래", detail: "새로운 기술이 사회·환경·윤리에 미칠 영향을 <b>기술이 널리 쓰이기 전에 미리 평가</b>해 위험을 줄이려는 제도적 절차입니다." }
+  ];
+  buildCardGrid("c5-grid", "c5-detail", items);
+})();
+
+})();
+</script>
+</body>
+</html>

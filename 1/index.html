@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>과학과 문명의 탄생과 통합 — 과학사 스테이션</title>
+<link rel="stylesheet" href="../assets/theme.css">
+</head>
+<body>
+
+<div class="app">
+  <nav class="rail" id="rail">
+    <div class="brand">
+      <a class="home" href="../">← 과학의 역사와 문화</a>
+      <div class="eyebrow" style="margin-top:8px">Ⅰ · 과학과 문명의 탄생과 통합</div>
+      <h1 class="display">문명 속에서<br>태어난 과학</h1>
+    </div>
+    <button class="tab-btn active" data-tab="0"><span class="num">01</span> 인류 문명의 탄생과 과학</button>
+    <button class="tab-btn" data-tab="1"><span class="num">02</span> 고대 그리스의 과학</button>
+    <button class="tab-btn" data-tab="2"><span class="num">03</span> 중세의 종교와 과학</button>
+    <button class="tab-btn" data-tab="3"><span class="num">04</span> 르네상스와 과학혁명</button>
+    <button class="tab-btn" data-tab="4"><span class="num">05</span> 과학자의 신념과 세계관</button>
+  </nav>
+
+  <main>
+    <!-- TAB0 인류 문명의 탄생과 과학 -->
+    <section class="tab-panel" data-panel="0">
+      <div class="stage-head">
+        <div class="eyebrow">01 · 고대 문명이 남긴 과학의 흔적</div>
+        <h2 class="display">인류 문명의 탄생과 과학</h2>
+        <p>인류의 4대 문명과 아메리카 문명은 저마다의 자연환경 속에서 독자적인 과학적 지혜를 발전시켰습니다. 카드를 눌러 각 문명이 남긴 대표적인 과학적 성취를 확인해 보세요.</p>
+      </div>
+      <div class="stage-card">
+        <div class="card-grid" id="c0-grid"></div>
+        <div class="detail-panel" id="c0-detail">카드를 클릭하면 자세한 설명이 나타납니다.</div>
+      </div>
+    </section>
+
+    <!-- TAB1 고대 그리스의 과학 -->
+    <section class="tab-panel" data-panel="1" hidden>
+      <div class="stage-head">
+        <div class="eyebrow">02 · 신화 대신 이성으로 자연을 설명하다</div>
+        <h2 class="display">고대 그리스의 과학</h2>
+        <p>고대 그리스 학자들은 신화 대신 이성과 논리로 자연을 설명하려 했습니다. 시간순으로 놓인 점을 눌러 각 학자의 사상을 확인해 보세요. (무세이온의 과학자 유클리드·프톨레마이오스 포함)</p>
+      </div>
+      <div class="stage-card">
+        <div class="timeline-wrap">
+          <div class="timeline-track" id="c1-track"></div>
+        </div>
+        <div class="detail-panel" id="c1-detail"></div>
+      </div>
+    </section>
+
+    <!-- TAB2 중세의 종교와 과학 -->
+    <section class="tab-panel" data-panel="2" hidden>
+      <div class="stage-head">
+        <div class="eyebrow">03 · 종교와 지역에 따라 달라진 중세 과학</div>
+        <h2 class="display">중세의 종교와 과학</h2>
+        <p>같은 시기라도 지역과 종교적 배경에 따라 과학은 서로 다른 방식으로 발전했습니다. 지역을 선택해 비교해 보세요.</p>
+      </div>
+      <div class="stage-card">
+        <div class="controls">
+          <div class="ctrl-group">
+            <div class="ctrl-label">지역</div>
+            <div class="seg" id="c2-region">
+              <button class="on" data-r="europe">중세 서유럽</button>
+              <button data-r="islam">이슬람 세계</button>
+              <button data-r="korea">고려·조선</button>
+            </div>
+          </div>
+        </div>
+        <div class="detail-panel" id="c2-detail"></div>
+        <div class="info-card">생각해 보기 — 자연과 인간의 조화로운 공존은 정치가 할 일이다? / 조선이 독자적인 역법을 만들어 쓴다? 두 질문을 놓고 각 지역의 과학관과 연결 지어 토론해 볼 수 있습니다.</div>
+      </div>
+    </section>
+
+    <!-- TAB3 르네상스와 과학혁명 -->
+    <section class="tab-panel" data-panel="3" hidden>
+      <div class="stage-head">
+        <div class="eyebrow">04 · 우주관을 뒤흔든 100여 년</div>
+        <h2 class="display">르네상스와 과학혁명</h2>
+        <p>16~17세기, 소수의 과학자들이 관측과 수학으로 낡은 우주관을 무너뜨렸습니다. 점을 눌러 과학혁명의 주요 사건을 시간순으로 확인해 보세요.</p>
+      </div>
+      <div class="stage-card">
+        <div class="timeline-wrap">
+          <div class="timeline-track" id="c3-track"></div>
+        </div>
+        <div class="detail-panel" id="c3-detail"></div>
+      </div>
+    </section>
+
+    <!-- TAB4 과학자의 신념과 세계관 -->
+    <section class="tab-panel" data-panel="4" hidden>
+      <div class="stage-head">
+        <div class="eyebrow">05 · 세계관이 곧 과학이었다</div>
+        <h2 class="display">천동설과 지동설, 두 세계관</h2>
+        <p>과학자의 신념과 세계관은 그가 세운 이론에 큰 영향을 줍니다. 천동설과 지동설을 전환하며 두 우주관의 구조 차이를 비교해 보세요.</p>
+      </div>
+      <div class="stage-card">
+        <div class="canvas-wrap"><canvas id="c4" width="900" height="440"></canvas></div>
+        <div class="controls">
+          <div class="ctrl-group">
+            <div class="ctrl-label">우주관</div>
+            <div class="seg" id="c4-model">
+              <button class="on" data-m="geo">천동설(지구 중심)</button>
+              <button data-m="helio">지동설(태양 중심)</button>
+            </div>
+          </div>
+        </div>
+        <div class="info-card" id="c4-info"></div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<button class="theme-toggle" id="themeToggle">라이트 모드</button>
+
+<script src="../assets/theme.js"></script>
+<script>
+(function () {
+"use strict";
+
+/* TAB0 인류 문명의 탄생과 과학 */
+(function () {
+  var civs = [
+    { ico: "📜", name: "메소포타미아 문명", sub: "쐐기 문자 · 60진법", detail: "기원전 7000년경 물물 교환을 기록하던 <b>물표</b>에서 <b>쐐기 문자</b>가 탄생했습니다. <b>60진법</b>을 바탕으로 정교한 천문 관측과 달력을 만들었고, 이는 오늘날 시간을 60분·60초로 나누는 방식으로 이어집니다." },
+    { ico: "🏺", name: "이집트 문명", sub: "나일강과 기하학", detail: "나일강의 <b>범람 시기를 예측</b>하기 위해 천문학이, 홍수 후 <b>토지를 다시 측량</b>하기 위해 기하학이 발달했습니다. 린드 파피루스에는 넓이·부피 계산법이 기록되어 있고, 이 지식은 피라미드 건축에도 활용되었습니다." },
+    { ico: "🐉", name: "중국 문명", sub: "천원지방과 발명", detail: "하늘은 둥글고 땅은 네모지다는 <b>천원지방</b> 우주관을 바탕으로 독자적 천문 체계를 세웠습니다. 나침반·종이·화약·인쇄술의 뿌리가 된 과학기술이 이 시기부터 축적되었습니다." },
+    { ico: "🕉️", name: "인도 문명", sub: "숫자 0과 계획도시", detail: "<b>0의 개념</b>과 십진법 자릿수 체계를 처음으로 고안해 오늘날 수학의 기초를 놓았습니다. 인더스 문명의 모헨조다로·하라파는 정교한 배수 시설을 갖춘 계획도시였습니다." },
+    { ico: "🗿", name: "마야 문명(아메리카)", sub: "20진법과 달력", detail: "20진법 수 체계와 매우 정교한 <b>마야 달력</b>을 만들었습니다. 뜻글자와 소리글자를 함께 쓰는 상형 문자로 천문 관측 기록과 역사를 남겼습니다." }
+  ];
+  var grid = document.getElementById("c0-grid");
+  var detail = document.getElementById("c0-detail");
+  civs.forEach(function (c, i) {
+    var btn = document.createElement("button");
+    btn.className = "pick-card" + (i === 0 ? " on" : "");
+    btn.innerHTML = '<div class="pc-ico">' + c.ico + '</div><div class="pc-name">' + c.name + '</div><div class="pc-sub">' + c.sub + '</div>';
+    btn.addEventListener("click", function () {
+      grid.querySelectorAll(".pick-card").forEach(function (b) { b.classList.toggle("on", b === btn); });
+      detail.innerHTML = "<h4>" + c.ico + " " + c.name + "</h4>" + c.detail;
+    });
+    grid.appendChild(btn);
+  });
+  detail.innerHTML = "<h4>" + civs[0].ico + " " + civs[0].name + "</h4>" + civs[0].detail;
+})();
+
+/* TAB1 고대 그리스의 과학 (timeline) */
+(function () {
+  var items = [
+    { pct: 4, name: "탈레스", year: "기원전 624년경", detail: "<b>탈레스</b> — 신화 대신 자연현상 자체로 세계를 설명하려 한 최초의 인물로 꼽힙니다. \"만물의 근원은 <b>물</b>\"이라고 주장하며 합리적 자연철학의 문을 열었습니다." },
+    { pct: 22, name: "피타고라스", year: "기원전 570년경", detail: "<b>피타고라스</b> — 수(數)를 만물의 근원으로 보았습니다. 피타고라스 정리로 잘 알려져 있으며, 지구가 둥근 <b>구형</b>이라고 생각한 초기 인물 중 한 명입니다." },
+    { pct: 46, name: "아리스토텔레스", year: "기원전 384년경", detail: "<b>아리스토텔레스</b> — 관찰과 분류를 중시하는 자연학 체계를 세웠습니다. 지구를 우주의 중심에 두는 <b>지구중심설</b>과 흙·물·불·공기의 <b>4원소설</b>을 정리해 이후 2천 년 가까이 서양 사상에 영향을 주었습니다." },
+    { pct: 68, name: "유클리드", year: "기원전 300년경", detail: "<b>유클리드</b> — 알렉산드리아의 무세이온에서 활동하며 『원론』을 저술했습니다. 소수의 공리로부터 논리적으로 정리를 이끌어내는 <b>공리적 방법</b>으로 기하학을 체계화했습니다." },
+    { pct: 92, name: "프톨레마이오스", year: "서기 100~170년경", detail: "<b>프톨레마이오스</b> — 무세이온에서 활동하며 『알마게스트』를 저술, 지구중심설을 정교한 수학적 모형(주전원)으로 완성해 이후 1400년 넘게 표준 우주관으로 자리 잡았습니다." }
+  ];
+  buildTimeline("c1-track", "c1-detail", items);
+})();
+
+/* TAB2 중세의 종교와 과학 */
+(function () {
+  var data = {
+    europe: "<h4>🏰 중세 서유럽</h4>그리스도교 신학이 학문의 중심에 있었습니다. 아리스토텔레스 철학은 스콜라 철학을 통해 신학과 결합되었고, 자연은 <b>신의 섭리를 드러내는 대상</b>으로 여겨졌습니다. 12~13세기에는 대학이 설립되며 학문 공동체가 성장했습니다.",
+    islam: "<h4>🕌 이슬람 세계</h4>그리스·로마·인도의 지식을 활발히 번역·계승하며 <b>대수학</b>(알콰리즈미), 연금술, 의학(이븐 시나의 『의학전범』), 천문학이 크게 발전했습니다. 바그다드의 '지혜의 집' 등 학문 기관이 번성한 이슬람 과학의 <b>황금기</b>였습니다.",
+    korea: "<h4>🇰🇷 고려·조선</h4>실용적 필요에 따라 독자적 과학기술이 발전했습니다. 조선 세종 때는 <b>측우기</b>, <b>앙부일구</b>(해시계), <b>자격루</b>(물시계) 등이 만들어졌고, 『칠정산』을 통해 우리 하늘에 맞는 독자적 <b>역법</b>을 완성했습니다."
+  };
+  var detail = document.getElementById("c2-detail");
+  document.querySelectorAll("#c2-region button").forEach(function (b) {
+    b.addEventListener("click", function () {
+      document.querySelectorAll("#c2-region button").forEach(function (x) { x.classList.toggle("on", x === b); });
+      detail.innerHTML = data[b.getAttribute("data-r")];
+    });
+  });
+  detail.innerHTML = data.europe;
+})();
+
+/* TAB3 르네상스와 과학혁명 (timeline) */
+(function () {
+  var items = [
+    { pct: 6, name: "코페르니쿠스", year: "1543년", detail: "<b>코페르니쿠스</b> — 『천구의 회전에 관하여』에서 태양을 중심에 두는 <b>지동설</b>을 제안했습니다. 세상을 떠나기 직전 출판하여 파장을 늦췄지만, 이후 우주관 전환의 출발점이 되었습니다." },
+    { pct: 36, name: "갈릴레이", year: "1609년경", detail: "<b>갈릴레이</b> — 직접 만든 망원경으로 목성의 위성, 달의 분화구, 금성의 위상 변화를 관측해 지동설을 뒷받침하는 <b>관측 증거</b>를 최초로 제시했습니다." },
+    { pct: 62, name: "케플러", year: "1609~1619년", detail: "<b>케플러</b> — 티코 브라헤의 정밀한 관측 자료를 분석해 행성이 <b>타원 궤도</b>로 움직인다는 행성 운동 법칙 세 가지를 발견, 지동설을 수학적으로 완성했습니다." },
+    { pct: 92, name: "뉴턴", year: "1687년", detail: "<b>뉴턴</b> — 『프린키피아』에서 <b>만유인력의 법칙</b>과 운동 법칙을 제시해, 하늘의 운동과 땅의 운동을 하나의 원리로 설명하며 과학혁명을 완성했습니다." }
+  ];
+  buildTimeline("c3-track", "c3-detail", items);
+})();
+
+/* shared timeline builder */
+function buildTimeline(trackId, detailId, items) {
+  var track = document.getElementById(trackId);
+  var detail = document.getElementById(detailId);
+  var fill = document.createElement("div");
+  fill.className = "timeline-fill";
+  track.appendChild(fill);
+  var dots = [];
+  items.forEach(function (it, i) {
+    var dot = document.createElement("div");
+    dot.className = "timeline-dot" + (i === 0 ? " on" : "");
+    dot.style.left = it.pct + "%";
+    dot.innerHTML = '<span class="td-label">' + it.name + '</span>';
+    dot.addEventListener("click", function () { select(i); });
+    track.appendChild(dot);
+    dots.push(dot);
+  });
+  function select(i) {
+    dots.forEach(function (d, di) { d.classList.toggle("on", di === i); });
+    fill.style.width = items[i].pct + "%";
+    detail.innerHTML = "<h4>" + items[i].name + " · " + items[i].year + "</h4>" + items[i].detail;
+  }
+  select(0);
+}
+
+/* TAB4 천동설/지동설 */
+(function () {
+  var canvas = document.getElementById("c4");
+  var ctx = setupCanvas(canvas);
+  var W = canvas._w, H = canvas._h;
+  var model = "geo";
+  var t = 0;
+
+  document.querySelectorAll("#c4-model button").forEach(function (b) {
+    b.addEventListener("click", function () {
+      model = b.getAttribute("data-m");
+      document.querySelectorAll("#c4-model button").forEach(function (x) { x.classList.toggle("on", x === b); });
+      updateInfo();
+    });
+  });
+  function updateInfo() {
+    var info = document.getElementById("c4-info");
+    if (model === "geo") {
+      info.innerHTML = "<b>천동설(지구중심설)</b> — 지구가 우주의 중심에 고정되어 있고, 달·수성·금성·태양·화성·목성·토성이 지구 주위를 돕니다. 행성의 <b>역행 운동</b>을 설명하기 위해 주전원(작은 원)이라는 복잡한 장치가 추가되었습니다.";
+    } else {
+      info.innerHTML = "<b>지동설(태양중심설)</b> — 태양이 중심에 있고, 지구를 포함한 행성들이 태양 주위를 돕니다. 별도의 주전원 없이도 행성의 겉보기 운동을 훨씬 <b>단순하게</b> 설명할 수 있습니다.";
+    }
+  }
+
+  var planetsGeo = ["달", "수성", "금성", "태양", "화성", "목성", "토성"];
+  var planetsHelio = ["수성", "금성", "지구", "화성", "목성", "토성"];
+
+  function frame() {
+    if (canvas.offsetParent === null) { requestAnimationFrame(frame); return; }
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = cssVar("--panel");
+    ctx.fillRect(0, 0, W, H);
+    var cx = W / 2, cy = H / 2 + 10;
+
+    var planets = model === "geo" ? planetsGeo : planetsHelio;
+    var minR = 40, maxR = Math.min(W, H) / 2 - 30;
+    ctx.strokeStyle = cssVar("--line");
+    ctx.lineWidth = 1;
+    planets.forEach(function (name, i) {
+      var r = minR + (i + 1) * (maxR - minR) / planets.length;
+      ctx.beginPath();
+      ctx.arc(cx, cy, r, 0, Math.PI * 2);
+      ctx.stroke();
+    });
+
+    // center body
+    ctx.save();
+    ctx.fillStyle = model === "geo" ? cssVar("--cold") : cssVar("--coral");
+    ctx.beginPath();
+    ctx.arc(cx, cy, 16, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = cssVar("--foam");
+    ctx.font = "700 11px Segoe UI, sans-serif";
+    ctx.textAlign = "center";
+    ctx.fillText(model === "geo" ? "지구" : "태양", cx, cy + 34);
+    ctx.restore();
+
+    planets.forEach(function (name, i) {
+      var r = minR + (i + 1) * (maxR - minR) / planets.length;
+      var speed = 0.25 + i * 0.12;
+      var ang = t * speed + i * 1.3;
+      var px = cx + Math.cos(ang) * r, py = cy + Math.sin(ang) * r;
+
+      if (model === "geo" && name !== "태양" && name !== "달") {
+        // epicycle: small circle around the moving point
+        var epiR = r * 0.14;
+        var epiAng = t * speed * 3.2;
+        var ex = px + Math.cos(epiAng) * epiR, ey = py + Math.sin(epiAng) * epiR;
+        ctx.save();
+        ctx.strokeStyle = cssVar("--line");
+        ctx.globalAlpha = 0.6;
+        ctx.beginPath(); ctx.arc(px, py, epiR, 0, Math.PI * 2); ctx.stroke();
+        ctx.restore();
+        px = ex; py = ey;
+      }
+
+      ctx.save();
+      ctx.fillStyle = cssVar("--teal");
+      ctx.beginPath();
+      ctx.arc(px, py, 6, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+      ctx.save();
+      ctx.fillStyle = cssVar("--mist");
+      ctx.font = "10px Segoe UI, sans-serif";
+      ctx.textAlign = "left";
+      ctx.fillText(name, px + 9, py + 3);
+      ctx.restore();
+    });
+
+    t += 1 / 90;
+    requestAnimationFrame(frame);
+  }
+  updateInfo();
+  requestAnimationFrame(frame);
+})();
+
+})();
+</script>
+</body>
+</html>

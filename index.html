@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>과학의 역사와 문화 — 인터랙티브 학습 도구</title>
+<link rel="stylesheet" href="assets/theme.css">
+<style>
+  body { display: block; }
+  .hero { padding: 64px 30px 30px; max-width: 1080px; margin: 0 auto; }
+  .hero .eyebrow { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--teal); font-weight: 700; }
+  .hero h1 { font-size: clamp(30px, 5vw, 46px); margin: 10px 0 14px; text-wrap: balance; }
+  .hero p { color: var(--mist); font-size: 15.5px; line-height: 1.7; max-width: 640px; margin: 0; }
+
+  .grid { max-width: 1080px; margin: 30px auto 20px; padding: 0 30px; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; }
+  .unit-card { display: block; background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 24px; text-decoration: none; color: inherit; transition: border-color .15s, transform .15s; position: relative; overflow: hidden; }
+  .unit-card:hover { border-color: var(--teal-dim); transform: translateY(-2px); }
+  .unit-card .chapter { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--teal); font-weight: 700; margin-bottom: 6px; }
+  .unit-card h3 { font-size: 20px; margin: 0 0 8px; }
+  .unit-card p { color: var(--mist); font-size: 13px; line-height: 1.6; margin: 0 0 14px; min-height: 60px; }
+  .unit-card .topics { display: flex; flex-wrap: wrap; gap: 6px; }
+  .unit-card .topics span { font-size: 10.5px; padding: 3px 8px; border-radius: 999px; background: var(--panel-2); border: 1px solid var(--line); color: var(--mist); }
+  .unit-card .go { position: absolute; top: 24px; right: 24px; color: var(--mist); font-size: 18px; }
+  .unit-card .count { position: absolute; bottom: 22px; right: 22px; font-size: 11px; color: var(--teal); font-weight: 700; }
+
+  .part-label { max-width: 1080px; margin: 0 auto; padding: 30px 30px 0; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--mist); font-weight: 700; }
+  .tips { max-width: 1080px; margin: 16px auto 70px; padding: 0 30px; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+  .tip-card { background: var(--panel-2); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; }
+  .tip-card .num { font-family: Georgia, serif; font-size: 22px; color: var(--teal); font-weight: 700; }
+  .tip-card h4 { font-size: 14px; margin: 6px 0 4px; }
+  .tip-card p { font-size: 12.5px; color: var(--mist); line-height: 1.6; margin: 0; }
+  .back-link { max-width: 1080px; margin: 20px auto 0; padding: 0 30px; }
+  .back-link a { color: var(--mist); font-size: 12px; text-decoration: none; }
+  .back-link a:hover { color: var(--teal); }
+</style>
+</head>
+<body>
+
+<div class="back-link"><a href="https://wmfsljy-coder.github.io/science-teacher-hub/">← 지구과학 교사 웹툴 모음</a></div>
+
+<div class="hero">
+  <div class="eyebrow">고등학교 과학의 역사와 문화 · 인터랙티브 학습 도구</div>
+  <h1 class="display">과학의 역사와 문화<br>과학사 스테이션</h1>
+  <p>인류 문명의 탄생부터 다가올 미래까지, 과학과 인간 사회가 함께 만들어 온 이야기를 카드·타임라인·비교 화면으로 직접 탐색하는 인터랙티브 학습 도구입니다. 아래에서 학습할 대단원을 선택하세요.</p>
+</div>
+
+<div class="grid">
+  <a class="unit-card" href="1/">
+    <div class="chapter">Ⅰ</div>
+    <h3 class="display">과학과 문명의<br>탄생과 통합</h3>
+    <p>인류 문명의 탄생과 과학, 고대 그리스의 과학, 중세의 종교와 과학, 르네상스와 과학혁명, 과학자의 신념과 세계관을 다룹니다.</p>
+    <div class="topics"><span>4대 문명</span><span>그리스 철학자</span><span>중세 과학</span><span>과학혁명</span><span>천동설·지동설</span></div>
+    <div class="go">→</div>
+    <div class="count">5개 소단원</div>
+  </a>
+  <a class="unit-card" href="2/">
+    <div class="chapter">Ⅱ</div>
+    <h3 class="display">변화하는<br>과학과 세계</h3>
+    <p>현대 과학과 사회문화, 과학자의 논쟁과 연구 규범, 현대 예술과 과학, 감염병과 과학, 교통수단의 발달, 20세기 과학기술의 빛과 그림자를 다룹니다.</p>
+    <div class="topics"><span>연구 윤리</span><span>과학과 예술</span><span>감염병</span><span>교통의 발달</span><span>빛과 그림자</span></div>
+    <div class="go">→</div>
+    <div class="count">6개 소단원</div>
+  </a>
+  <a class="unit-card" href="3/">
+    <div class="chapter">Ⅲ</div>
+    <h3 class="display">과학과<br>인류의 미래</h3>
+    <p>새로운 문화의 등장, 과학 용어의 사회 확산, 과학기술과 결합한 음악, 인간과 기계의 연결, 가상·증강 현실, 과학기술과 시민 참여를 다룹니다.</p>
+    <div class="topics"><span>1인 미디어</span><span>AI를 보는 시선</span><span>VR·AR</span><span>시민 과학</span></div>
+    <div class="go">→</div>
+    <div class="count">6개 소단원</div>
+  </a>
+</div>
+
+<div class="part-label">이 사이트 활용법</div>
+<div class="tips">
+  <div class="tip-card">
+    <div class="num">01</div>
+    <h4>수업 중 시연</h4>
+    <p>프로젝터로 화면을 띄우고 카드·타임라인을 직접 눌러 가며 과학과 사회의 관계를 시각적으로 설명할 수 있습니다.</p>
+  </div>
+  <div class="tip-card">
+    <div class="num">02</div>
+    <h4>학생 개별 활동</h4>
+    <p>링크를 공유하면 학생이 각자 기기로 접속해 스스로 탐색할 수 있습니다. 로그인이 필요 없습니다.</p>
+  </div>
+  <div class="tip-card">
+    <div class="num">03</div>
+    <h4>다크 · 라이트 모드</h4>
+    <p>오른쪽 위 버튼으로 화면 밝기를 전환할 수 있어, 어두운 교실이나 밝은 창가 어디서나 보기 편합니다.</p>
+  </div>
+  <div class="tip-card">
+    <div class="num">04</div>
+    <h4>토론 활동과 함께</h4>
+    <p>각 단원 속 '생각해 보기' 카드는 교과서의 토론·탐구 활동 질문을 담고 있어 모둠 토의로 이어가기 좋습니다.</p>
+  </div>
+</div>
+
+<button class="theme-toggle" id="themeToggle">라이트 모드</button>
+<script src="assets/theme.js"></script>
+</body>
+</html>

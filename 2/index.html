@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>변화하는 과학과 세계 — 과학사 스테이션</title>
+<link rel="stylesheet" href="../assets/theme.css">
+</head>
+<body>
+
+<div class="app">
+  <nav class="rail" id="rail">
+    <div class="brand">
+      <a class="home" href="../">← 과학의 역사와 문화</a>
+      <div class="eyebrow" style="margin-top:8px">Ⅱ · 변화하는 과학과 세계</div>
+      <h1 class="display">현대 사회 속<br>과학과 문화</h1>
+    </div>
+    <button class="tab-btn active" data-tab="0"><span class="num">01</span> 현대 과학과 사회문화</button>
+    <button class="tab-btn" data-tab="1"><span class="num">02</span> 과학자의 논쟁과 연구 규범</button>
+    <button class="tab-btn" data-tab="2"><span class="num">03</span> 현대 예술과 과학</button>
+    <button class="tab-btn" data-tab="3"><span class="num">04</span> 감염병과 과학</button>
+    <button class="tab-btn" data-tab="4"><span class="num">05</span> 교통수단의 발달과 사회</button>
+    <button class="tab-btn" data-tab="5"><span class="num">06</span> 20세기 과학기술의 빛과 그림자</button>
+  </nav>
+
+  <main>
+    <!-- TAB0 현대 과학과 사회문화 -->
+    <section class="tab-panel" data-panel="0">
+      <div class="stage-head">
+        <div class="eyebrow">01 · 거대해지고 촘촘해진 현대 과학</div>
+        <h2 class="display">현대 과학과 사회문화</h2>
+        <p>20세기 이후 과학은 개인의 탐구를 넘어 사회 전체와 얽힌 활동이 되었습니다. 카드를 눌러 현대 과학의 특징을 살펴보세요.</p>
+      </div>
+      <div class="stage-card">
+        <div class="card-grid" id="c0-grid"></div>
+        <div class="detail-panel" id="c0-detail"></div>
+      </div>
+    </section>
+
+    <!-- TAB1 과학자의 논쟁과 연구 규범 -->
+    <section class="tab-panel" data-panel="1" hidden>
+      <div class="stage-head">
+        <div class="eyebrow">02 · 과학은 논쟁 속에서 다듬어진다</div>
+        <h2 class="display">과학자의 논쟁과 과학 연구의 규범</h2>
+        <p>역사 속 과학 논쟁 사례와, 오늘날 과학자가 지켜야 할 연구 윤리 규범을 함께 살펴보세요.</p>
+      </div>
+      <div class="stage-card">
+        <div class="controls">
+          <div class="ctrl-group">
+            <div class="ctrl-label">살펴보기</div>
+            <div class="seg" id="c1-mode">
+              <button class="on" data-m="debate">역사 속 과학 논쟁</button>
+              <button data-m="norm">연구 윤리 규범</button>
+            </div>
+          </div>
+        </div>
+        <div class="card-grid" id="c1-grid"></div>
+        <div class="detail-panel" id="c1-detail"></div>
+      </div>
+    </section>
+
+    <!-- TAB2 현대 예술과 과학 -->
+    <section class="tab-panel" data-panel="2" hidden>
+      <div class="stage-head">
+        <div class="eyebrow">03 · 과학이 예술의 눈을 바꾸다</div>
+        <h2 class="display">현대 예술과 과학</h2>
+        <p>새로운 과학 이론과 기술은 예술가들에게 새로운 표현 방식을 열어 주었습니다. 사조를 눌러 과학과의 연결점을 확인해 보세요.</p>
+      </div>
+      <div class="stage-card">
+        <div class="card-grid" id="c2-grid"></div>
+        <div class="detail-panel" id="c2-detail"></div>
+      </div>
+    </section>
+
+    <!-- TAB3 감염병과 과학 -->
+    <section class="tab-panel" data-panel="3" hidden>
+      <div class="stage-head">
+        <div class="eyebrow">04 · 인류사를 바꾼 감염병과의 싸움</div>
+        <h2 class="display">감염병과 과학</h2>
+        <p>대규모 감염병은 그때마다 과학 발전의 계기가 되기도 했습니다. 시간순으로 점을 눌러 확인해 보세요.</p>
+      </div>
+      <div class="stage-card">
+        <div class="timeline-wrap"><div class="timeline-track" id="c3-track"></div></div>
+        <div class="detail-panel" id="c3-detail"></div>
+        <div class="info-card">생각해 보기 — COVID-19로 알게 된 진실, 우리의 노동은 안전한가? 감염병 대응 과정에서 드러난 필수 노동자의 여건 문제를 함께 토론해 볼 수 있습니다.</div>
+      </div>
+    </section>
+
+    <!-- TAB4 교통수단의 발달과 사회 -->
+    <section class="tab-panel" data-panel="4" hidden>
+      <div class="stage-head">
+        <div class="eyebrow">05 · 이동의 속도가 사회를 바꾸다</div>
+        <h2 class="display">교통수단의 발달과 사회</h2>
+        <p>교통수단의 발달은 이동 속도뿐 아니라 사람들의 생활 방식과 도시의 모습까지 바꾸어 왔습니다.</p>
+      </div>
+      <div class="stage-card">
+        <div class="timeline-wrap"><div class="timeline-track" id="c4-track"></div></div>
+        <div class="detail-panel" id="c4-detail"></div>
+      </div>
+    </section>
+
+    <!-- TAB5 20세기 과학기술의 빛과 그림자 -->
+    <section class="tab-panel" data-panel="5" hidden>
+      <div class="stage-head">
+        <div class="eyebrow">06 · 같은 기술, 두 얼굴</div>
+        <h2 class="display">20세기 과학기술의 빛과 그림자</h2>
+        <p>20세기의 대표적 과학기술은 인류에게 혜택을 주는 동시에 새로운 위험도 함께 가져왔습니다. 기술을 선택해 두 얼굴을 비교해 보세요.</p>
+      </div>
+      <div class="stage-card">
+        <div class="card-grid" id="c5-grid"></div>
+        <div class="compare-wrap" id="c5-compare"></div>
+        <div class="info-card">생각해 보기 — 생명 공학의 상업화, 그 결과는? 유전자 기술의 특허와 상업적 이용이 가져올 수 있는 이익과 위험을 함께 토론해 볼 수 있습니다.</div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<button class="theme-toggle" id="themeToggle">라이트 모드</button>
+
+<script src="../assets/theme.js"></script>
+<script>
+(function () {
+"use strict";
+
+function buildTimeline(trackId, detailId, items) {
+  var track = document.getElementById(trackId);
+  var detail = document.getElementById(detailId);
+  var fill = document.createElement("div");
+  fill.className = "timeline-fill";
+  track.appendChild(fill);
+  var dots = [];
+  items.forEach(function (it, i) {
+    var dot = document.createElement("div");
+    dot.className = "timeline-dot" + (i === 0 ? " on" : "");
+    dot.style.left = it.pct + "%";
+    dot.innerHTML = '<span class="td-label">' + it.name + '</span>';
+    dot.addEventListener("click", function () { select(i); });
+    track.appendChild(dot);
+    dots.push(dot);
+  });
+  function select(i) {
+    dots.forEach(function (d, di) { d.classList.toggle("on", di === i); });
+    fill.style.width = items[i].pct + "%";
+    detail.innerHTML = "<h4>" + items[i].name + (items[i].year ? " · " + items[i].year : "") + "</h4>" + items[i].detail;
+  }
+  select(0);
+}
+
+function buildCardGrid(gridId, detailId, items) {
+  var grid = document.getElementById(gridId);
+  var detail = document.getElementById(detailId);
+  grid.innerHTML = "";
+  items.forEach(function (c, i) {
+    var btn = document.createElement("button");
+    btn.className = "pick-card" + (i === 0 ? " on" : "");
+    btn.innerHTML = '<div class="pc-ico">' + c.ico + '</div><div class="pc-name">' + c.name + '</div><div class="pc-sub">' + (c.sub || "") + '</div>';
+    btn.addEventListener("click", function () {
+      grid.querySelectorAll(".pick-card").forEach(function (b) { b.classList.toggle("on", b === btn); });
+      if (detail) detail.innerHTML = "<h4>" + c.ico + " " + c.name + "</h4>" + c.detail;
+      if (c.onSelect) c.onSelect();
+    });
+    grid.appendChild(btn);
+  });
+  if (items.length && detail) detail.innerHTML = "<h4>" + items[0].ico + " " + items[0].name + "</h4>" + items[0].detail;
+}
+
+/* TAB0 현대 과학과 사회문화 */
+(function () {
+  var items = [
+    { ico: "🔬", name: "거대 과학(Big Science)", sub: "국가·국제 협력 연구", detail: "입자가속기, 우주 탐사, 인간 게놈 프로젝트처럼 <b>막대한 예산과 대규모 인력</b>이 필요한 연구가 늘었습니다. 이제 과학은 국가나 여러 나라가 함께 추진하는 거대한 협력 사업이 되었습니다." },
+    { ico: "🧩", name: "전문화와 분업", sub: "세부 분야로 쪼개진 연구", detail: "과학 지식이 폭발적으로 늘면서 한 사람이 모든 것을 아는 시대는 끝났습니다. 연구자들은 <b>매우 좁고 깊은 전문 분야</b>를 맡아 협업하는 방식으로 일합니다." },
+    { ico: "📢", name: "과학의 대중화", sub: "시민과 만나는 과학", detail: "다큐멘터리, 과학관, SNS 등을 통해 과학 지식이 <b>대중과 직접 소통</b>하게 되었습니다. 시민 과학(citizen science)처럼 일반인이 연구에 직접 참여하는 사례도 늘고 있습니다." },
+    { ico: "🏛️", name: "과학과 정책", sub: "국가 정책이 된 과학기술", detail: "기후 변화, 감염병 대응, 신기술 규제처럼 오늘날 많은 국가 정책이 과학적 근거 위에서 결정됩니다. 과학은 이제 <b>정치·행정과 뗄 수 없는 영역</b>이 되었습니다." }
+  ];
+  buildCardGrid("c0-grid", "c0-detail", items);
+})();
+
+/* TAB1 과학자의 논쟁과 연구 규범 */
+(function () {
+  var debates = [
+    { ico: "🧬", name: "다윈과 진화론 논쟁", detail: "다윈의 『종의 기원』(1859)은 당시 종교적 세계관과 크게 충돌하며 격렬한 논쟁을 낳았습니다. 오늘날에는 과학계 내에서 널리 받아들여지지만, 사회적으로는 여전히 논쟁이 이어지는 지역도 있습니다." },
+    { ico: "⚠️", name: "우생학의 오용", detail: "20세기 초 일부 과학자들은 유전학을 왜곡해 특정 집단을 차별하는 <b>우생학</b>을 주장했습니다. 이는 과학 지식이 잘못된 사회적 신념과 결합했을 때 얼마나 위험할 수 있는지 보여 주는 사례입니다." },
+    { ico: "🧪", name: "연구 부정행위 사례", detail: "논문 데이터 조작이나 연구 성과 과장 같은 <b>연구 부정행위</b> 사례는 과학계 전체의 신뢰를 흔듭니다. 이런 사건들은 왜 엄격한 검증과 규범이 필요한지를 알려 줍니다." }
+  ];
+  var norms = [
+    { ico: "🤝", name: "정직성", detail: "실험 데이터를 <b>위조·변조하지 않고</b> 있는 그대로 보고해야 합니다. 연구의 가장 기본이 되는 원칙입니다." },
+    { ico: "🔎", name: "동료 검토(peer review)", detail: "논문을 발표하기 전, 같은 분야의 다른 전문가들이 연구 방법과 결과를 <b>검증</b>하는 과정을 거칩니다." },
+    { ico: "📂", name: "데이터 공개", detail: "다른 연구자가 결과를 <b>재현하고 검증</b>할 수 있도록 실험 방법과 원자료를 투명하게 공개하는 것이 권장됩니다." },
+    { ico: "🧑‍⚖️", name: "책임성", detail: "연구가 사람·동물·환경에 미칠 영향을 미리 고려하고, 연구 윤리 위원회(IRB) 심의 등 절차를 지켜야 합니다." }
+  ];
+  var grid = document.getElementById("c1-grid"), detail = document.getElementById("c1-detail");
+  function render(mode) { buildCardGrid("c1-grid", "c1-detail", mode === "debate" ? debates : norms); }
+  document.querySelectorAll("#c1-mode button").forEach(function (b) {
+    b.addEventListener("click", function () {
+      document.querySelectorAll("#c1-mode button").forEach(function (x) { x.classList.toggle("on", x === b); });
+      render(b.getAttribute("data-m"));
+    });
+  });
+  render("debate");
+})();
+
+/* TAB2 현대 예술과 과학 */
+(function () {
+  var items = [
+    { ico: "🎨", name: "인상주의", sub: "빛과 색의 광학", detail: "19세기 광학 연구는 인상주의 화가들이 빛과 색을 새로운 방식으로 다루도록 이끌었습니다. 대상을 있는 그대로가 아니라 <b>빛이 눈에 만드는 인상</b> 그대로 그리려 했습니다." },
+    { ico: "🔷", name: "입체주의(큐비즘)", sub: "4차원과 다중 시점", detail: "아인슈타인의 상대성 이론과 새로운 기하학은 '시간'이라는 4번째 차원에 대한 관심을 불러일으켰습니다. 입체주의는 하나의 그림 안에 <b>여러 시점을 동시에</b> 담아냈습니다." },
+    { ico: "🌀", name: "옵아트(Op Art)", sub: "착시와 시지각 과학", detail: "인간의 시지각을 연구하는 과학은 옵아트 예술가들에게 영감을 주었습니다. 기하학적 패턴만으로 <b>착시와 움직이는 듯한 느낌</b>을 만들어 냅니다." },
+    { ico: "💻", name: "디지털 아트", sub: "컴퓨터와 알고리즘", detail: "컴퓨터 그래픽과 인공지능 기술의 발달은 알고리즘으로 이미지를 생성하는 <b>디지털 아트·생성 예술</b>이라는 새로운 장르를 만들어 냈습니다." }
+  ];
+  buildCardGrid("c2-grid", "c2-detail", items);
+})();
+
+/* TAB3 감염병과 과학 */
+(function () {
+  var items = [
+    { pct: 8, name: "흑사병(페스트)", year: "14세기", detail: "유럽 인구의 약 3분의 1이 목숨을 잃었습니다. 세균의 존재를 몰랐던 당시에는 원인을 알 수 없었지만, 이후 <b>공중 보건 개념</b>(격리, 검역)이 자리 잡는 계기가 되었습니다." },
+    { pct: 40, name: "스페인 독감", year: "1918~1919년", detail: "제1차 세계대전 직후 전 세계에서 수천만 명이 사망했습니다. 이 사건은 <b>바이러스학</b>과 국제 보건 협력의 필요성을 일깨웠습니다." },
+    { pct: 68, name: "HIV/AIDS", year: "1980년대~", detail: "새로운 감염병 대응을 위한 <b>항바이러스제 개발</b>과 함께, 감염병에 대한 사회적 낙인과 인권 문제도 크게 부각되었습니다." },
+    { pct: 94, name: "COVID-19", year: "2019년~", detail: "역사상 가장 빠른 속도로 <b>mRNA 백신</b>이 개발·보급되었습니다. 동시에 필수 노동자의 노동 환경, 방역과 자유의 균형 같은 사회적 쟁점도 크게 떠올랐습니다." }
+  ];
+  buildTimeline("c3-track", "c3-detail", items);
+})();
+
+/* TAB4 교통수단의 발달과 사회 */
+(function () {
+  var items = [
+    { pct: 6, name: "증기 기관차", year: "19세기 초", detail: "증기기관을 이용한 철도는 사람과 물자를 이전과 비교할 수 없는 속도로 실어 날랐습니다. 도시와 도시를 가깝게 연결하며 산업혁명을 가속했습니다." },
+    { pct: 34, name: "자동차의 대중화", year: "20세기 초", detail: "컨베이어 벨트 방식의 대량 생산으로 자동차 가격이 낮아지며 <b>개인 이동 수단</b>의 시대가 열렸고, 도로와 교외 주거지 등 도시의 모습 자체가 바뀌었습니다." },
+    { pct: 62, name: "비행기의 발달", year: "20세기 중반", detail: "제트 엔진의 등장으로 대륙 간 이동이 하루 안에 가능해졌습니다. 사람과 물자, 문화가 국경을 넘어 훨씬 빠르게 교류하게 되었습니다." },
+    { pct: 90, name: "고속철도·전기차", year: "20세기 말~현재", detail: "고속철도는 도시 간 이동을 다시 혁신했고, 최근에는 <b>전기차·자율주행</b> 기술이 교통수단의 다음 변화를 이끌고 있습니다." }
+  ];
+  buildTimeline("c4-track", "c4-detail", items);
+})();
+
+/* TAB5 20세기 과학기술의 빛과 그림자 */
+(function () {
+  var items = [
+    {
+      ico: "⚛️", name: "원자력",
+      light: "적은 연료로 막대한 전기를 생산할 수 있고, 이산화탄소 배출이 적은 에너지원입니다.",
+      shadow: "체르노빌·후쿠시마 사고처럼 대형 사고 시 피해가 매우 크고, 핵무기 개발과 방사성 폐기물 처리 문제가 따릅니다."
+    },
+    {
+      ico: "🌾", name: "화학 비료·농약",
+      light: "농작물 수확량을 크게 늘려 세계 인구 증가를 뒷받침한 '녹색 혁명'의 핵심 기술입니다.",
+      shadow: "토양과 수질 오염, 생태계 교란을 일으킬 수 있고, 특정 화학물질은 인체 건강에도 악영향을 줄 수 있습니다."
+    },
+    {
+      ico: "💊", name: "항생제",
+      light: "세균 감염으로 인한 사망을 극적으로 줄여 인류의 평균 수명을 크게 늘렸습니다.",
+      shadow: "오남용으로 인해 항생제가 듣지 않는 <b>슈퍼박테리아(내성균)</b>가 늘어나는 새로운 위협이 나타나고 있습니다."
+    },
+    {
+      ico: "🏭", name: "화석 연료·중화학 공업",
+      light: "저렴하고 강력한 에너지원으로 20세기 산업화와 경제 성장을 이끈 원동력이었습니다.",
+      shadow: "온실가스 배출로 인한 <b>기후 변화</b>와 대기오염을 일으키는 주요 원인으로 지목되고 있습니다."
+    }
+  ];
+  var grid = document.getElementById("c5-grid"), compare = document.getElementById("c5-compare");
+  function render(idx) {
+    var it = items[idx];
+    compare.innerHTML =
+      '<div class="compare-col"><h4>💡 빛</h4><p>' + it.light + '</p></div>' +
+      '<div class="compare-col"><h4>🌑 그림자</h4><p>' + it.shadow + '</p></div>';
+  }
+  items.forEach(function (it, i) {
+    var btn = document.createElement("button");
+    btn.className = "pick-card" + (i === 0 ? " on" : "");
+    btn.innerHTML = '<div class="pc-ico">' + it.ico + '</div><div class="pc-name">' + it.name + '</div>';
+    btn.addEventListener("click", function () {
+      grid.querySelectorAll(".pick-card").forEach(function (b) { b.classList.toggle("on", b === btn); });
+      render(i);
+    });
+    grid.appendChild(btn);
+  });
+  render(0);
+})();
+
+/* tab switching + theme toggle handled by theme.js */
+})();
+</script>
+</body>
+</html>
