@@ -84,6 +84,25 @@
         <div class="detail-panel" id="c3-detail"></div>
         <div class="info-card">생각해 보기 — COVID-19로 알게 된 진실, 우리의 노동은 안전한가? 감염병 대응 과정에서 드러난 필수 노동자의 여건 문제를 함께 토론해 볼 수 있습니다.</div>
       </div>
+      <div class="stage-card">
+        <div class="canvas-wrap"><canvas id="c3b" width="900" height="380"></canvas></div>
+        <div class="controls">
+          <div class="ctrl-group" style="flex:1 1 100%">
+            <div class="ctrl-label">기초감염재생산수 R0<span class="val" id="c3b-r-val">2.5</span></div>
+            <input type="range" id="c3b-r" min="10" max="100" step="1" value="25">
+          </div>
+          <div class="ctrl-group">
+            <div class="ctrl-label">감염병 예시로 이동</div>
+            <div class="seg" id="c3b-preset">
+              <button data-r="18">흑사병(약 1.8)</button>
+              <button data-r="20">스페인 독감(약 2.0)</button>
+              <button class="on" data-r="25">COVID-19 초기(약 2.5)</button>
+              <button data-r="90">오미크론(약 9.0)</button>
+            </div>
+          </div>
+        </div>
+        <div class="info-card" id="c3b-info"></div>
+      </div>
     </section>
 
     <!-- TAB4 교통수단의 발달과 사회 -->
@@ -219,6 +238,82 @@ function buildCardGrid(gridId, detailId, items) {
     { pct: 94, name: "COVID-19", year: "2019년~", detail: "역사상 가장 빠른 속도로 <b>mRNA 백신</b>이 개발·보급되었습니다. 동시에 필수 노동자의 노동 환경, 방역과 자유의 균형 같은 사회적 쟁점도 크게 떠올랐습니다." }
   ];
   buildTimeline("c3-track", "c3-detail", items);
+})();
+
+/* TAB3b 감염병 확산 계산기(R0) */
+(function () {
+  var canvas = document.getElementById("c3b");
+  var ctx = setupCanvas(canvas);
+  var W = canvas._w, H = canvas._h;
+  var info = document.getElementById("c3b-info");
+  var rX10 = 25;
+  var POP = 10000;
+  var GEN = 12;
+
+  function simulate(r0) {
+    var susceptible = POP - 1, infected = 1;
+    var series = [infected];
+    for (var g = 0; g < GEN; g++) {
+      var newInfected = Math.min(susceptible, r0 * infected * (susceptible / POP));
+      susceptible -= newInfected;
+      infected = newInfected;
+      series.push(infected);
+      if (susceptible <= 0) break;
+    }
+    return series;
+  }
+
+  document.getElementById("c3b-r").addEventListener("input", function (e) {
+    rX10 = +e.target.value;
+    document.getElementById("c3b-r-val").textContent = (rX10 / 10).toFixed(1);
+    syncPreset();
+    render();
+  });
+  document.querySelectorAll("#c3b-preset button").forEach(function (b) {
+    b.addEventListener("click", function () {
+      rX10 = +b.getAttribute("data-r");
+      document.getElementById("c3b-r").value = rX10;
+      document.getElementById("c3b-r-val").textContent = (rX10 / 10).toFixed(1);
+      document.querySelectorAll("#c3b-preset button").forEach(function (x) { x.classList.toggle("on", x === b); });
+      render();
+    });
+  });
+  function syncPreset() {
+    document.querySelectorAll("#c3b-preset button").forEach(function (x) { x.classList.toggle("on", +x.getAttribute("data-r") === rX10); });
+  }
+
+  function render() {
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = cssVar("--panel"); ctx.fillRect(0, 0, W, H);
+    var r0 = rX10 / 10;
+    var series = simulate(r0);
+    var x0 = 70, x1 = W - 40, y0 = 30, y1 = H - 60;
+    var maxV = Math.max.apply(null, series.concat([POP * 0.3]));
+    ctx.strokeStyle = cssVar("--line"); ctx.beginPath(); ctx.moveTo(x0, y0); ctx.lineTo(x0, y1); ctx.lineTo(x1, y1); ctx.stroke();
+
+    ctx.beginPath();
+    series.forEach(function (v, g) {
+      var xx = x0 + g / (GEN) * (x1 - x0), yy = y1 - v / maxV * (y1 - y0);
+      if (g === 0) ctx.moveTo(xx, yy); else ctx.lineTo(xx, yy);
+    });
+    ctx.strokeStyle = cssVar("--coral"); ctx.lineWidth = 2.5; ctx.stroke();
+    series.forEach(function (v, g) {
+      var xx = x0 + g / (GEN) * (x1 - x0), yy = y1 - v / maxV * (y1 - y0);
+      ctx.beginPath(); ctx.arc(xx, yy, 3, 0, 7); ctx.fillStyle = cssVar("--coral"); ctx.fill();
+    });
+
+    ctx.font = "11px Segoe UI"; ctx.fillStyle = cssVar("--mist"); ctx.textAlign = "left";
+    ctx.fillText("세대 0", x0, y1 + 22);
+    ctx.textAlign = "right"; ctx.fillText("세대 " + GEN, x1, y1 + 22);
+    ctx.save(); ctx.translate(24, (y0 + y1) / 2); ctx.rotate(-Math.PI / 2); ctx.textAlign = "center"; ctx.fillText("세대별 신규 감염자 수(가상 인구 " + POP.toLocaleString() + "명)", 0, 0); ctx.restore();
+
+    var peak = Math.max.apply(null, series);
+    var totalInfected = POP - (POP - series.reduce(function (a, b) { return a + b; }, 1) > 0 ? 0 : 0);
+    var herdImmunity = r0 > 1 ? (1 - 1 / r0) * 100 : 0;
+
+    info.innerHTML = "기초감염재생산수 R0 = <b>" + r0.toFixed(1) + "</b>(감염자 한 명이 평균 " + r0.toFixed(1) + "명에게 옮기는 경우)일 때, 이 단순화 모형에서 유행은 최대 세대당 약 <b>" + Math.round(peak).toLocaleString() + "명</b>까지 늘어납니다. R0가 클수록 유행 곡선이 더 가파르게 커지고 빨리 정점에 도달합니다. 집단 면역 형성에 필요한 감염(또는 예방접종) 비율은 이론상 약 <b>" + herdImmunity.toFixed(0) + "%</b>(= 1 − 1/R0)입니다.";
+  }
+  render();
 })();
 
 /* TAB4 교통수단의 발달과 사회 */
