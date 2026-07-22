@@ -32,6 +32,26 @@
   .back-link { max-width: 1080px; margin: 20px auto 0; padding: 0 30px; }
   .back-link a { color: var(--mist); font-size: 12px; text-decoration: none; }
   .back-link a:hover { color: var(--teal); }
+
+  .qr-block { margin-top: 22px; }
+  .qr-toggle {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--panel); border: 1px solid var(--line); color: var(--ink);
+    border-radius: 10px; padding: 10px 16px; font-size: 13.5px; font-weight: 700;
+    cursor: pointer; font-family: inherit;
+  }
+  .qr-toggle:hover { border-color: var(--teal-dim); }
+  .qr-toggle .qr-caret { color: var(--mist); transition: transform .15s; display: inline-block; }
+  .qr-toggle.open .qr-caret { transform: rotate(180deg); }
+  .qr-panel {
+    margin-top: 12px; background: var(--panel); border: 1px solid var(--line);
+    border-radius: 14px; padding: 20px; display: inline-flex; flex-direction: column;
+    align-items: center; gap: 10px; max-width: 260px;
+  }
+  .qr-panel .qr-code { background: #fff; padding: 10px; border-radius: 8px; line-height: 0; }
+  .qr-panel .qr-code svg { display: block; width: 160px; height: 160px; }
+  .qr-panel .qr-url { color: var(--mist); font-size: 11.5px; word-break: break-all; margin: 0; text-align: center; }
+  .qr-panel .qr-hint { color: var(--mist); font-size: 12px; margin: 0; text-align: center; }
 </style>
 </head>
 <body>
@@ -42,6 +62,16 @@
   <div class="eyebrow">고등학교 과학의 역사와 문화 · 인터랙티브 학습 도구</div>
   <h1 class="display">과학의 역사와 문화<br>과학사 스테이션</h1>
   <p>인류 문명의 탄생부터 다가올 미래까지, 과학과 인간 사회가 함께 만들어 온 이야기를 카드·타임라인·비교 화면으로 직접 탐색하는 인터랙티브 학습 도구입니다. 아래에서 학습할 대단원을 선택하세요.</p>
+  <div class="qr-block">
+    <button class="qr-toggle" id="qrToggle" type="button" aria-expanded="false">
+      <span>📱 QR 코드</span><span class="qr-caret">▾</span>
+    </button>
+    <div class="qr-panel" id="qrPanel" hidden>
+      <p class="qr-hint">학생들이 해드폰으로 찍으면 이 페이지로 바로 접속됩니다.</p>
+      <div class="qr-code" id="qrCode"></div>
+      <p class="qr-url" id="qrUrl"></p>
+    </div>
+  </div>
 </div>
 
 <div class="grid">
@@ -73,5 +103,30 @@
 
 <button class="theme-toggle" id="themeToggle">라이트 모드</button>
 <script src="assets/theme.js"></script>
+<script src="assets/qrcode.js"></script>
+<script>
+(function () {
+  var toggle = document.getElementById("qrToggle");
+  var panel = document.getElementById("qrPanel");
+  var holder = document.getElementById("qrCode");
+  var urlEl = document.getElementById("qrUrl");
+  var pageUrl = "https://wmfsljy-coder.github.io/science-history-culture/";
+  var built = false;
+  toggle.addEventListener("click", function () {
+    var willOpen = panel.hidden;
+    panel.hidden = !willOpen;
+    toggle.setAttribute("aria-expanded", String(willOpen));
+    toggle.classList.toggle("open", willOpen);
+    if (willOpen && !built) {
+      var qr = qrcode(0, "M");
+      qr.addData(pageUrl);
+      qr.make();
+      holder.innerHTML = qr.createSvgTag(4);
+      urlEl.textContent = pageUrl;
+      built = true;
+    }
+  });
+})();
+</script>
 </body>
 </html>
