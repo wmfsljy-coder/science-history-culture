@@ -49,6 +49,20 @@
         </div>
         <div class="detail-panel" id="c1-detail"></div>
       </div>
+
+      <div class="stage-head">
+        <div class="eyebrow">🔎 미션 · 사상으로 그리스 학자 맞히기</div>
+        <h2 class="display" style="font-size:18px;">이 사상은 어떤 학자의 것일까?</h2>
+      </div>
+      <div class="stage-card">
+        <div class="info-card" id="c1m-data"></div>
+        <div class="seg" id="c1m-choices"></div>
+        <div class="toggle-row" style="margin:14px 20px;">
+          <button class="btn" id="c1m-check">정답 확인</button>
+          <button class="btn" id="c1m-new">새 문제</button>
+        </div>
+        <div class="info-card" id="c1m-info"></div>
+      </div>
     </section>
 
     <!-- TAB2 중세의 종교와 과학 -->
@@ -154,6 +168,56 @@
     { pct: 92, name: "프톨레마이오스", year: "서기 100~170년경", detail: "<b>프톨레마이오스</b> — 무세이온에서 활동하며 『알마게스트』를 저술, 지구중심설을 정교한 수학적 모형(주전원)으로 완성해 이후 1400년 넘게 표준 우주관으로 자리 잡았습니다." }
   ];
   buildTimeline("c1-track", "c1-detail", items);
+})();
+
+/* TAB1 미션 — 사상으로 학자 맞히기 */
+(function () {
+  var labels = { thales: "탈레스", pyth: "피타고라스", aristo: "아리스토텔레스", euclid: "유클리드", ptolemy: "프톨레마이오스" };
+  var qa = [
+    { txt: "\"만물의 근원은 물\"이라고 주장하며, 신화 대신 자연현상 자체로 세계를 설명하려 한 최초의 인물로 꼽힌다.", key: "thales" },
+    { txt: "수(數)를 만물의 근원으로 보았고, 지구가 둥근 구형이라고 생각한 초기 인물 중 한 명이다.", key: "pyth" },
+    { txt: "지구를 우주의 중심에 두는 지구중심설과 흙·물·불·공기의 4원소설을 정리했다.", key: "aristo" },
+    { txt: "『원론』을 저술했으며, 소수의 공리로부터 논리적으로 정리를 이끌어내는 공리적 방법으로 기하학을 체계화했다.", key: "euclid" },
+    { txt: "『알마게스트』를 저술, 지구중심설을 정교한 수학적 모형(주전원)으로 완성해 1400년 넘게 표준 우주관으로 자리 잡게 했다.", key: "ptolemy" }
+  ];
+  var dataBox = document.getElementById("c1m-data");
+  var seg = document.getElementById("c1m-choices");
+  var checkBtn = document.getElementById("c1m-check");
+  var newBtn = document.getElementById("c1m-new");
+  var info = document.getElementById("c1m-info");
+  var current = null, picked = null;
+
+  function newQuestion() {
+    current = qa[Math.floor(Math.random() * qa.length)];
+    picked = null;
+    dataBox.innerHTML = current.txt;
+    seg.innerHTML = "";
+    Object.keys(labels).forEach(function (k) {
+      var b = document.createElement("button");
+      b.textContent = labels[k];
+      b.addEventListener("click", function () {
+        picked = k;
+        seg.querySelectorAll("button").forEach(function (x) { x.classList.toggle("on", x === b); });
+      });
+      seg.appendChild(b);
+    });
+    info.innerHTML = "";
+    info.style.color = "";
+  }
+
+  checkBtn.addEventListener("click", function () {
+    if (!picked) { info.innerHTML = "먼저 보기를 하나 선택하세요."; info.style.color = "var(--coral)"; return; }
+    if (picked === current.key) {
+      info.innerHTML = "✅ 정답! '" + labels[current.key] + "'에 대한 설명입니다.";
+      info.style.color = "var(--teal)";
+    } else {
+      info.innerHTML = "❌ 틀렸습니다. 정답은 '" + labels[current.key] + "' 입니다.";
+      info.style.color = "var(--coral)";
+    }
+  });
+
+  newBtn.addEventListener("click", newQuestion);
+  newQuestion();
 })();
 
 /* TAB2 중세의 종교와 과학 */

@@ -103,6 +103,20 @@
         </div>
         <div class="info-card" id="c3b-info"></div>
       </div>
+
+      <div class="stage-head">
+        <div class="eyebrow">🔎 미션 · 감염병과 기초감염재생산수(R0) 짝짓기</div>
+        <h2 class="display" style="font-size:18px;">이 감염병의 R0는 대략 얼마였을까?</h2>
+      </div>
+      <div class="stage-card">
+        <div class="info-card" id="c3m-data"></div>
+        <div class="seg" id="c3m-choices"></div>
+        <div class="toggle-row" style="margin:14px 20px;">
+          <button class="btn" id="c3m-check">정답 확인</button>
+          <button class="btn" id="c3m-new">새 문제</button>
+        </div>
+        <div class="info-card" id="c3m-info"></div>
+      </div>
     </section>
 
     <!-- TAB4 교통수단의 발달과 사회 -->
@@ -314,6 +328,56 @@ function buildCardGrid(gridId, detailId, items) {
     info.innerHTML = "기초감염재생산수 R0 = <b>" + r0.toFixed(1) + "</b>(감염자 한 명이 평균 " + r0.toFixed(1) + "명에게 옮기는 경우)일 때, 이 단순화 모형에서 유행은 최대 세대당 약 <b>" + Math.round(peak).toLocaleString() + "명</b>까지 늘어납니다. R0가 클수록 유행 곡선이 더 가파르게 커지고 빨리 정점에 도달합니다. 집단 면역 형성에 필요한 감염(또는 예방접종) 비율은 이론상 약 <b>" + herdImmunity.toFixed(0) + "%</b>(= 1 − 1/R0)입니다.";
   }
   render();
+})();
+
+/* TAB3 미션 — 감염병과 R0 짝짓기 */
+(function () {
+  var diseases = [
+    { name: "흑사병", r0: 1.8 },
+    { name: "스페인 독감", r0: 2.0 },
+    { name: "COVID-19 초기", r0: 2.5 },
+    { name: "오미크론", r0: 9.0 }
+  ];
+  var dataBox = document.getElementById("c3m-data");
+  var seg = document.getElementById("c3m-choices");
+  var checkBtn = document.getElementById("c3m-check");
+  var newBtn = document.getElementById("c3m-new");
+  var info = document.getElementById("c3m-info");
+  var current = null, picked = null;
+
+  function newQuestion() {
+    current = diseases[Math.floor(Math.random() * diseases.length)];
+    picked = null;
+    dataBox.innerHTML = "감염병: <b>" + current.name + "</b>";
+    var opts = diseases.map(function (d) { return d.r0; });
+    opts.sort(function () { return Math.random() - 0.5; });
+    seg.innerHTML = "";
+    opts.forEach(function (o) {
+      var b = document.createElement("button");
+      b.textContent = "R0 ≈ " + o.toFixed(1);
+      b.addEventListener("click", function () {
+        picked = o;
+        seg.querySelectorAll("button").forEach(function (x) { x.classList.toggle("on", x === b); });
+      });
+      seg.appendChild(b);
+    });
+    info.innerHTML = "";
+    info.style.color = "";
+  }
+
+  checkBtn.addEventListener("click", function () {
+    if (picked === null) { info.innerHTML = "먼저 보기를 하나 선택하세요."; info.style.color = "var(--coral)"; return; }
+    if (picked === current.r0) {
+      info.innerHTML = "✅ 정답! " + current.name + "의 R0는 약 " + current.r0.toFixed(1) + " 입니다.";
+      info.style.color = "var(--teal)";
+    } else {
+      info.innerHTML = "❌ 틀렸습니다. " + current.name + "의 R0는 약 " + current.r0.toFixed(1) + " 입니다.";
+      info.style.color = "var(--coral)";
+    }
+  });
+
+  newBtn.addEventListener("click", newQuestion);
+  newQuestion();
 })();
 
 /* TAB4 교통수단의 발달과 사회 */
