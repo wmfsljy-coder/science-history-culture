@@ -21,6 +21,7 @@
     <button class="tab-btn" data-tab="3"><span class="num">04</span> 인간과 기계, 사물의 연결</button>
     <button class="tab-btn" data-tab="4"><span class="num">05</span> 가상 현실과 증강 현실</button>
     <button class="tab-btn" data-tab="5"><span class="num">06</span> 과학기술과 시민 참여</button>
+    <button class="tab-btn" data-tab="6"><span class="num">07</span> 정리하기</button>
   </nav>
 
   <main>
@@ -30,6 +31,8 @@
         <div class="eyebrow">01 · 기술이 만든 새로운 생활 방식</div>
         <h2 class="display">과학기술의 발전과 새로운 문화의 등장</h2>
         <p>디지털 기술은 우리가 소통하고 소비하는 방식 자체를 바꾸어 놓았습니다. 카드를 눌러 각각의 문화 현상을 살펴보세요.</p>
+      
+        <span class="std-chip">12과사03-01</span><span class="std-chip">12과사03-02</span><span class="std-chip">12과사03-03</span><span class="std-chip">12과사03-04</span><span class="std-chip">12과사03-05</span><span class="std-chip">12과사03-06</span><div class="std-note"><b>[12과사03-01]</b> 과학기술의 발전을 통해 새롭게 나타난 문화적 변화를 찾아보고, 과학을 주제로 한 문화 활동을 할 수 있다.<br><b>[12과사03-02]</b> 일상생활이나 미디어에서 사용되는 과학 용어를 조사하고, 과학 용어가 우리 사회에서 쓰이는 방식을 설명할 수 있다.<br><b>[12과사03-03]</b> 과학기술의 발전이 음악에 영향을 끼친 사례를 탐색하고 인공지능으로 음악을 만들어 볼 수 있다.<br><b>[12과사03-04]</b> 인간과 기계, 사물 등을 연결하는 과학기술의 발전 동향을 파악하고 미래 사회의 모습을 예측할 수 있다.<br><b>[12과사03-05]</b> 가상현실이나 증강현실을 활용한 우리 주변의 사례를 조사하고, 이러한 기술의 가능성과 한계를 설명할 수 있다.<br><b>[12과사03-06]</b> 집단적 의사결정을 통해 과학기술과 관련된 사회적 문제를 해결한 사례를 조사하여 발표할 수 있다.</div><div class="terms"><b>1인 미디어</b><b>인공지능</b><b>VR·AR</b><b>시민 과학</b></div>
       </div>
       <div class="stage-card">
         <div class="card-grid" id="c0-grid"></div>
@@ -128,6 +131,15 @@
         <div class="detail-panel" id="c5-detail"></div>
         <div class="info-card">생각해 보기 — 과학기술, 이대로 괜찮은가? 편리함과 효율을 앞세운 기술 발전이 자칫 소홀히 할 수 있는 가치는 무엇인지 토론해 볼 수 있습니다.</div>
       </div>
+    </section>
+
+    <section class="tab-panel" data-panel="6" hidden>
+      <div class="stage-head">
+        <div class="eyebrow">07 · 오늘 알아낸 것을 문장으로</div>
+        <h2 class="display">정리하기</h2>
+        <p>조작한 것을 말이나 글로 옮기지 않으면 남지 않습니다. 아래를 채우고 <b>답안 복사</b>를 눌러 제출하세요. 쓰는 동안 자동으로 저장됩니다.</p>
+      </div>
+      <div class="stage-card" style="padding:6px 0 4px"><div id="wk"></div></div>
     </section>
   </main>
 </div>
@@ -301,6 +313,36 @@ function buildCardGrid(gridId, detailId, items) {
   buildCardGrid("c5-grid", "c5-detail", items);
 })();
 
+})();
+</script>
+
+<script>
+(function () {
+  window.sthUnit("shc-3");
+  window.sthWork({
+    mount: "wk",
+    unitLabel: "[과학의 역사와 문화 Ⅲ] 과학과 인류의 미래",
+    items: [
+      {
+            "id": "w1",
+            "label": "과학 용어가 사회로 나갈 때",
+            "hint": "일상에서 원래 뜻과 다르게 쓰이는 과학 용어를 하나 찾아, 원래 뜻과 쓰이는 뜻을 나란히 쓰세요.",
+            "ph": "용어: … / 과학에서: … / 일상에서: …"
+      },
+      {
+            "id": "w2",
+            "label": "시민이 참여한 결정",
+            "hint": "과학기술 문제를 여럿이 함께 결정한 사례를 하나 들고, 그 결정이 왜 전문가만의 몫이 아니었는지 쓰세요.",
+            "ph": ""
+      },
+      {
+            "id": "w3",
+            "label": "아직 헷갈리는 것",
+            "hint": "다음 시간에 여기서부터 시작합니다.",
+            "ph": ""
+      }
+]
+  });
 })();
 </script>
 </body>

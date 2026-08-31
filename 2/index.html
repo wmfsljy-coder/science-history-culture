@@ -21,6 +21,7 @@
     <button class="tab-btn" data-tab="3"><span class="num">04</span> 감염병과 과학</button>
     <button class="tab-btn" data-tab="4"><span class="num">05</span> 교통수단의 발달과 사회</button>
     <button class="tab-btn" data-tab="5"><span class="num">06</span> 20세기 과학기술의 빛과 그림자</button>
+    <button class="tab-btn" data-tab="6"><span class="num">07</span> 정리하기</button>
   </nav>
 
   <main>
@@ -30,6 +31,8 @@
         <div class="eyebrow">01 · 거대해지고 촘촘해진 현대 과학</div>
         <h2 class="display">현대 과학과 사회문화</h2>
         <p>20세기 이후 과학은 개인의 탐구를 넘어 사회 전체와 얽힌 활동이 되었습니다. 카드를 눌러 현대 과학의 특징을 살펴보세요.</p>
+      
+        <span class="std-chip">12과사02-01</span><span class="std-chip">12과사02-02</span><span class="std-chip">12과사02-03</span><span class="std-chip">12과사02-04</span><span class="std-chip">12과사02-05</span><span class="std-chip">12과사02-06</span><div class="std-note"><b>[12과사02-01]</b> 상대성 이론 등과 같은 현대 과학의 등장이 당시의 사회문화에 끼친 영향을 설명할 수 있다.<br><b>[12과사02-02]</b> 현대 과학의 등장 과정에서 나타난 과학자들의 논쟁이나 토론 사례를 조사하여 발표할 수 있다.<br><b>[12과사02-03]</b> 현대 예술 작품이나 건축물에 과학적 원리가 적용된 사례를 조사하고, 과학과 예술의 관계를 설명할 수 있다.<br><b>[12과사02-04]</b> 감염병이 사회에 영향을 미친 대표적인 사례를 찾고, 과학이 사회 문제 해결에 기여한 바를 설명할 수 있다.<br><b>[12과사02-05]</b> 과학기술이 교통수단의 발달에 미친 영향을 인식하고, 교통수단의 발전이 가져온 변화를 설명할 수 있다.<br><b>[12과사02-06]</b> 산업혁명 이후 나타난 과학기술이 인류 문명에 미친 긍정적 효과와 부정적 영향을 균형 있게 설명할 수 있다.</div><div class="terms"><b>상대성 이론</b><b>연구 윤리</b><b>감염병</b><b>산업혁명</b></div>
       </div>
       <div class="stage-card">
         <div class="card-grid" id="c0-grid"></div>
@@ -144,6 +147,15 @@
         <div class="compare-wrap" id="c5-compare"></div>
         <div class="info-card">생각해 보기 — 생명 공학의 상업화, 그 결과는? 유전자 기술의 특허와 상업적 이용이 가져올 수 있는 이익과 위험을 함께 토론해 볼 수 있습니다.</div>
       </div>
+    </section>
+
+    <section class="tab-panel" data-panel="6" hidden>
+      <div class="stage-head">
+        <div class="eyebrow">07 · 오늘 알아낸 것을 문장으로</div>
+        <h2 class="display">정리하기</h2>
+        <p>조작한 것을 말이나 글로 옮기지 않으면 남지 않습니다. 아래를 채우고 <b>답안 복사</b>를 눌러 제출하세요. 쓰는 동안 자동으로 저장됩니다.</p>
+      </div>
+      <div class="stage-card" style="padding:6px 0 4px"><div id="wk"></div></div>
     </section>
   </main>
 </div>
@@ -436,6 +448,36 @@ function buildCardGrid(gridId, detailId, items) {
 })();
 
 /* tab switching + theme toggle handled by theme.js */
+})();
+</script>
+
+<script>
+(function () {
+  window.sthUnit("shc-2");
+  window.sthWork({
+    mount: "wk",
+    unitLabel: "[과학의 역사와 문화 Ⅱ] 변화하는 과학과 세계",
+    items: [
+      {
+            "id": "w1",
+            "label": "논쟁이 남긴 것",
+            "hint": "과학자들의 논쟁 사례를 하나 골라, 무엇을 두고 갈렸고 어떻게 정리되었는지 쓰세요.",
+            "ph": ""
+      },
+      {
+            "id": "w2",
+            "label": "빛과 그림자",
+            "hint": "한 기술을 골라 긍정적 효과와 부정적 영향을 각각 하나씩, 같은 무게로 쓰세요.",
+            "ph": "긍정: … / 부정: …"
+      },
+      {
+            "id": "w3",
+            "label": "아직 헷갈리는 것",
+            "hint": "다음 시간에 여기서부터 시작합니다.",
+            "ph": ""
+      }
+]
+  });
 })();
 </script>
 </body>

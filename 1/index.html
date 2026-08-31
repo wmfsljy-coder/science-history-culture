@@ -20,6 +20,7 @@
     <button class="tab-btn" data-tab="2"><span class="num">03</span> 중세의 종교와 과학</button>
     <button class="tab-btn" data-tab="3"><span class="num">04</span> 르네상스와 과학혁명</button>
     <button class="tab-btn" data-tab="4"><span class="num">05</span> 과학자의 신념과 세계관</button>
+    <button class="tab-btn" data-tab="5"><span class="num">06</span> 정리하기</button>
   </nav>
 
   <main>
@@ -29,6 +30,8 @@
         <div class="eyebrow">01 · 고대 문명이 남긴 과학의 흔적</div>
         <h2 class="display">인류 문명의 탄생과 과학</h2>
         <p>인류의 4대 문명과 아메리카 문명은 저마다의 자연환경 속에서 독자적인 과학적 지혜를 발전시켰습니다. 카드를 눌러 각 문명이 남긴 대표적인 과학적 성취를 확인해 보세요.</p>
+      
+        <span class="std-chip">12과사01-01</span><span class="std-chip">12과사01-02</span><span class="std-chip">12과사01-03</span><span class="std-chip">12과사01-04</span><span class="std-chip">12과사01-05</span><div class="std-note"><b>[12과사01-01]</b> 인류 문명의 탄생 과정에서 인류의 지혜가 담긴 과학적 사례를 발견하고, 이를 설명할 수 있다.<br><b>[12과사01-02]</b> 고대 그리스 철학자의 과학적 사고나 주장 등을 조사하고, 그리스 문명이 고대 과학에 미친 영향을 설명할 수 있다.<br><b>[12과사01-03]</b> 중세 시대 유럽과 중동 지역을 중심으로 종교나 문화가 과학에 기여한 바를 설명할 수 있다.<br><b>[12과사01-04]</b> 르네상스와 과학혁명이 일어난 사회문화적 배경을 조사하고, 과학과 예술 사이의 관계를 설명할 수 있다.<br><b>[12과사01-05]</b> 과학 지식의 형성 과정에서 과학자의 신념이나 세계관이 영향을 준 사례를 조사하여 발표할 수 있다.</div><div class="terms"><b>4대 문명</b><b>천동설</b><b>지동설</b><b>과학혁명</b></div>
       </div>
       <div class="stage-card">
         <div class="card-grid" id="c0-grid"></div>
@@ -123,6 +126,15 @@
         </div>
         <div class="info-card" id="c4-info"></div>
       </div>
+    </section>
+
+    <section class="tab-panel" data-panel="5" hidden>
+      <div class="stage-head">
+        <div class="eyebrow">06 · 오늘 알아낸 것을 문장으로</div>
+        <h2 class="display">정리하기</h2>
+        <p>조작한 것을 말이나 글로 옮기지 않으면 남지 않습니다. 아래를 채우고 <b>답안 복사</b>를 눌러 제출하세요. 쓰는 동안 자동으로 저장됩니다.</p>
+      </div>
+      <div class="stage-card" style="padding:6px 0 4px"><div id="wk"></div></div>
     </section>
   </main>
 </div>
@@ -370,6 +382,36 @@ function buildTimeline(trackId, detailId, items) {
   requestAnimationFrame(frame);
 })();
 
+})();
+</script>
+
+<script>
+(function () {
+  window.sthUnit("shc-1");
+  window.sthWork({
+    mount: "wk",
+    unitLabel: "[과학의 역사와 문화 Ⅰ] 과학과 문명의 탄생과 통합",
+    items: [
+      {
+            "id": "w1",
+            "label": "문명이 만든 과학",
+            "hint": "고른 문명 하나에서, 그곳의 필요가 어떤 과학을 낳았는지 짝지어 쓰세요.",
+            "ph": "예: 나일강의 범람 → …"
+      },
+      {
+            "id": "w2",
+            "label": "신념이 관측을 이긴 순간",
+            "hint": "과학자의 세계관이 결론에 영향을 준 사례를 하나 들고, 어디서 그것이 드러나는지 쓰세요.",
+            "ph": ""
+      },
+      {
+            "id": "w3",
+            "label": "아직 헷갈리는 것",
+            "hint": "다음 시간에 여기서부터 시작합니다.",
+            "ph": ""
+      }
+]
+  });
 })();
 </script>
 </body>
