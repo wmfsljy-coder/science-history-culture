@@ -54,7 +54,7 @@ function segWire(id, onPick) {
       text(ctx, "365일 달력 한 해", x0, 22, { s: 12, w: "800" });
       [["아케트 (범람)", 0, "--cold"], ["페레트 (파종)", 120, "--green"], ["셰무 (수확)", 240, "--amber"]].forEach(function (s) {
         ctx.globalAlpha = .28; ctx.fillStyle = v(s[2]); ctx.fillRect(X(s[1]), by - 14, X(s[1] + 120) - X(s[1]), 28); ctx.globalAlpha = 1;
-        text(ctx, s[0], X(s[1]) + 6, by + 4, { s: 11, w: "700", c: v("--ink-2") });
+        text(ctx, s[0], X(s[1]) + 6, by + 4, { s: 11, w: "700", c: v("--ink") });
       });
       ctx.globalAlpha = .18; ctx.fillStyle = v("--mist"); ctx.fillRect(X(360), by - 14, X(365) - X(360), 28); ctx.globalAlpha = 1;
       var d = drift(yr);
@@ -147,7 +147,7 @@ function segWire(id, onPick) {
         ctx.fillStyle = v("--amber"); ctx.globalAlpha = .12; ctx.beginPath(); ctx.moveTo(P0[0], P0[1]); ctx.lineTo(P1[0], P1[1]); ctx.lineTo(P2[0], P2[1]); ctx.closePath(); ctx.fill(); ctx.globalAlpha = 1;
         [[P0, P1, a], [P1, P2, b], [P2, P0, 12 - a - b]].forEach(function (s) {
           seg(ctx, s[0][0], s[0][1], s[1][0], s[1][1], v("--amber-700"), 3);
-          for (var k = 0; k < s[2]; k++) dot(ctx, s[0][0] + (s[1][0] - s[0][0]) * k / s[2], s[0][1] + (s[1][1] - s[0][1]) * k / s[2], 4.5, v("--ink-2"));
+          for (var k = 0; k < s[2]; k++) dot(ctx, s[0][0] + (s[1][0] - s[0][0]) * k / s[2], s[0][1] + (s[1][1] - s[0][1]) * k / s[2], 4.5, v("--ink"));
         });
         var angs = [[P1, t.B], [P0, t.A], [P2, t.C]], big = angs.reduce(function (m, x) { return x[1] > m[1] ? x : m; });
         angs.forEach(function (x) { text(ctx, x[1].toFixed(0) + "°", x[0][0] + (x[0] === P0 ? -34 : 8), x[0][1] + (x[0] === P2 ? -8 : 18), { s: 12, w: "800", c: x === big && Math.abs(x[1] - 90) < 0.5 ? v("--green-700") : v("--mist") }); });
@@ -409,7 +409,7 @@ function segWire(id, onPick) {
       ctx.fillStyle = v("--brand"); ctx.globalAlpha = .35; ctx.fillRect(ox, oy, L, L); ctx.globalAlpha = 1;
       ctx.fillStyle = v("--teal"); ctx.globalAlpha = .3; ctx.fillRect(ox + L, oy, Hh, L); ctx.fillRect(ox, oy + L, L, Hh); ctx.globalAlpha = 1;
       ctx.save(); ctx.strokeStyle = v("--amber-700"); ctx.setLineDash([5, 4]); ctx.lineWidth = 2; ctx.strokeRect(ox + L, oy + L, Hh, Hh); ctx.restore();
-      ctx.strokeStyle = v("--ink-2"); ctx.lineWidth = 1.5; ctx.strokeRect(ox, oy, L, L); ctx.strokeRect(ox + L, oy, Hh, L); ctx.strokeRect(ox, oy + L, L, Hh);
+      ctx.strokeStyle = v("--ink"); ctx.lineWidth = 1.5; ctx.strokeRect(ox, oy, L, L); ctx.strokeRect(ox + L, oy, Hh, L); ctx.strokeRect(ox, oy + L, L, Hh);
       if (L > 26) text(ctx, "x²", ox + L / 2, oy + L / 2 + 5, { s: 13, w: "900", a: "center" });
       if (L > 18) { text(ctx, h + "x", ox + L + Hh / 2, oy + L / 2 + 5, { s: 12, w: "800", a: "center" }); text(ctx, h + "x", ox + L / 2, oy + L + Hh / 2 + 5, { s: 12, w: "800", a: "center" }); }
       text(ctx, (h * h) + "", ox + L + Hh / 2, oy + L + Hh / 2 + 5, { s: 12, w: "800", a: "center", c: v("--amber-700") });
@@ -542,9 +542,9 @@ function segWire(id, onPick) {
       text(ctx, "지평선 · 소실점", vx + 8, hz - 8, { s: 11, w: "700", c: v("--mist") });
       dot(ctx, vx, hz, 4, v("--rose"));
       for (var k = -3; k <= 3; k++) seg(ctx, vx, hz, vx + k * 260, H, v("--line"), 1);
-      var c1 = col(10, v("--ink-2")), c2 = col(d, v("--brand"));
+      var c1 = col(10, v("--ink")), c2 = col(d, v("--brand"));
       seg(ctx, c1.x, c1.top, vx, hz, v("--rose"), 1, true); seg(ctx, c1.x, c1.base, vx, hz, v("--rose"), 1, true);
-      text(ctx, "첫 기둥 10 m", c1.x, c1.base + 16, { s: 10.5, w: "800", a: "center", c: v("--ink-2") });
+      text(ctx, "첫 기둥 10 m", c1.x, c1.base + 16, { s: 10.5, w: "800", a: "center", c: v("--ink") });
       text(ctx, "둘째 " + d + " m", c2.x, c2.top - 8, { s: 10.5, w: "800", a: "center", c: v("--brand") });
       var r = 10 / d;
       text(ctx, "그림 속 크기 비", 640, 70, { s: 12, c: v("--mist") });
