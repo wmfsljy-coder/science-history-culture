@@ -673,7 +673,8 @@ window.sthWork({
     { key: "r3", label: "③ 지혜의 집에서 경복궁까지" },
     { key: "r4", label: "④ 8분의 오차" },
     { key: "rQuiz", label: "수준별 문제" },
-    { key: "rLab", label: "응용 실험실" }
+    { key: "rLab", label: "응용 실험실" },
+    { key: "rReal", label: "실제 자료" }
   ],
   items: [
     { id: "all", label: "네 사건을 꿰는 한 문장", hint: "이집트의 달력, 그리스의 지구 둘레, 중세의 대수학과 역법, 케플러의 타원. 네 이야기를 ‘필요’, ‘관측’, ‘신념’이라는 말을 넣어 한 문장으로 이어 보세요." },
@@ -690,7 +691,8 @@ window.sthShare({
     { key: "r3", label: "③ 지혜의 집에서 경복궁까지" },
     { key: "r4", label: "④ 8분의 오차" },
     { key: "rQuiz", label: "수준별 문제" },
-    { key: "rLab", label: "응용 실험실" }
+    { key: "rLab", label: "응용 실험실" },
+    { key: "rReal", label: "실제 자료" }
   ],
   line: { id: "all", label: "네 사건을 꿰는 한 문장" }
 });
