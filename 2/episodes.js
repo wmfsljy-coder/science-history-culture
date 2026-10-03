@@ -626,7 +626,8 @@ window.sthWork({
     { key: "r3", label: "③ 보이지 않는 적과의 싸움" },
     { key: "r4", label: "④ 경부선 400 km" },
     { key: "rQuiz", label: "수준별 문제" },
-    { key: "rLab", label: "응용 실험실" }
+    { key: "rLab", label: "응용 실험실" },
+    { key: "rReal", label: "실제 자료" }
   ],
   items: [
     { id: "all", label: "네 사건을 꿰는 한 문장", hint: "상대성 이론, 예술, 감염병, 교통과 항생제. 네 이야기를 ‘현대 과학’과 ‘사회’라는 말을 넣어 한 문장으로 이어 보세요." },
@@ -643,7 +644,8 @@ window.sthShare({
     { key: "r3", label: "③ 보이지 않는 적과의 싸움" },
     { key: "r4", label: "④ 경부선 400 km" },
     { key: "rQuiz", label: "수준별 문제" },
-    { key: "rLab", label: "응용 실험실" }
+    { key: "rLab", label: "응용 실험실" },
+    { key: "rReal", label: "실제 자료" }
   ],
   line: { id: "all", label: "네 사건을 꿰는 한 문장" }
 });
