@@ -89,7 +89,7 @@ window.sthLab({
       api.slider({ label: "펌프", min: 0, max: Math.max(0, S.pumps.length - 1), step: 1, value: k, fmt: function (x) { return S.pumps[x] ? S.pumps[x][0] : ""; }, onInput: function (x) { k = x; draw(); } });
       api.slider({ label: "브로드 가 펌프의 비율", min: 0, max: 100, step: 1, value: 0, fmt: function (x) { return x + " %"; }, onInput: function (x) { g = x; api.changed(); draw(); } });
       api.info("파란 점 = 펌프, 작은 네모 = 사망자(빨강 = 고른 펌프가 가장 가까운 사람). " + SRC2
-        + "<div data-link='{\"id\":\"natgeo-snow\",\"title\":\"런던 전염병 지도 그리기 (교과서 연결 자료)\",\"src\":\"내셔널지오그래픽 교육 · 비상교육 과학의 역사와 문화\",\"url\":\"https://education.nationalgeographic.org/resource/mapping-london-epidemic/\",\"ask\":\"스노가 브로드 가 펌프를 의심한 뒤 펌프에 어떤 조치를 했고, 그 뒤 무엇이 달라졌는지 한 문장으로 적어 오세요.\"}'></div>");
+        + "<div data-link='{\"id\":\"natgeo-snow\",\"title\":\"런던 전염병 지도 그리기 (교과서 연결 자료)\",\"src\":\"내셔널지오그래픽 교육 · 비상교육 과학의 역사와 문화\",\"url\":\"https://education.nationalgeographic.org/resource/mapping-a-london-epidemic/\",\"ask\":\"‘죽음의 펌프’에서 먼 곳에 살던 사람도 콜레라로 죽은 까닭을 이 자료가 어떻게 설명하는지 한 문장으로 적어 오세요(번역기를 써도 좋아요).\"}'></div>");
       draw();
       return {
         judge: function () {
