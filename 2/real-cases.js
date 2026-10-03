@@ -12,7 +12,7 @@ function nearest(x, y) { var b = 0, bd = 1e9; S.pumps.forEach(function (p, i) { 
 var NEAR = S.deaths.map(function (d) { return nearest(d[0], d[1]); });
 var BROAD = S.pumps.map(function (p) { return p[0]; }).indexOf("Broad St");
 var NB = NEAR.filter(function (k) { return k === BROAD; }).length, SHARE = S.deaths.length ? NB / S.deaths.length * 100 : 0;
-var SRC1 = "<small>자료: Dyson, Eddington & Davidson (1920), Philosophical Transactions of the Royal Society A 220, 291–333 — 태양 가장자리로 환산한 별빛의 휨. 소브랄의 다른 망원경(천체 사진기) 값 0.93″ 은 초점이 흐려져 보고서에서 덜 믿을 만하다고 했습니다.</small>";
+var SRC1 = "<small>자료: Dyson, Eddington & Davidson (1920), Philosophical Transactions of the Royal Society A 220, 291–333 — 태양 가장자리로 환산한 별빛의 휨. 소브랄의 다른 망원경(천체 사진기) 값 0.93″ 은 초점이 흐려져 보고서에서 덜 믿을 만하다고 했습니다. ± 값은 당시 보고서의 ‘확률 오차’(표준 편차의 약 2/3)입니다.</small>";
 var SRC2 = "<small>출처: 존 스노(1855) 『콜레라의 전파 방식에 대하여』 브로드 가 지도를 Tobler 가 숫자로 옮긴 자료(R 패키지 HistData), 사망자 " + S.deaths.length + "명 · 펌프 " + S.pumps.length + "개. 가까운 펌프는 직선거리로 정했습니다. 사본은 data/snow-1854.js.</small>";
 
 window.sthLab({
@@ -41,9 +41,9 @@ window.sthLab({
           var y = 80 + i * 70;
           H.line(ctx, [[X(e[1] - 2 * e[2]), y], [X(e[1] + 2 * e[2]), y]], H.v("--ink"), 2);
           H.dot(ctx, X(e[1]), y, 7, H.v("--amber-700"));
-          H.text(ctx, e[0] + " " + e[1] + " ± " + e[2] + "″", X(e[1]), y - 14, { s: 11, w: "800", a: "center" });
+          H.text(ctx, e[0] + " " + e[1] + " ± " + e[2].toFixed(2) + "″", X(e[1]), y - 14, { s: 11, w: "800", a: "center" });
         });
-        H.text(ctx, "가로 막대 = 오차의 두 배 범위", x0, 245, { s: 10, c: H.v("--mist") });
+        H.text(ctx, "가로 막대 = 보고한 오차(확률 오차)의 두 배 범위", x0, 245, { s: 10, c: H.v("--mist") });
         H.rows(ctx, 660, 60, [["내 판단", ({ none: "아직", n: "뉴턴", e: "아인슈타인", b: "둘 다 아님" })[pick], null, true]], 60);
       }
       cv.canvas._redraw = draw;
@@ -52,7 +52,7 @@ window.sthLab({
       draw();
       return {
         judge: function () {
-          if (pick === "e") return { ok: true, msg: "두 관측값(1.98″, 1.61″)의 오차 범위가 아인슈타인의 1.75″ 를 품고, 뉴턴의 0.87″ 은 멀리 벗어납니다." };
+          if (pick === "e") return { ok: true, msg: "두 관측값(1.98″, 1.61″)은 모두 아인슈타인의 1.75″ 쪽에 있습니다. 특히 오차가 작은 소브랄 값은 뉴턴의 0.87″ 과 크게 다르고, 오차가 큰 프린시페 값만으로는 둘을 가르기 어려웠습니다." };
           if (pick === "n") return { ok: false, msg: "뉴턴의 0.87″ 은 두 관측의 오차 범위 밖에 있습니다." };
           return { ok: false, msg: "두 관측의 오차 범위가 한 예측선을 함께 품고 있어요. 어느 쪽인가요?" };
         }
@@ -60,13 +60,13 @@ window.sthLab({
     },
     hints: ["오차 막대가 어느 점선과 겹치는지 보세요.", "1.61 ~ 1.98″ 은 0.87″ 보다 1.75″ 에 가깝습니다."],
     solution: "<b>아인슈타인</b>(일반 상대성 이론).",
-    why: "1919년 11월 영국 왕립학회는 일식 관측이 일반 상대성 이론의 예측과 맞는다고 발표했고, 아인슈타인은 하루아침에 세계적인 유명 인사가 되었습니다. 그러나 오차가 커서 관측 자료를 고르는 방법을 두고 논쟁이 이어졌고, 이후 1970년대 전파 망원경 관측에서 0.1% 수준까지 확인되며 논쟁이 끝났습니다.<br>"
+    why: "1919년 11월 6일 영국 왕립학회와 왕립천문학회의 합동 회의에서 일식 관측이 일반 상대성 이론의 예측과 맞는다고 발표했고, 아인슈타인은 하루아침에 세계적인 유명 인사가 되었습니다. 그러나 오차가 커서 관측 자료를 고르는 방법을 두고 논쟁이 이어졌고, 이후 1970년대 전파 망원경 관측이 약 1% 정밀도로 아인슈타인의 값을 확인했고, 2000년대에는 0.1%보다도 정밀하게 맞아 논쟁이 끝났습니다.<br>"
       + "과학 이론은 한 번의 관측으로 ‘증명’되기보다, 새로운 예측을 내고 그것이 거듭 검증되면서 믿음을 얻습니다. 지금도 GPS 위성은 상대성 이론으로 시간을 보정해야 정확히 작동해요."
   },
   {
     id: "r2", tag: "실제 자료 · 감염병과 과학", title: "펌프의 손잡이를 떼어라", short: "스노의 지도",
     who: "🚰", name: "존 스노",
-    say: "“1854년 런던 소호에서 콜레라로 열흘 만에 수백 명이 죽었어요. 의사 존 스노는 죽은 사람들의 집을 지도에 점으로 찍었습니다. 아래는 그 지도를 숫자로 옮긴 <b>실제 자료</b>예요. 각 사망자에게 <b>가장 가까운 펌프</b>를 정하면, 브로드 가 펌프가 가장 가까운 사망자는 <b>전체의 몇 %</b>일까요?”",
+    say: "“1854년 런던 소호에서 콜레라로 열흘 만에 수백 명이 죽었어요. 의사 존 스노는 죽은 사람들의 집을 지도에 막대(표시)로 찍었습니다. 아래는 그 지도를 숫자로 옮긴 <b>실제 자료</b>예요. 각 사망자에게 <b>가장 가까운 펌프</b>를 정하면, 브로드 가 펌프가 가장 가까운 사망자는 <b>전체의 몇 %</b>일까요?”",
     predict: {
       q: "콜레라는 무엇을 통해 퍼질까요(스노의 생각)?",
       options: ["㉠ 나쁜 공기(독기)를 마셔서", "㉡ 오염된 물을 마셔서", "㉢ 환자와 눈을 마주쳐서"],
@@ -78,8 +78,8 @@ window.sthLab({
       function draw() {
         H.paper(ctx, W, cv.H);
         var x0 = 30, y0 = 20, sc = 14;
-        function X(x) { return x0 + (x - 3) * sc * 1.2; }
-        function Y(y) { return y0 + (20 - y) * sc; }
+        function X(x) { return 40 + (x - 8) * 42; }
+        function Y(y) { return 20 + (19 - y) * 20; }
         S.deaths.forEach(function (d, i) { H.box(ctx, X(d[0]) - 1.5, Y(d[1]) - 1.5, 3, 3, NEAR[i] === k ? H.v("--rose-700") : H.v("--mist"), 0.85); });
         S.pumps.forEach(function (p, i) { H.dot(ctx, X(p[1]), Y(p[2]), i === k ? 8 : 5, i === k ? H.v("--amber-700") : H.v("--brand")); });
         var n = NEAR.filter(function (q) { return q === k; }).length;
