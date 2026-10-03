@@ -5,7 +5,7 @@
 (function () {
 "use strict";
 var O = window.REAL_OWID || { by: {} };
-var NAME = { "South Korea": "한국", "World": "세계 평균", "Germany": "독일", "China": "중국", "Japan": "일본", "United States": "미국" };
+var NAME = { "South Korea": "한국", "World": "세계 전체", "Germany": "독일", "China": "중국", "Japan": "일본", "United States": "미국" };
 var ORDER = ["South Korea", "Japan", "World", "United States", "China", "Germany"].filter(function (c) { return O.by[c]; });
 function get(c, y, i) { var a = O.by[c] || []; for (var k = 0; k < a.length; k++) if (a[k][0] === y && a[k][i] != null) return a[k][i]; return null; }
 var Y = 2025; if (get("South Korea", Y, 1) == null) Y = 2024;
@@ -20,13 +20,13 @@ window.sthLab({
   {
     id: "r1", tag: "실제 자료 · 재생 에너지", title: "우리나라 전기 가운데 바람이 만든 몫", short: "풍력 비율",
     who: "🌬️", name: "마을 공청회 준비팀",
-    say: "“우리 마을 앞바다에 해상 풍력 발전 단지 계획이 나왔어요. 판단하려면 지금 우리나라가 어디쯤인지 알아야 합니다. " + Y + "년 <b>전기 생산 가운데 풍력의 비율</b>을 나라별로 보여 드려요. <b>세계 평균은 우리나라의 몇 배</b>일까요?”",
+    say: "“우리 마을 앞바다에 해상 풍력 발전 단지 계획이 나왔어요. 판단하려면 지금 우리나라가 어디쯤인지 알아야 합니다. " + Y + "년 <b>전기 생산 가운데 풍력의 비율</b>을 나라별로 보여 드려요. <b>세계 전체은 우리나라의 몇 배</b>일까요?”",
     predict: {
       q: "우리나라 전기 가운데 풍력이 만든 비율은 대략 얼마일까요?",
       options: ["㉠ 1% 도 안 된다", "㉡ 10% 쯤", "㉢ 30% 쯤"],
       answer: 0
     },
-    task: "세계 평균 ÷ 우리나라 를 슬라이더로 맞추세요(± 1 배).",
+    task: "세계 전체 ÷ 우리나라 를 슬라이더로 맞추세요(± 1 배).",
     build: function (stage, api) {
       var H = api.h, cv = api.canvas(270), ctx = cv.ctx, W = cv.W, g = 1;
       function draw() {
@@ -42,18 +42,18 @@ window.sthLab({
         H.rows(ctx, 660, 50, [["내 답 (몇 배)", g + " 배", null, true]], 60);
       }
       cv.canvas._redraw = draw;
-      api.slider({ label: "세계 평균은 우리나라의 몇 배", min: 1, max: 40, step: 1, value: 1, fmt: function (x) { return x + " 배"; }, onInput: function (x) { g = x; api.changed(); draw(); } });
+      api.slider({ label: "세계 전체은 우리나라의 몇 배", min: 1, max: 40, step: 1, value: 1, fmt: function (x) { return x + " 배"; }, onInput: function (x) { g = x; api.changed(); draw(); } });
       api.info(SRC
         + "<div data-link='{\"id\":\"owid-mix\",\"title\":\"나라별 전기 생산 구성\",\"src\":\"Our World in Data\",\"url\":\"https://ourworldindata.org/grapher/electricity-mix?country=~KOR\",\"ask\":\"우리나라 전기 생산에서 비율이 가장 큰 에너지원 세 가지와 그 비율을 적고, 10년 전과 비교해 가장 크게 늘어난 것과 줄어든 것을 적어 오세요.\"}'></div>");
       draw();
       return {
         judge: function () {
           if (Math.abs(g - WR) <= 1) return { ok: true, msg: WW.toFixed(1) + " ÷ " + KW.toFixed(2) + " ≈ " + WR.toFixed(0) + " 배 — 우리나라 풍력은 아직 아주 작습니다. 독일은 전기의 약 " + Math.round(get("Germany", Y, 1) || 27) + "% 를 바람으로 만들어요." };
-          return { ok: false, msg: g + " 배는 " + (g < WR ? "작습니다" : "큽니다") + ". 세계 평균 막대의 값을 한국 값으로 나누세요." };
+          return { ok: false, msg: g + " 배는 " + (g < WR ? "작습니다" : "큽니다") + ". 세계 전체 막대의 값을 한국 값으로 나누세요." };
         }
       };
     },
-    hints: ["세계 평균 " + WW.toFixed(1) + "%, 한국 " + KW.toFixed(2) + "%.", WW.toFixed(1) + " ÷ " + KW.toFixed(2) + " ≈ ?"],
+    hints: ["세계 전체 " + WW.toFixed(1) + "%, 한국 " + KW.toFixed(2) + "%.", WW.toFixed(1) + " ÷ " + KW.toFixed(2) + " ≈ ?"],
     solution: "약 <b>" + Math.round(WR) + " 배</b>.",
     why: "우리나라는 산이 많고 땅이 좁아 육상 풍력 터를 찾기 어렵고, 주민 동의·인허가·송전망 연결에 오랜 시간이 걸려 풍력이 늦게 자랐습니다. 대신 서해·남해의 얕은 바다에 해상 풍력을 늘리려는 계획이 나오고 있어요.<br>"
       + "공청회에서는 ‘탄소 배출을 줄이고 에너지를 자급한다’는 이점과 함께, 소음·경관·어업·철새 같은 지역의 걱정을 자료로 함께 따져야 합니다. 과학 기술의 쟁점은 숫자와 가치 판단이 함께 들어가는 문제예요."
@@ -64,7 +64,7 @@ window.sthLab({
     say: "“풍력은 더디지만 태양광은 빠르게 늘었어요. 우리나라 <b>태양광 발전량</b>이 <b>2015년</b>에서 <b>" + Y + "년</b>까지 <b>몇 배</b>가 되었는지 구해 주세요.”",
     predict: {
       q: "새 기술이 퍼질 때 발전량은 보통 어떤 모양으로 늘어날까요?",
-      options: ["㉠ 해마다 같은 양씩(직선)", "㉡ 처음엔 느리다가 점점 빠르게(곱절로)", "㉢ 늘지 않는다"],
+      options: ["㉠ 해마다 같은 양씩(직선)", "㉡ 처음엔 느리다가 빠르게 늘고, 나중엔 다시 느려진다(S자)", "㉢ 늘지 않는다"],
       answer: 1
     },
     task: Y + "년 ÷ 2015년 을 슬라이더로 맞추세요(± 0.5 배).",
@@ -98,7 +98,7 @@ window.sthLab({
     },
     hints: ["오른쪽 판의 두 값을 쓰세요.", S1.toFixed(1) + " ÷ " + S0.toFixed(2) + " ≈ ?"],
     solution: "약 <b>" + SR.toFixed(1) + " 배</b>.",
-    why: "태양광 패널 값은 대량 생산과 기술 발전으로 지난 십여 년 동안 크게 내려, 세계 곳곳에서 가장 싼 전기 가운데 하나가 되었습니다. 새 기술이 퍼질 때는 이처럼 처음엔 느리다가 값이 내리며 빠르게 늘어나는 모습이 자주 나타나요.<br>"
+    why: "태양광 패널 값은 대량 생산과 기술 발전으로 지난 십여 년 동안 크게 내려, 세계 곳곳에서 가장 싼 전기 가운데 하나가 되었습니다. 새 기술이 퍼질 때는 이처럼 처음엔 느리다가 값이 내리며 빠르게 늘어나는 모습이 자주 나타나요. 다만 우리나라는 2022년 뒤로 송전망 부족·출력 제한 등으로 증가가 주춤했어요(그래프의 마지막 몇 해).<br>"
       + "다만 태양광과 풍력은 날씨에 따라 발전량이 오르내려, 남는 전기를 저장하는 장치(배터리·양수 발전)와 지역을 잇는 송전망이 함께 갖춰져야 합니다. 미래 에너지는 한 가지 기술이 아니라 여러 기술과 사회적 선택이 함께 만드는 것입니다."
   }
   ]
