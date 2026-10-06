@@ -104,7 +104,7 @@ function actx() {
     }
     function update() {
       var ok = draw();
-      put("a-lv-info", "전자가 n = " + n + " 에서 n = 2 로 옮겨 가며 " + dE(n).toFixed(2) + " eV 의 빛(파장 " + lam(n).toFixed(0) + " nm)을 냅니다. " + (ok ? "✅ 수소가 내는 붉은빛(Hα, 656 nm)입니다." : "656 nm 붉은빛이 나오는 출발 준위를 찾아보세요."));
+      put("a-lv-info", "전자가 n = " + n + " 에서 n = 2로 옮겨 가며 " + dE(n).toFixed(2) + " eV의 빛(파장 " + lam(n).toFixed(0) + " nm)을 냅니다. " + (ok ? "✅ 수소가 내는 붉은빛(Hα, 656 nm)입니다." : "656 nm 붉은빛이 나오는 출발 준위를 찾아보세요."));
       if (ok && !got.a) { got.a = true; window.sthState("lvGot", got); mission(); }
     }
     function mission() {
@@ -225,7 +225,7 @@ function actx() {
       q: "‘양자 파동 에너지 팔찌 — 몸의 에너지 균형을 맞춰 줍니다’라는 광고를 과학적으로 판단하는 가장 좋은 방법은?",
       options: ["과학 용어가 많이 들어 있으니 믿을 만하다고 본다", "용어가 과학에서의 뜻으로 쓰였는지, 효과를 측정해 확인한 근거가 있는지 따져 본다", "유명인이 광고하는지 확인한다"],
       answer: 1,
-      why: ["용어가 많다고 근거가 되지는 않습니다. 오히려 뜻을 흐리는 말일 수 있어요.", "‘에너지 균형’은 과학에서 재거나 정의할 수 없는 말입니다. 과학에서의 뜻과 측정 가능한 근거를 확인해야 합니다.", "광고하는 사람의 유명세는 과학적 근거가 아닙니다."],
+      why: ["용어가 많다고 근거가 되지는 않습니다. 오히려 뜻을 흐리는 말일 수 있습니다.", "‘에너지 균형’은 과학에서 재거나 정의할 수 없는 말입니다. 과학에서의 뜻과 측정 가능한 근거를 확인해야 합니다.", "광고하는 사람의 유명세는 과학적 근거가 아닙니다."],
       onDone: function () { got.q = true; window.sthState("termGot", got); mission(); }
     });
     canvas._redraw = draw;
@@ -265,7 +265,7 @@ function actx() {
     }
     function update() {
       var ok = draw();
-      put("a-cit-info", "한 사람이 센 값은 들쭉날쭉하지만, " + n + "명의 평균은 오차 범위가 <b>± " + moe(n).toFixed(1) + "%</b> 로 줄어듭니다. " + (ok ? "± 10% 안에 들었습니다." : "아직 ± 10% 보다 큽니다. 참가자를 늘려 보세요."));
+      put("a-cit-info", "한 사람이 센 값은 들쭉날쭉하지만, " + n + "명의 평균은 오차 범위가 <b>± " + moe(n).toFixed(1) + "%</b>로 줄어듭니다. " + (ok ? "± 10% 안에 들었습니다." : "아직 ± 10%보다 큽니다. 참가자를 늘려 보세요."));
       if (!got && n >= 36 && n <= 40) { got = true; window.sthState("citGot", true); window.sthState("citN", n); mission(); }
     }
     function mission() {
@@ -452,13 +452,13 @@ function actx() {
     }
     function update() {
       var ok = draw(), fa = Math.abs(alias());
-      put("b-smp-info", "1초에 " + fs + "천 번 재면 20 kHz 소리가 " + (ok ? "<b>그대로</b> 되살아납니다." : "<b>" + fa.toFixed(0) + " kHz</b> 의 다른 소리로 바뀌어 기록됩니다(겹침 현상).") + " 한 주기에 적어도 두 번보다 많이 재야 원래 소리를 되살릴 수 있습니다.");
+      put("b-smp-info", "1초에 " + fs + "천 번 재면 20 kHz 소리가 " + (ok ? "<b>그대로</b> 되살아납니다." : "<b>" + fa.toFixed(0) + " kHz</b>의 다른 소리로 바뀌어 기록됩니다(겹침 현상).") + " 한 주기에 적어도 두 번보다 많이 재야 원래 소리를 되살릴 수 있습니다.");
       if (!got && fs >= 41 && fs <= 45) { got = true; window.sthState("smpGot", true); window.sthState("smpFs", fs); mission(); }
     }
     function mission() {
       if (!got) return;
-      window.sthState("smpBest", "20 kHz 는 " + (window.sthState("smpFs") || 41) + " kHz 이상으로 표본화");
-      window.sthMission("m2-3", true, "<span class='m-tag'>미션 완료</span>" + window.sthState("smpBest") + ". 들리는 가장 높은 소리의 두 배보다 촘촘히 재야 합니다. 그래서 CD 는 44.1 kHz 를 씁니다.");
+      window.sthState("smpBest", "20 kHz는 " + (window.sthState("smpFs") || 41) + " kHz 이상으로 표본화");
+      window.sthMission("m2-3", true, "<span class='m-tag'>미션 완료</span>" + window.sthState("smpBest") + ". 들리는 가장 높은 소리의 두 배보다 촘촘히 재야 합니다. 그래서 CD는 44.1 kHz를 씁니다.");
       ep.clear(2);
     }
     canvas._redraw = draw;
@@ -633,8 +633,8 @@ function actx() {
       if (cov < 0.4) msg += "화면 바깥의 현실이 계속 보여 <b>‘창문으로 보는 느낌’</b>에 가깝습니다. ";
       else if (cov < 0.75) msg += "요즘 나오는 기기들이 대체로 이 범위(90~110°)에 있습니다. ";
       else msg += "사람 시야를 거의 다 덮어 <b>바깥이 보이지 않습니다.</b> ";
-      msg += "지연 " + lat + " ms 는 고개를 빠르게 돌릴 때 화면이 <b>" + lagAngle().toFixed(1) + "° 뒤처진다</b>는 뜻이고, 멀미 위험은 <b>" + r2.n + "</b>입니다.";
-      if (lat > 20) msg += " 20 ms 를 넘으면 눈이 보는 것과 몸이 느끼는 것이 어긋나 어지러워집니다.";
+      msg += "지연 " + lat + " ms는 고개를 빠르게 돌릴 때 화면이 <b>" + lagAngle().toFixed(1) + "° 뒤처진다</b>는 뜻이고, 멀미 위험은 <b>" + r2.n + "</b>입니다.";
+      if (lat > 20) msg += " 20 ms를 넘으면 눈이 보는 것과 몸이 느끼는 것이 어긋나 어지러워집니다.";
       put("c-vr-info", msg);
       draw();
       if (!got.a && lat === 14) { got.a = ch = true; }
@@ -682,13 +682,13 @@ function actx() {
     }
     function update() {
       var ok = draw();
-      put("c-tele-info", d.toLocaleString() + " km 떨어진 로봇까지 명령이 갔다가 영상이 돌아오는 데 <b>" + rtt(d).toFixed(1) + " ms</b> 가 걸립니다. " + (ok ? "20 ms 안이라 손처럼 부드럽게 조종할 수 있습니다." : "20 ms 를 넘어 조종이 굼뜨고 위험해집니다."));
+      put("c-tele-info", d.toLocaleString() + " km 떨어진 로봇까지 명령이 갔다가 영상이 돌아오는 데 <b>" + rtt(d).toFixed(1) + " ms</b>가 걸립니다. " + (ok ? "20 ms 안이라 손처럼 부드럽게 조종할 수 있습니다." : "20 ms를 넘어 조종이 굼뜨고 위험해집니다."));
       if (!got.a && d === 1500) { got.a = true; window.sthState("teleGot", got); mission(); }
     }
     function mission() {
       if (got.a) done("m3-3a"); if (got.q) done("m3-3b");
       if (got.a && got.q) {
-        window.sthState("teleBest", "원격 조종은 약 1500 km 까지");
+        window.sthState("teleBest", "원격 조종은 약 1500 km까지");
         window.sthMission("m3-3", true, "<span class='m-tag'>미션 완료</span>" + window.sthState("teleBest") + ". 빛의 속력조차 거리 앞에서는 느립니다. 그래서 계산을 사용자 가까이에서 처리하는 기술이 함께 발전합니다.");
         ep.clear(2);
       }
@@ -698,9 +698,9 @@ function actx() {
     window.sthPick({
       mount: "c-tele-pick",
       q: "서울의 의사가 뉴욕(약 11,000 km)의 수술 로봇을 손처럼 조종할 수 있을까요?",
-      options: ["통신이 빠르니 문제없다", "왕복 지연이 100 ms 를 넘어 손처럼 조종하기 어렵다 — 빛의 속력이라는 한계가 있다", "거리와 지연은 관계없다"],
+      options: ["통신이 빠르니 문제없다", "왕복 지연이 100 ms를 넘어 손처럼 조종하기 어렵다 — 빛의 속력이라는 한계가 있다", "거리와 지연은 관계없다"],
       answer: 1,
-      why: ["광섬유 속 빛도 1초에 약 20만 km 밖에 못 갑니다.", "2 × 11,000 ÷ 200,000 초 = 110 ms 에 처리 시간까지 더해집니다. 아무리 기술이 좋아져도 빛보다 빠를 수는 없습니다.", "신호가 가는 시간은 거리에 비례합니다."],
+      why: ["광섬유 속 빛도 1초에 약 20만 km 밖에 못 갑니다.", "2 × 11,000 ÷ 200,000 초 = 110 ms에 처리 시간까지 더해집니다. 아무리 기술이 좋아져도 빛보다 빠를 수는 없습니다.", "신호가 가는 시간은 거리에 비례합니다."],
       onDone: function () { got.q = true; window.sthState("teleGot", got); mission(); }
     });
     update(); mission();
@@ -735,7 +735,7 @@ function actx() {
     mount: "wk3", unitLabel: "[과학의 역사와 문화 Ⅲ] 이야기 ③ 멀미 나는 가상 교실",
     items: [
       { id: "w3", label: "가상현실이 어지러운 까닭",
-        hint: "지연을 20 ms 앞뒤로 바꿔 보고, 왜 20 ms 가 기준이 되는지 눈과 몸의 감각으로 설명하세요.", ph: "" },
+        hint: "지연을 20 ms 앞뒤로 바꿔 보고, 왜 20 ms가 기준이 되는지 눈과 몸의 감각으로 설명하세요.", ph: "" },
       { id: "e3a", label: "10년 뒤의 초연결 학교", hint: "사람과 기계, 사물을 잇는 기술이 10년 뒤 우리 학교의 하루를 어떻게 바꿀지 예측하고, 그때 생길 수 있는 한계나 문제도 하나 쓰세요." }
     ]
   });
@@ -784,7 +784,7 @@ function actx() {
     }
     function update() {
       var ok = draw();
-      put("d-noise-info", "발전기에서 " + r + " m 떨어진 집 앞의 소음은 약 <b>" + Lp(r).toFixed(1) + " dB</b> 입니다. " + (ok ? "밤 기준(45 dB) 안입니다." : "밤 기준(45 dB)을 넘습니다."));
+      put("d-noise-info", "발전기에서 " + r + " m 떨어진 집 앞의 소음은 약 <b>" + Lp(r).toFixed(1) + " dB</b>입니다. " + (ok ? "밤 기준(45 dB) 안입니다." : "밤 기준(45 dB)을 넘습니다."));
       if (!got.a && r >= 360 && r <= 380) { got.a = true; window.sthState("noiseGot", got); window.sthState("noiseR", r); mission(); }
     }
     function mission() {
@@ -802,7 +802,7 @@ function actx() {
       q: "그래프로 보면, 발전기와 집 사이의 거리가 두 배가 되면 소음은 어떻게 될까요?",
       options: ["절반(dB 값이 반)이 된다", "약 6 dB 줄어든다", "변하지 않는다"],
       answer: 1,
-      why: ["dB 는 로그 눈금이라 값이 반으로 줄지 않습니다.", "20 × log 2 ≈ 6. 소리가 넓게 퍼지면서 거리가 두 배일 때마다 약 6 dB 씩 줄어듭니다.", "그래프가 거리에 따라 내려갑니다."],
+      why: ["dB는 로그 눈금이라 값이 반으로 줄지 않습니다.", "20 × log 2 ≈ 6. 소리가 넓게 퍼지면서 거리가 두 배일 때마다 약 6 dB씩 줄어듭니다.", "그래프가 거리에 따라 내려갑니다."],
       onDone: function () { got.q = true; window.sthState("noiseGot", got); mission(); }
     });
     update(); mission();
@@ -868,7 +868,7 @@ function actx() {
       var a = simulate(), s = stats(a), s0 = stats(INIT), ch = false, msg;
       $("d-rv").textContent = rounds + "회"; $("d-mean").textContent = s.m.toFixed(2); $("d-sd").textContent = s.sd.toFixed(2); $("d-ext").textContent = s.ext + "명";
       if (rounds === 0) msg = "처음에는 의견이 <b>양 끝으로 갈려</b> 있습니다. 극단에 선 사람이 " + s0.ext + "명입니다. 라운드를 올리며 두 진행 방식이 어떻게 달라지는지 보세요.";
-      else if (mode === "delib") msg = "<b>다른 의견도 듣는 경우</b> — 흩어짐이 " + s0.sd.toFixed(2) + " → <b>" + s.sd.toFixed(2) + "</b> 로 줄고, 극단에 선 사람이 " + s0.ext + "명 → <b>" + s.ext + "명</b>이 되었습니다. 결론이 하나로 모이는 것이 아니라 <b>서로의 거리가 좁아지는</b> 것입니다.";
+      else if (mode === "delib") msg = "<b>다른 의견도 듣는 경우</b> — 흩어짐이 " + s0.sd.toFixed(2) + " → <b>" + s.sd.toFixed(2) + "</b>로 줄고, 극단에 선 사람이 " + s0.ext + "명 → <b>" + s.ext + "명</b>이 되었습니다. 결론이 하나로 모이는 것이 아니라 <b>서로의 거리가 좁아지는</b> 것입니다.";
       else msg = "<b>비슷한 의견만 듣는 경우</b> — 흩어짐이 " + s0.sd.toFixed(2) + " → <b>" + s.sd.toFixed(2) + "</b>, 극단에 선 사람이 " + s0.ext + "명 → <b>" + s.ext + "명</b>. 같은 사람들이 같은 시간을 이야기했는데 <b>거리가 더 벌어졌습니다.</b> 이것을 집단 극화라고 합니다.";
       put("d-op-info", msg);
       draw();
