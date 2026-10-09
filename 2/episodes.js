@@ -288,7 +288,7 @@ function mix(a, b, p) { return "rgb(" + [0, 1, 2].map(function (i) { return Math
     function mission() {
       if (!got) return;
       window.sthState("ctBest", "a ≈ " + (+window.sthState("ctA") || 6.2).toFixed(1) + " 인 현수선 아치");
-      window.sthMission("m2-3", true, "<span class='m-tag'>미션 완료</span>" + window.sthState("ctBest") + ". 가우디는 사슬 모형을 거꾸로 매달아 계산 없이도 이 곡선을 찾았고, 사그라다 파밀리아의 기둥과 아치를 설계했습니다.");
+      window.sthMission("m2-3", true, "<span class='m-tag'>미션 완료</span>" + window.sthState("ctBest") + ". 가우디는 사슬 모형을 거꾸로 매달아 계산 없이도 이 곡선을 찾았고, <span data-place=41.4035,2.1744,18,s>사그라다 파밀리아</span>의 기둥과 아치를 설계했습니다.");
       ep.clear(2);
     }
     canvas._redraw = draw;
