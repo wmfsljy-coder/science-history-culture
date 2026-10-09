@@ -112,7 +112,7 @@ function segWire(id, onPick) {
       { t: "린드 파피루스에 넓이와 부피 계산법을 기록했다", a: "eg", why: "이집트의 수학 기록입니다." },
       { t: "하늘은 둥글고 땅은 네모지다는 천원지방 우주관을 세웠다", a: "cn", why: "중국의 우주관입니다." },
       { t: "나침반·종이·화약·인쇄술로 이어지는 기술이 쌓였다", a: "cn", why: "중국의 4대 발명입니다." },
-      { t: "0 의 개념과 자릿값을 쓰는 십진법을 고안했다", a: "in", why: "오늘날 수 표기의 바탕입니다. 기원후 5~7세기 무렵의 일로, 같은 칸의 인더스 문명(기원전 2500년 무렵)보다 3천 년쯤 뒤입니다." },
+      { t: "0의 개념과 자릿값을 쓰는 십진법을 고안했다", a: "in", why: "오늘날 수 표기의 바탕입니다. 기원후 5~7세기 무렵의 일로, 같은 칸의 인더스 문명(기원전 2500년 무렵)보다 3천 년쯤 뒤입니다." },
       { t: "모헨조다로에 정교한 배수 시설을 갖춘 계획도시를 세웠다", a: "in", why: "인더스 문명의 도시입니다.", hint: "인더스강 유역의 도시입니다." },
       { t: "20진법 수 체계를 썼다", a: "ma", why: "마야는 손가락과 발가락을 모두 센 20진법을 썼습니다." },
       { t: "매우 정교한 달력으로 천문 관측과 역사를 기록했다", a: "ma", why: "마야 달력입니다.", hint: "아메리카 대륙의 문명입니다." }
@@ -142,7 +142,7 @@ function segWire(id, onPick) {
         text(ctx, "세 변으로 삼각형을 만들 수 없어요 — 두 변의 합이 나머지 한 변보다 길어야 합니다.", 40, 140, { s: 13, w: "700", c: v("--rose-700") });
       } else {
         var P0 = [ox, oy], P1 = [ox + a * u, oy];
-        var ang = Math.PI - t.B * Math.PI / 180;           // P1 에서 P2 로 가는 방향
+        var ang = Math.PI - t.B * Math.PI / 180;           // P1에서 P2로 가는 방향
         var P2 = [P1[0] + Math.cos(ang) * b * u, P1[1] - Math.sin(ang) * b * u];
         ctx.fillStyle = v("--amber"); ctx.globalAlpha = .12; ctx.beginPath(); ctx.moveTo(P0[0], P0[1]); ctx.lineTo(P1[0], P1[1]); ctx.lineTo(P2[0], P2[1]); ctx.closePath(); ctx.fill(); ctx.globalAlpha = 1;
         [[P0, P1, a], [P1, P2, b], [P2, P0, 12 - a - b]].forEach(function (s) {
@@ -168,7 +168,7 @@ function segWire(id, onPick) {
       if (got.a) done("m1-4a"); if (got.q) done("m1-4b");
       if (got.a && got.q) {
         window.sthState("ropeBest", "3 : 4 : 5 밧줄로 직각");
-        window.sthMission("m1-4", true, "<span class='m-tag'>미션 완료</span>세 변이 3 : 4 : 5 이면 3² + 4² = 5² 이므로 직각 삼각형이 됩니다. 범람 뒤 땅을 다시 나누는 실용적 필요가 기하학을 키웠습니다.");
+        window.sthMission("m1-4", true, "<span class='m-tag'>미션 완료</span>세 변이 3 : 4 : 5이면 3² + 4² = 5²이므로 직각 삼각형이 됩니다. 범람 뒤 땅을 다시 나누는 실용적 필요가 기하학을 키웠습니다.");
         ep.clear(3); ep.clear(4);
       }
     }
@@ -180,7 +180,7 @@ function segWire(id, onPick) {
       q: "매듭 12개를 3 · 4 · 5 칸으로 나누면 직각이 생기는 까닭은?",
       options: ["밧줄이 12칸이라 우연히 맞았을 뿐이다", "짧은 두 변의 제곱의 합이 가장 긴 변의 제곱과 같기 때문이다 (9 + 16 = 25)", "어떤 밧줄이든 세 변의 길이가 모두 다르기만 하면 직각이 된다"],
       answer: 1,
-      why: ["12칸이어도 4 · 4 · 4 로 나누면 60° 정삼각형이 됩니다.", "훗날 ‘피타고라스 정리’로 불리는 관계입니다. 경험으로 얻은 지혜가 나중에 증명된 수학이 되었습니다.", "매듭 13개를 3 · 4 · 6 칸으로 나누면 세 변이 모두 다르지만 9 + 16 ≠ 36 이라 직각이 되지 않습니다."],
+      why: ["12칸이어도 4 · 4 · 4로 나누면 60° 정삼각형이 됩니다.", "훗날 ‘피타고라스 정리’로 불리는 관계입니다. 경험으로 얻은 지혜가 나중에 증명된 수학이 되었습니다.", "매듭 13개를 3 · 4 · 6 칸으로 나누면 세 변이 모두 다르지만 9 + 16 ≠ 36이라 직각이 되지 않습니다."],
       onDone: function () { got.q = true; window.sthState("ropeGot", got); mission(); }
     });
     update(); mission();
@@ -386,7 +386,7 @@ function segWire(id, onPick) {
       { t: "11~13세기에 대학이 세워져 학문 공동체가 자랐다", a: "eu", why: "볼로냐(1088년 무렵)·파리·옥스퍼드 대학 등입니다." },
       { t: "자연은 신의 섭리를 드러내는 대상으로 여겨졌다", a: "eu", why: "자연 연구가 신학의 일부였습니다." },
       { t: "바그다드 ‘지혜의 집’에서 그리스·인도의 책을 아랍어로 번역했다", a: "is", why: "고대 지식을 지키고 이었습니다." },
-      { t: "알콰리즈미가 방정식을 푸는 대수학을 체계화했다", a: "is", why: "algebra 라는 말이 그의 책에서 나왔습니다." },
+      { t: "알콰리즈미가 방정식을 푸는 대수학을 체계화했다", a: "is", why: "algebra라는 말이 그의 책에서 나왔습니다." },
       { t: "이븐 시나가 『의학전범』을 썼다", a: "is", why: "수백 년 동안 유럽 의과 대학의 교과서였습니다.", hint: "‘지혜의 집’ 전통을 이은 학자입니다." },
       { t: "측우기로 비의 양을 재어 전국에서 기록했다", a: "ko", why: "농사를 위한 실용적 관측입니다." },
       { t: "앙부일구와 자격루로 시각을 알렸다", a: "ko", why: "해시계와 물시계입니다." },
@@ -424,7 +424,7 @@ function segWire(id, onPick) {
     }
     function update() {
       var ok = draw(), P = Q[q];
-      $("al-info").innerHTML = ok ? "x = <b>" + x + "</b> 일 때 x² + " + P.b + "x = " + P.c + ". 그림으로 보면 큰 정사각형의 한 변 " + Math.sqrt(P.c + P.b * P.b / 4) + " 에서 " + P.b / 2 + " 를 뺀 값입니다." : "정사각형과 직사각형 두 개의 넓이 합이 " + P.c + " 이 되는 x 를 찾으세요.";
+      $("al-info").innerHTML = ok ? "x = <b>" + x + "</b> 일 때 x² + " + P.b + "x = " + P.c + ". 그림으로 보면 큰 정사각형의 한 변 " + Math.sqrt(P.c + P.b * P.b / 4) + " 에서 " + P.b / 2 + " 를 뺀 값입니다." : "정사각형과 직사각형 두 개의 넓이 합이 " + P.c + " 이 되는 x를 찾으세요.";
       if (ok && !got[q]) { got[q] = true; window.sthState("algGot", got); mission(); }
     }
     function mission() {
@@ -472,7 +472,7 @@ function segWire(id, onPick) {
     }
     function update() {
       var ok = draw(), dm = (L - BJ) * 4;
-      $("ch-info").innerHTML = "지구는 24시간에 360° 돌므로 경도 1° 마다 해가 4분씩 먼저 또는 늦게 뜹니다. 관측자는 베이징보다 <b>" + Math.abs(dm).toFixed(0) + "분</b> " + (dm >= 0 ? "먼저" : "늦게") + " 정오를 맞습니다." + (ok ? " 한양은 베이징보다 약 <b>42분</b> 앞선 시각을 씁니다." : "");
+      $("ch-info").innerHTML = "지구는 24시간에 360° 돌므로 경도 1°마다 해가 4분씩 먼저 또는 늦게 뜹니다. 관측자는 베이징보다 <b>" + Math.abs(dm).toFixed(0) + "분</b> " + (dm >= 0 ? "먼저" : "늦게") + " 정오를 맞습니다." + (ok ? " 한양은 베이징보다 약 <b>42분</b> 앞선 시각을 씁니다." : "");
       if (ok && !got.a) { got.a = true; window.sthState("chGot", got); mission(); }
     }
     function mission() {
@@ -554,7 +554,7 @@ function segWire(id, onPick) {
     }
     function update() {
       var r = draw(), ch = false;
-      $("ps-info").innerHTML = "둘째 기둥이 " + d + " m 에 있으면 그림 속 높이는 첫 기둥의 <b>" + (r * 100).toFixed(0) + "%</b>. 거리가 두 배가 되면 크기는 절반 — 모든 기둥의 윗끝과 아랫끝을 이은 선은 한 소실점으로 모입니다.";
+      $("ps-info").innerHTML = "둘째 기둥이 " + d + " m에 있으면 그림 속 높이는 첫 기둥의 <b>" + (r * 100).toFixed(0) + "%</b>. 거리가 두 배가 되면 크기는 절반 — 모든 기둥의 윗끝과 아랫끝을 이은 선은 한 소실점으로 모입니다.";
       if (!got.a && Math.abs(r - 0.5) < 0.01) { got.a = ch = true; }
       if (!got.b && Math.abs(r - 1 / 3) < 0.01) { got.b = ch = true; }
       if (ch) { window.sthState("psGot", got); mission(); }
@@ -563,7 +563,7 @@ function segWire(id, onPick) {
       if (got.a) done("m4-2a"); if (got.b) done("m4-2b");
       if (got.a && got.b) {
         window.sthState("psBest", "절반 20 m, 3분의 1 30 m");
-        window.sthMission("m4-2", true, "<span class='m-tag'>미션 완료</span>20 m 에서 절반, 30 m 에서 3분의 1. 보이는 크기는 거리에 반비례합니다. 르네상스 화가들은 이 수학으로 평면에 깊이를 그렸고, 정밀한 관찰과 수학을 함께 쓰는 태도가 과학혁명으로 이어졌습니다.");
+        window.sthMission("m4-2", true, "<span class='m-tag'>미션 완료</span>20 m에서 절반, 30 m에서 3분의 1. 보이는 크기는 거리에 반비례합니다. 르네상스 화가들은 이 수학으로 평면에 깊이를 그렸고, 정밀한 관찰과 수학을 함께 쓰는 태도가 과학혁명으로 이어졌습니다.");
         ep.clear(1);
       }
     }
@@ -613,7 +613,7 @@ function segWire(id, onPick) {
     }
     function update() {
       var mx = draw(), ch = false;
-      $("kp-info").innerHTML = e === 0 ? "완전한 원 궤도로는 관측과 최대 <b>" + (mx / 60).toFixed(1) + "°</b> 나 어긋납니다. 이심률을 조금씩 키워 보세요." : (mx < 10 ? "✅ 최대 차이 <b>" + mx.toFixed(1) + "분</b> — 관측 정밀도 안으로 들어왔습니다. 화성은 약간 찌그러진 <b>타원</b>을 돕니다." : "최대 차이 " + (mx >= 60 ? (mx / 60).toFixed(1) + "°" : mx.toFixed(1) + "분") + ". " + (e < ET ? "이심률을 조금 더 키워 보세요." : "이심률이 너무 큽니다. 조금 줄여 보세요."));
+      $("kp-info").innerHTML = e === 0 ? "완전한 원 궤도로는 관측과 최대 <b>" + (mx / 60).toFixed(1) + "°</b>나 어긋납니다. 이심률을 조금씩 키워 보세요." : (mx < 10 ? "✅ 최대 차이 <b>" + mx.toFixed(1) + "분</b> — 관측 정밀도 안으로 들어왔습니다. 화성은 약간 찌그러진 <b>타원</b>을 돕니다." : "최대 차이 " + (mx >= 60 ? (mx / 60).toFixed(1) + "°" : mx.toFixed(1) + "분") + ". " + (e < ET ? "이심률을 조금 더 키워 보세요." : "이심률이 너무 큽니다. 조금 줄여 보세요."));
       if (!got.a && e === 0) { got.a = ch = true; }
       if (!got.b && mx < 10) { got.b = ch = true; got.e = e; }
       if (ch) { window.sthState("kpGot", got); mission(); }

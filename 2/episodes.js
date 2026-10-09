@@ -104,7 +104,7 @@ function mix(a, b, p) { return "rgb(" + [0, 1, 2].map(function (i) { return Math
       q: "측정값에 맞는 곡선은 누구의 예측에 가까운가요?",
       options: ["뉴턴 (0.87″)", "아인슈타인 (1.75″)", "빛은 전혀 휘지 않는다 (0″)"],
       answer: 1,
-      why: ["측정값은 뉴턴 예측의 약 두 배입니다.", "태양 근처에서 공간이 휘어 빛의 경로가 휜다는 일반 상대성 이론의 예측과 맞습니다.", "측정값 모두 0 보다 분명히 큽니다."],
+      why: ["측정값은 뉴턴 예측의 약 두 배입니다.", "태양 근처에서 공간이 휘어 빛의 경로가 휜다는 일반 상대성 이론의 예측과 맞습니다.", "측정값 모두 0보다 분명히 큽니다."],
       onDone: function () { got.q = true; window.sthState("dfGot", got); mission(); }
     });
     update(); mission();
@@ -137,7 +137,7 @@ function mix(a, b, p) { return "rgb(" + [0, 1, 2].map(function (i) { return Math
     }
     function update() {
       draw(); var ch = false, e = err(d);
-      $("gp-info").innerHTML = on ? "위성 시계를 상대성 이론으로 미리 보정하면 오차가 쌓이지 않습니다. 오늘날 위성 항법은 이 보정을 기본으로 합니다." : "하루 38 μs 의 시계 오차 × 빛의 속력(30만 km/s) = 하루 약 <b>11.4 km</b> 의 위치 오차(단순화한 계산). " + d + "일이면 약 " + e.toFixed(0) + " km 입니다.";
+      $("gp-info").innerHTML = on ? "위성 시계를 상대성 이론으로 미리 보정하면 오차가 쌓이지 않습니다. 오늘날 위성 항법은 이 보정을 기본으로 합니다." : "하루 38 μs의 시계 오차 × 빛의 속력(30만 km/s) = 하루 약 <b>11.4 km</b>의 위치 오차(단순화한 계산). " + d + "일이면 약 " + e.toFixed(0) + " km입니다.";
       if (!on && d === 9 && !got.a) { got.a = ch = true; }
       if (on && d >= 30 && !got.b) { got.b = ch = true; }
       if (ch) { window.sthState("gpGot", got); mission(); }
@@ -282,7 +282,7 @@ function mix(a, b, p) { return "rgb(" + [0, 1, 2].map(function (i) { return Math
     }
     function update() {
       var ok = draw(), h = hgt(a);
-      $("ct-info").innerHTML = "a 가 작을수록 곡선이 가파르고 높아지며, 클수록 납작해집니다. 지금 높이 <b>" + h.toFixed(2) + " m</b>." + (ok ? " 누르는 힘이 곡선을 따라 땅으로 곧게 전해지는 아치입니다." : "");
+      $("ct-info").innerHTML = "a가 작을수록 곡선이 가파르고 높아지며, 클수록 납작해집니다. 지금 높이 <b>" + h.toFixed(2) + " m</b>." + (ok ? " 누르는 힘이 곡선을 따라 땅으로 곧게 전해지는 아치입니다." : "");
       if (ok && !got) { got = true; window.sthState("ctGot", true); window.sthState("ctA", a); mission(); }
     }
     function mission() {
@@ -426,7 +426,7 @@ function mix(a, b, p) { return "rgb(" + [0, 1, 2].map(function (i) { return Math
     }
     function update() {
       draw(); var re = reff(), ch = false;
-      $("hd-info").innerHTML = "R0 = " + R0 + " 인 감염병에서 인구의 " + vc + "% 가 면역이면 환자 한 명이 실제로 옮기는 수는 <b>" + re.toFixed(2) + "명</b>입니다. " + (re < 1 - 1e-9 ? "1 보다 작으므로 세대가 지날수록 환자가 줄어듭니다." : re <= 1 + 1e-9 ? "정확히 1 이라 환자 수가 더 늘지 않고 그대로 유지됩니다(1 보다 작아지면 줄어듭니다)." : "1 보다 크므로 세대마다 환자가 불어납니다.");
+      $("hd-info").innerHTML = "R0 = " + R0 + " 인 감염병에서 인구의 " + vc + "%가 면역이면 환자 한 명이 실제로 옮기는 수는 <b>" + re.toFixed(2) + "명</b>입니다. " + (re < 1 - 1e-9 ? "1보다 작으므로 세대가 지날수록 환자가 줄어듭니다." : re <= 1 + 1e-9 ? "정확히 1이라 환자 수가 더 늘지 않고 그대로 유지됩니다(1보다 작아지면 줄어듭니다)." : "1보다 크므로 세대마다 환자가 불어납니다.");
       if (re <= 1 + 1e-9 && R0 === 2.5 && !got.a) { got.a = ch = true; }
       if (re <= 1 + 1e-9 && R0 === 9 && !got.b) { got.b = ch = true; }
       if (ch) { window.sthState("hdGot", got); mission(); }
@@ -507,7 +507,7 @@ function mix(a, b, p) { return "rgb(" + [0, 1, 2].map(function (i) { return Math
     }
     function update() {
       draw(); var t = 400 / sp, ch = false;
-      $("tp-info").innerHTML = "평균 " + sp + " km/h 로 400 km 를 가면 <b>" + t.toFixed(1) + "시간</b>. " + (2 * t <= 6 + 1e-9 ? "당일에 부산에서 일을 보고 돌아올 수 있습니다." : "당일 출장은 어렵습니다.");
+      $("tp-info").innerHTML = "평균 " + sp + " km/h로 400 km를 가면 <b>" + t.toFixed(1) + "시간</b>. " + (2 * t <= 6 + 1e-9 ? "당일에 부산에서 일을 보고 돌아올 수 있습니다." : "당일 출장은 어렵습니다.");
       if (!got.a && Math.abs(t - 14) <= 0.5) { got.a = ch = true; }
       if (!got.b && 800 / sp <= 6 + 1e-9 && sp <= 140) { got.b = ch = true; }
       if (ch) { window.sthState("tpGot", got); mission(); }
@@ -515,7 +515,7 @@ function mix(a, b, p) { return "rgb(" + [0, 1, 2].map(function (i) { return Math
     function mission() {
       if (got.a) done("m4-2a"); if (got.b) done("m4-2b");
       if (got.a && got.b) {
-        window.sthState("tpBest", "1905년 기차 약 29 km/h, 당일 출장은 약 134 km/h 부터");
+        window.sthState("tpBest", "1905년 기차 약 29 km/h, 당일 출장은 약 134 km/h부터");
         window.sthMission("m4-2", true, "<span class='m-tag'>미션 완료</span>" + window.sthState("tpBest") + ". 속력이 빨라지자 전국이 ‘하루 생활권’이 되었고, 일하는 방식과 도시의 모습도 달라졌습니다.");
         ep.clear(1);
       }
