@@ -1,7 +1,8 @@
 /* 과학의 역사와 문화 Ⅲ 과학과 인류의 미래 — 실제 자료
    r1 우리나라 전기 가운데 바람이 만든 몫 — 나라별 풍력 비율 비교(2025)
    r2 태양광은 10년 동안 몇 배가 되었나 — 우리나라 태양광 발전량(2015 → 2025)
-   자료: data/owid-wind-solar.js (Our World in Data 에너지 자료) */
+   r3 과학과 의사결정 — 기온 자료로 군항제 개막일 정하기
+   자료: data/owid-wind-solar.js (Our World in Data 에너지 자료), data/bloom.js */
 (function () {
 "use strict";
 var O = window.REAL_OWID || { by: {} };
@@ -12,6 +13,13 @@ var Y = 2025; if (get("South Korea", Y, 1) == null) Y = 2024;
 var KW = get("South Korea", Y, 1) || 0.6, WW = get("World", Y, 1) || 8.5, WR = KW ? WW / KW : 14;
 var S0 = get("South Korea", 2015, 4) || 4, S1 = get("South Korea", Y, 4) || 38, SR = S0 ? S1 / S0 : 9;
 var SRC = "<small>출처: Our World in Data 에너지 자료(Energy Institute 『세계 에너지 통계』, Ember 등을 모은 것, CC BY 4.0) — 나라별 전기 생산 가운데 풍력·태양광의 비율(%)과 발전량(TWh, 1 TWh = 10억 kWh). 사본은 data/owid-wind-solar.js.</small>";
+var ZG = (window.REAL_BLOOM || {}).rule600 || [];      /* [연도, 600 °C 법칙 날 "월-일"] */
+function zI(md) { return Math.round((Date.UTC(2001, +md.slice(0, 2) - 1, +md.slice(3)) - Date.UTC(2001, 0, 1)) / 864e5); }
+function zD(i) { var t = new Date(Date.UTC(2001, 0, 1) + i * 864e5); return (t.getUTCMonth() + 1) + "월 " + t.getUTCDate() + "일"; }
+var ZGY = ZG.map(function (r) { var a = zI(r[1]) + 1; return { y: r[0], open: a, full: a + 6 }; });   /* 개화 ≈ 600 °C 날 + 1, 만개 ≈ 개화 + 6 */
+function zOk(d) { return ZGY.filter(function (g) { return g.open <= d && g.full >= d && g.full <= d + 9; }).length; }
+var Z_BEST = 0; for (var zd = zI("03-15"); zd <= zI("04-10"); zd++) Z_BEST = Math.max(Z_BEST, zOk(zd));
+var SRC_Z = "<small>출처: 기상청 날씨누리 과거 관측 일별 자료, 창원(155) 날마다 최고 기온으로 해마다 ‘600 °C 법칙’ 날짜를 셈. 개화는 그 다음 날, 만개(만발)는 개화 엿새 뒤로 어림(2023년 진해: 3월 21일 개화 → 3월 27일 만발, 창원기상대). 2026년 군항제는 3월 27일 ~ 4월 5일. 사본은 data/bloom.js.</small>";
 
 window.sthLab({
   mount: "real", key: "real", result: "rReal", label: "실제 자료",
@@ -100,6 +108,50 @@ window.sthLab({
     solution: "약 <b>" + SR.toFixed(1) + " 배</b>.",
     why: "태양광 패널 값은 대량 생산과 기술 발전으로 지난 십여 년 동안 크게 내려, 세계 곳곳에서 가장 싼 전기 가운데 하나가 되었습니다. 새 기술이 퍼질 때는 이처럼 처음엔 느리다가 값이 내리며 빠르게 늘어나는 모습이 자주 나타납니다. 다만 우리나라는 2022년 뒤로 송전망 부족·출력 제한 등으로 증가가 주춤했어요(그래프의 마지막 몇 해).<br>"
       + "다만 태양광과 풍력은 날씨에 따라 발전량이 오르내려, 남는 전기를 저장하는 장치(배터리·양수 발전)와 지역을 잇는 송전망이 함께 갖춰져야 합니다. 미래 에너지는 한 가지 기술이 아니라 여러 기술과 사회적 선택이 함께 만드는 것입니다."
+  },
+  {
+    id: "r3", tag: "실제 자료 · 과학과 의사결정", title: "군항제 개막일은 언제가 좋을까", short: "군항제 날짜",
+    who: "🌸", name: "축제 준비 위원회",
+    say: "“진해군항제는 열흘 동안 열리고, 숙소 · 교통 · 공연 준비 때문에 날짜를 몇 달 전에 정해야 합니다. 바람은 두 가지예요. <b>개막 날 이미 꽃이 피어 있고, 축제 동안 만개(80 % 이상)를 볼 수 있을 것.</b> 아래 막대는 지난 " + ZGY.length + "년 동안 창원의 기온으로 어림한 해마다의 <b>개화 ~ 만개</b> 기간입니다. 두 바람을 가장 많은 해에 채우는 개막일을 찾아 주세요.”",
+    predict: {
+      q: "해마다 꽃 피는 날이 달라질 때, 날짜를 정하는 가장 과학적인 방법은?",
+      options: ["㉠ 작년에 핀 날로 정한다", "㉡ 여러 해의 기록을 모아 가장 많은 해에 맞는 날을 고르고, 빗나갈 해가 있음을 미리 알린다", "㉢ 해마다 같은 날(4월 1일)로 고정한다"],
+      answer: 1
+    },
+    task: "개막일을 옮겨 <b>두 바람을 모두 채우는 해가 가장 많은 날</b>을 찾으세요.",
+    build: function (stage, api) {
+      var H = api.h, cv = api.canvas(300), ctx = cv.ctx, W = cv.W, d = zI("03-22");
+      var x0 = 60, x1 = 640, y0 = 20, y1 = 262, a0 = zI("03-15"), a1 = zI("04-15"), n = ZGY.length || 1, bh = (y1 - y0) / n;
+      function X(i) { return x0 + (i - a0) / (a1 - a0) * (x1 - x0); }
+      function draw() {
+        H.paper(ctx, W, cv.H); H.axes(ctx, x0, y0, x1, y1);
+        H.box(ctx, X(d), y0, X(d + 10) - X(d), y1 - y0, H.v("--amber-700"), 0.12);
+        H.dash(ctx, X(d), y0, X(d), y1, H.v("--amber-700"), 1.6);
+        ["03-15", "03-22", "04-01", "04-08", "04-15"].forEach(function (md) { H.text(ctx, zD(zI(md)), X(zI(md)), y1 + 15, { s: 10, a: "center", c: H.v("--mist") }); });
+        ZGY.forEach(function (g, i) {
+          var ok = g.open <= d && g.full >= d && g.full <= d + 9, y = y0 + i * bh + 2;
+          H.box(ctx, X(g.open), y, X(g.full) - X(g.open), bh - 4, ok ? H.v("--green-700") : H.v("--coral-700"), 0.75);
+          H.text(ctx, g.y, x0 - 6, y + bh / 2 + 3, { s: 9, a: "right", c: H.v("--mist") });
+        });
+        H.rows(ctx, 680, 34, [["개막일", zD(d) + " ~ " + zD(d + 9), "--amber-700"], ["두 바람을 채운 해", zOk(d) + " / " + n + "해", null, true], ["초록", "채움"], ["빨강", "못 채움"]], 50);
+      }
+      cv.canvas._redraw = draw;
+      api.slider({ label: "개막일", min: zI("03-15"), max: zI("04-08"), step: 1, value: d, fmt: function (i) { return zD(i); }, onInput: function (i) { d = i; api.changed(); draw(); } });
+      api.info("막대 왼쪽 끝 = 개화(꽃이 피기 시작), 오른쪽 끝 = 만개. 노란 칸이 열흘 축제입니다. 개막 날이 막대 안에 있고, 막대 오른쪽 끝이 노란 칸 안에 있으면 초록. " + SRC_Z);
+      draw();
+      return {
+        judge: function () {
+          var c = zOk(d);
+          if (c === Z_BEST) return { ok: true, msg: zD(d) + " 개막이면 " + n + "해 가운데 " + c + "해에 두 바람을 다 채웁니다. 그래도 " + (n - c) + "해는 빗나갑니다 — 이것이 자연을 상대로 한 결정의 한계입니다." };
+          return { ok: false, msg: zD(d) + " 개막은 " + c + "해입니다. 더 많은 해를 채우는 날이 있습니다(가장 많으면 " + Z_BEST + "해)." };
+        }
+      };
+    },
+    hints: ["개막이 너무 이르면 꽃이 아직 안 핀 해(막대가 노란 칸 오른쪽)가 많아집니다.", "너무 늦으면 만개가 축제 전에 지나 버린 해가 많아집니다. 3월 말 쪽을 살펴보세요."],
+    solution: "3월 말(약 " + (function () { var r = []; for (var i = zI("03-15"); i <= zI("04-08"); i++) if (zOk(i) === Z_BEST) r.push(zD(i)); return r.join(", "); })() + ") 개막이 " + Z_BEST + "해로 가장 많습니다.",
+    why: "2026년 군항제는 3월 27일에 열렸고, 이 어림으로는 " + zOk(zI("03-27")) + "해를 채우는 날입니다. 실제로 2026년 진해 벚꽃은 3월 24일 피고 축제 기간에 만개했습니다.<br>"
+      + "집단의 결정에는 과학 자료만 들어가지 않습니다. 주말 · 공휴일, 숙소와 교통, 상인과 주민의 사정, 안전이 함께 따져집니다. 과학은 ‘몇 해 가운데 몇 해쯤 맞을지’라는 근거와 불확실성을 알려 주고, 사람들은 그것을 바탕으로 의논해 정합니다. 그리고 봄이 점점 따뜻해지면(이 단원의 기후 이야기) 오래된 기록으로 정한 날짜는 차츰 맞지 않게 되므로, 근거도 새 자료로 계속 고쳐야 합니다.<br>"
+      + "※ ‘600 °C 날 + 1 = 개화, 개화 + 6 = 만개’는 몇 해의 관측에서 얻은 어림이라 해마다 며칠씩 어긋날 수 있습니다."
   }
   ]
 });
