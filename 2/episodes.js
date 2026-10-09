@@ -137,7 +137,7 @@ function mix(a, b, p) { return "rgb(" + [0, 1, 2].map(function (i) { return Math
     }
     function update() {
       draw(); var ch = false, e = err(d);
-      $("gp-info").innerHTML = on ? "위성 시계를 상대성 이론으로 미리 보정하면 오차가 쌓이지 않습니다. 오늘날 위성 항법은 이 보정을 기본으로 합니다." : "하루 38 μs 의 시계 오차 × 빛의 속력(30만 km/s) = 하루 약 <b>11.4 km</b> 의 위치 오차. " + d + "일이면 약 " + e.toFixed(0) + " km 입니다.";
+      $("gp-info").innerHTML = on ? "위성 시계를 상대성 이론으로 미리 보정하면 오차가 쌓이지 않습니다. 오늘날 위성 항법은 이 보정을 기본으로 합니다." : "하루 38 μs 의 시계 오차 × 빛의 속력(30만 km/s) = 하루 약 <b>11.4 km</b> 의 위치 오차(단순화한 계산). " + d + "일이면 약 " + e.toFixed(0) + " km 입니다.";
       if (!on && d === 9 && !got.a) { got.a = ch = true; }
       if (on && d >= 30 && !got.b) { got.b = ch = true; }
       if (ch) { window.sthState("gpGot", got); mission(); }
@@ -303,7 +303,7 @@ function mix(a, b, p) { return "rgb(" + [0, 1, 2].map(function (i) { return Math
       { t: "빛이 눈에 만드는 순간의 인상을 그리려 했다", a: "im", why: "야외의 빛을 좇은 인상주의입니다." },
       { t: "광학·색채 연구의 영향으로 순수한 색 점을 나란히 찍었다", a: "im", why: "쇠라의 점묘법입니다." },
       { t: "한 그림에 여러 시점에서 본 모습을 동시에 담았다", a: "cu", why: "피카소·브라크의 입체주의입니다." },
-      { t: "시간이라는 네 번째 차원과 새로운 기하학에 관심을 보였다", a: "cu", why: "상대성 이론 시대의 새로운 공간 개념이 영향을 주었습니다.", hint: "여러 시점을 한 화면에 담은 사조입니다." },
+      { t: "눈에 보이지 않는 4차원 공간과 비유클리드 기하학에 관심을 보였다", a: "cu", why: "당시 유행한 4차원 공간과 새로운 기하학 이야기가 영향을 주었습니다(상대성 이론이 대중에 널리 알려진 것은 입체주의가 시작된 뒤인 1919년 무렵입니다).", hint: "여러 시점을 한 화면에 담은 사조입니다." },
       { t: "기하학적 무늬만으로 화면이 움직이는 듯한 착시를 만든다", a: "op", why: "옵티컬 아트입니다." },
       { t: "눈과 뇌가 형태를 받아들이는 시지각 연구에서 영감을 얻었다", a: "op", why: "과학이 예술의 재료가 되었습니다." },
       { t: "알고리즘과 컴퓨터로 이미지를 생성한다", a: "dg", why: "생성 예술입니다." },
@@ -377,7 +377,7 @@ function mix(a, b, p) { return "rgb(" + [0, 1, 2].map(function (i) { return Math
     }
     function update() {
       draw();
-      $("sn-info").innerHTML = pick < 0 ? "지도의 사망자 집마다 가장 가까운 펌프를 따져 세면 오른쪽 막대가 됩니다. 어느 펌프가 수상한가요?" : (pick === 0 ? "✅ 브로드 거리 펌프의 손잡이를 떼어 내자 새 환자가 빠르게 줄었습니다. 뒤에 이 우물이 오물 구덩이와 가까이 있어 오염되었음이 밝혀졌습니다." : "펌프 " + P[pick][2] + " 주변의 사망자는 " + CNT[pick] + "명뿐입니다. 이 펌프를 막아도 유행은 계속됩니다.");
+      $("sn-info").innerHTML = pick < 0 ? "지도의 사망자 집마다 가장 가까운 펌프를 따져 세면 오른쪽 막대가 됩니다. 어느 펌프가 수상한가요?" : (pick === 0 ? "✅ 브로드 거리 펌프입니다. 손잡이를 뗄 무렵 유행은 이미 줄고 있었지만, 스노의 분석은 콜레라가 오염된 물로 퍼진다는 강력한 근거가 되었습니다. 뒤에 이 우물이 오물 구덩이와 가까이 있어 오염되었음이 밝혀졌습니다." : "펌프 " + P[pick][2] + " 주변의 사망자는 " + CNT[pick] + "명뿐입니다. 이 펌프를 막아도 유행은 계속됩니다.");
       if (pick === 0 && !got.a) { got.a = true; window.sthState("snGot", got); mission(); }
     }
     function mission() {
@@ -426,7 +426,7 @@ function mix(a, b, p) { return "rgb(" + [0, 1, 2].map(function (i) { return Math
     }
     function update() {
       draw(); var re = reff(), ch = false;
-      $("hd-info").innerHTML = "R0 = " + R0 + " 인 감염병에서 인구의 " + vc + "% 가 면역이면 환자 한 명이 실제로 옮기는 수는 <b>" + re.toFixed(2) + "명</b>입니다. " + (re <= 1 + 1e-9 ? "1 이하이므로 세대가 지날수록 환자가 줄어듭니다." : "1 보다 크므로 세대마다 환자가 불어납니다.");
+      $("hd-info").innerHTML = "R0 = " + R0 + " 인 감염병에서 인구의 " + vc + "% 가 면역이면 환자 한 명이 실제로 옮기는 수는 <b>" + re.toFixed(2) + "명</b>입니다. " + (re < 1 - 1e-9 ? "1 보다 작으므로 세대가 지날수록 환자가 줄어듭니다." : re <= 1 + 1e-9 ? "정확히 1 이라 환자 수가 더 늘지 않고 그대로 유지됩니다(1 보다 작아지면 줄어듭니다)." : "1 보다 크므로 세대마다 환자가 불어납니다.");
       if (re <= 1 + 1e-9 && R0 === 2.5 && !got.a) { got.a = ch = true; }
       if (re <= 1 + 1e-9 && R0 === 9 && !got.b) { got.b = ch = true; }
       if (ch) { window.sthState("hdGot", got); mission(); }
@@ -485,7 +485,7 @@ function mix(a, b, p) { return "rgb(" + [0, 1, 2].map(function (i) { return Math
   (function () {
     var canvas = $("c-trip"), ctx = window.setupCanvas(canvas), W = canvas._w, H = canvas._h, sp = 60;
     var got = window.sthState("tpGot") || { a: false, b: false };
-    var REF = [["걷기 (하루 8시간씩)", 100], ["1905년 경부선 첫 기차", 14], ["1936년 특급 열차", 6.75], ["1970년 고속버스", 5], ["2004년 KTX", 2.67]];
+    var REF = [["걷기 (하루 8시간씩)", 100], ["1905년 경부선 직통 급행", 14], ["1936년 특급 열차", 6.75], ["1970년 고속버스", 5], ["2004년 KTX", 2.67]];
     function draw() {
       paper(ctx, W, H);
       var x0 = 190, x1 = 580, y = 40;

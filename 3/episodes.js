@@ -313,7 +313,7 @@ function actx() {
   (function () {
     var cv = $("b-c-harm"), ctx = window.setupCanvas(cv), W = cv._w, H = cv._h;
     var N = 8, amp = [1, 0.5, 0.33, 0.25, 0.2, 0.17, 0.14, 0.13], F0 = 440;
-    var got = window.sthState("harmGot") || { a: false, b: false };
+    var got = window.sthState("harmGot") || { a: false, b: false }, fromPreset = false;
     var PRESET = {
       pure:   [1, 0, 0, 0, 0, 0, 0, 0],
       saw:    [1, 0.50, 0.33, 0.25, 0.20, 0.17, 0.14, 0.13],
@@ -384,9 +384,9 @@ function actx() {
     }
     function refresh() {
       $("b-badge").textContent = "기본 진동수 " + F0 + " Hz (라) · 배음 " + amp.filter(function (x) { return x > 0.03; }).length + "개";
-      put("b-info", describe() + " <b>음의 높이는 1배음(440 Hz)이 정합니다.</b> 다른 막대를 아무리 움직여도 ‘라’라는 음 높이는 바뀌지 않고 <b>음색만</b> 바뀝니다.");
+      put("b-info", describe() + " <b>음의 높이는 1배음(440 Hz)이 정합니다.</b> 다른 막대를 아무리 움직여도 ‘라’라는 음 높이는 바뀌지 않고 <b>음색만</b> 바뀝니다." + (oddOnly() && fromPreset && !got.a ? " <b>프리셋을 고른 그대로는 미션으로 치지 않아요.</b> ‘순음’에서 출발해 배음 막대를 직접 움직여 만들어 보세요." : ""));
       draw();
-      if (oddOnly() && !got.a) { got.a = true; window.sthState("harmGot", got); mission(); }
+      if (oddOnly() && !fromPreset && !got.a) { got.a = true; window.sthState("harmGot", got); mission(); }
     }
     function mission() {
       if (got.a) done("m2-2a"); if (got.b) done("m2-2b");
@@ -398,7 +398,7 @@ function actx() {
     }
     for (var j = 0; j < N; j++) {
       (function (k) {
-        $("bh" + k).addEventListener("input", function () { amp[k] = +this.value / 100; $("bh" + k + "-v").textContent = this.value; refresh(); });
+        $("bh" + k).addEventListener("input", function () { amp[k] = +this.value / 100; $("bh" + k + "-v").textContent = this.value; fromPreset = false; refresh(); });
       })(j);
     }
     Array.prototype.forEach.call(document.querySelectorAll("#b-preset button"), function (b) {
@@ -408,6 +408,7 @@ function actx() {
         b.classList.add("on");
         var p = PRESET[b.getAttribute("data-p")];
         for (var k = 0; k < N; k++) { amp[k] = p[k]; $("bh" + k).value = Math.round(p[k] * 100); $("bh" + k + "-v").textContent = Math.round(p[k] * 100); }
+        fromPreset = b.getAttribute("data-p") !== "pure";
         refresh();
       });
     });

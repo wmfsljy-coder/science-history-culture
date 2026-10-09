@@ -20,7 +20,7 @@ window.sthLab({
   {
     id: "r1", tag: "실제 자료 · 재생 에너지", title: "우리나라 전기 가운데 바람이 만든 몫", short: "풍력 비율",
     who: "🌬️", name: "마을 공청회 준비팀",
-    say: "“우리 마을 앞바다에 해상 풍력 발전 단지 계획이 나왔어요. 판단하려면 지금 우리나라가 어디쯤인지 알아야 합니다. " + Y + "년 <b>전기 생산 가운데 풍력의 비율</b>을 나라별로 보여 드려요. <b>세계 전체은 우리나라의 몇 배</b>일까요?”",
+    say: "“우리 마을 앞바다에 해상 풍력 발전 단지 계획이 나왔어요. 판단하려면 지금 우리나라가 어디쯤인지 알아야 합니다. " + Y + "년 <b>전기 생산 가운데 풍력의 비율</b>을 나라별로 보여 드려요. <b>세계 전체는 우리나라의 몇 배</b>일까요?”",
     predict: {
       q: "우리나라 전기 가운데 풍력이 만든 비율은 대략 얼마일까요?",
       options: ["㉠ 1% 도 안 된다", "㉡ 10% 쯤", "㉢ 30% 쯤"],
@@ -42,9 +42,9 @@ window.sthLab({
         H.rows(ctx, 660, 50, [["내 답 (몇 배)", g + " 배", null, true]], 60);
       }
       cv.canvas._redraw = draw;
-      api.slider({ label: "세계 전체은 우리나라의 몇 배", min: 1, max: 40, step: 1, value: 1, fmt: function (x) { return x + " 배"; }, onInput: function (x) { g = x; api.changed(); draw(); } });
+      api.slider({ label: "세계 전체는 우리나라의 몇 배", min: 1, max: 40, step: 1, value: 1, fmt: function (x) { return x + " 배"; }, onInput: function (x) { g = x; api.changed(); draw(); } });
       api.info(SRC
-        + "<div data-link='{\"id\":\"owid-mix\",\"title\":\"나라별 전기 생산 구성\",\"src\":\"Our World in Data\",\"url\":\"https://ourworldindata.org/grapher/electricity-mix?country=~KOR\",\"ask\":\"우리나라 전기 생산에서 비율이 가장 큰 에너지원 세 가지와 그 비율을 적고, 10년 전과 비교해 가장 크게 늘어난 것과 줄어든 것을 적어 오세요.\"}'></div>");
+        + "<div data-link='{\"id\":\"owid-mix\",\"title\":\"나라별 전기 생산 구성\",\"src\":\"Our World in Data\",\"url\":\"https://ourworldindata.org/grapher/electricity-mix?country=~KOR\",\"ask\":\"(그래프가 비율(%)이 아닌 발전량으로 보이면 보기 설정에서 비율로 바꿔 보세요.) 우리나라 전기 생산에서 비율이 가장 큰 에너지원 세 가지와 그 비율을 적고, 10년 전과 비교해 가장 크게 늘어난 것과 줄어든 것을 적어 오세요.\"}'></div>");
       draw();
       return {
         judge: function () {
