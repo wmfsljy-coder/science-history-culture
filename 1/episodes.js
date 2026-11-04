@@ -379,80 +379,187 @@ function ink(ctx, s, x, y, o) { o = o || {}; K.t(ctx, s, x, y, { s: o.s || 13, w
       ctx.lineTo(x + ux * L * .92 + px * w1, y + uy * L * .92 + py * w1); ctx.lineTo(x + ux * L, y + uy * L); ctx.lineTo(x + ux * L * .92 - px * w1, y + uy * L * .92 - py * w1);
       ctx.closePath(); ctx.fill();
     }
-    function draw() {
-      ctx.clearRect(0, 0, W, H);
-      var th = ang(), ex = th * 3 * Math.PI / 180, i;
+    /* ── 아이소메트릭 블록 모형: 시에네(왼쪽 위)에서 알렉산드리아(오른쪽 아래)까지 이집트 땅을 잘라 낸 블록 ──
+       땅의 굽음은 학생이 잰 그림자에서 나온다(중심각 × EXG 만큼 휘게 그림). 햇빛은 위에서 곧게(나란하게) 내려온다. */
+    var DH = 432, EXG = 1.5, XS = 90, XA = 470, ZT = 175, YO = 120, HO = 140;
+    var I = K.iso({ ox: 440, oy: 150, s: 0.66, L: 560, D: 150 });
+    var BL = I.L, BD = I.D, ph = 0, playing = !REDUCE;
+    function exR() { return Math.min(EXG * ang(), 40) * Math.PI / 180; }
+    function geo() {
+      var e = exR(), Rd = e > 1e-5 ? (XA - XS) / e : 1e9;
+      return { e: e, Rd: Rd, zc: ZT - Rd };
+    }
+    var G = geo();
+    function surf(x) { var dx = x - XS, r = G.Rd * G.Rd - dx * dx; return G.zc + Math.sqrt(Math.max(0, r)); }
+    function landCol(x, y, z, light) {
+      var c;
+      if (y > 52 && y < 74) c = "#3f86c4";                 /* 나일강 */
+      else if (y > 40 && y < 86) c = "#6f9e4a";            /* 강가의 밭 */
+      else c = ((Math.floor(x / 40) + Math.floor(y / 30)) % 2) ? "#dcc28a" : "#d4b77c"; /* 사막 */
+      return K.tint(c, light);
+    }
+    var STRATA = ["#d9bd86", "#c7a774", "#b48f5e", "#9f7b4f", "#8a6843", "#76583a"];
+    function faceFill(side, zf, Lw) {
+      I.profile(ctx, side, zf, 0); ctx.save(); ctx.clip();
+      for (var k = 0; k < 9; k++) {
+        ctx.beginPath(); var u, st = Math.max(2, Lw / 80);
+        for (u = 0; u <= Lw + .01; u += st) ctx.lineTo(Math.min(u, Lw), zf(Math.min(u, Lw)) - k * 26);
+        for (u = Lw; u >= -.01; u -= st) ctx.lineTo(Math.max(u, 0), zf(Math.max(u, 0)) - (k + 1) * 26 - 1);
+        ctx.closePath(); ctx.fillStyle = STRATA[k % STRATA.length]; ctx.fill();
+      }
+      var R = K.rng(side === "front" ? 41 : 43); ctx.fillStyle = "rgba(60,35,15,.22)";
+      for (var i = 0; i < Lw * 1.4; i++) ctx.fillRect(R() * Lw, R() * 200, 1.6, 1.6);
+      ctx.restore();
+    }
+    /* 기울어진 오벨리스크(막대): 밑동 (x0, y0, z0), 높이 H, 기울기 e(+x 쪽으로) */
+    function obelisk3d(x0, y0, z0, H, e) {
+      var ce = Math.cos(e), se = Math.sin(e), w = 7, w1 = 4.5, Hb = H * .9;
+      function f(a, b, h) { return I.P(x0 + a * ce + h * se, y0 + b, z0 - a * se + h * ce); }
+      I.quad(ctx, f(-w, w, 0), f(w, w, 0), f(w1, w1, Hb), f(-w1, w1, Hb), "#dcbb88");
+      I.quad(ctx, f(w, -w, 0), f(w, w, 0), f(w1, w1, Hb), f(w1, -w1, Hb), "#a9844f");
+      var tip = f(0, 0, H);
+      I.quad(ctx, f(-w1, w1, Hb), f(w1, w1, Hb), tip, tip, "#f3dca6");
+      I.quad(ctx, f(w1, -w1, Hb), f(w1, w1, Hb), tip, tip, "#c49a52");
+      return { top: tip, mid: f(0, 0, H * .55), tx: x0 + H * se };
+    }
+    function drawModel(th, C, ok) {
+      G = geo();
+      var zS = surf(XS), zA = surf(XA), i, rx, p, q;
+      K.studio(ctx, 0, 0, W, DH, { x: I.P(BL, BD, 0).x - 190, y: I.P(BL, BD, 0).y - 20, rx: 330, ry: 48 });
+      ctx.save(); ctx.beginPath(); ctx.roundRect(0, 0, W, DH, 14); ctx.clip();
+      /* 윗면: 사막·나일강 */
+      I.field(ctx, function (x) { return surf(x); }, landCol, 56, 12);
+      /* 앞면·오른쪽 면: 지층 단면 */
+      I.face(ctx, "front", function (Lw) {
+        faceFill("front", surf, Lw);
+        /* 시에네 우물 갱도와 바닥까지 닿는 햇빛 */
+        var bot = zS - 74;
+        ctx.fillStyle = "#24170b"; ctx.fillRect(XS - 9, bot, 18, zS - bot);
+        ctx.fillStyle = "#3d86c6"; ctx.fillRect(XS - 9, bot, 18, 9);
+        ctx.fillStyle = "rgba(255,226,140,.62)"; ctx.fillRect(XS - 3.5, bot + 9, 7, zS - bot - 9);
+        /* 땅에 수직인 선(연직선) — 아래로 이으면 지구 중심에서 만난다 */
+        ctx.save(); ctx.setLineDash([7, 6]); ctx.lineWidth = 2; ctx.strokeStyle = "rgba(255,255,255,.9)";
+        ctx.beginPath(); ctx.moveTo(XS, zS); ctx.lineTo(XS, 0); ctx.stroke();
+        var t = zA / (zA - G.zc);
+        ctx.beginPath(); ctx.moveTo(XA, zA); ctx.lineTo(XA + t * (XS - XA), 0); ctx.stroke();
+        ctx.restore();
+      });
+      I.face(ctx, "right", function (Lw) { faceFill("right", function () { return surf(BL); }, Lw); });
+      I.shade(ctx, "front", surf);
+      I.shade(ctx, "right", function () { return surf(BL); });
+      I.edges(ctx, surf(BL), surf(BL));
+      /* 시에네 우물 머리 */
+      var wc = I.P(XS, BD - 11, zS);
+      ctx.fillStyle = "#b9a17c"; ctx.beginPath(); ctx.ellipse(wc.x, wc.y - 3, 12, 6.5, 0, 0, 6.2832); ctx.fill();
+      ctx.fillStyle = "#1c1208"; ctx.beginPath(); ctx.ellipse(wc.x, wc.y - 3, 7.5, 4, 0, 0, 6.2832); ctx.fill();
+      K.glow(ctx, wc.x, wc.y - 2, 2.4, "rgba(255,226,150,.95)", 3);
+      /* 마을 */
+      [[22, 36, "#c0553f"], [48, 18, "#d08a2e"], [18, 92, "#c0553f"], [44, 104, "#3f6fb5"]].forEach(function (h) { I.house(ctx, h[0], h[1], surf(h[0] + 7), 14, 12, 10, h[2]); });
+      [[498, 14, "#3f6fb5"], [526, 30, "#c0553f"], [500, 96, "#d08a2e"], [528, 112, "#c0553f"]].forEach(function (h) { I.house(ctx, h[0], h[1], surf(h[0] + 7), 14, 12, 10, h[2]); });
+      [[140, 30], [180, 92], [260, 34], [330, 96], [400, 30], [445, 90]].forEach(function (t2, k) { I.tree(ctx, t2[0], t2[1], surf(t2[0]), .75 + (k % 3) * .1); });
+      /* 알렉산드리아의 막대: 땅에 수직으로 서 있으니 시에네 쪽에서 보면 기울어 있다 */
+      var tx = XA + HO * Math.sin(G.e);
+      ctx.fillStyle = "rgba(40,25,10,.6)";
+      p = [I.P(XA, YO - 7, zA), I.P(XA, YO + 7, zA), I.P(tx, YO + 1.5, surf(tx)), I.P(tx, YO - 1.5, surf(tx))];
+      ctx.beginPath(); ctx.moveTo(p[0].x, p[0].y); for (i = 1; i < 4; i++) ctx.lineTo(p[i].x, p[i].y); ctx.closePath(); ctx.fill();
+      var ob = obelisk3d(XA, YO, zA, HO, G.e);
+      I.person(ctx, XA - 16, YO + 18, surf(XA - 16), "#f1e3c0", 1.15);
+      /* 나란한 햇빛 */
+      var rays = [[XS, BD - 11]];
+      for (rx = 30; rx <= 540; rx += 64) rays.push([rx, 70]);
+      rays.push([tx, YO]);
+      rays.forEach(function (r, k) {
+        q = I.P(r[0], r[1], surf(r[0])); var y0 = 34;
+        ctx.save(); ctx.shadowColor = KC.yellow; ctx.shadowBlur = 5;
+        K.arrow(ctx, { x: q.x, y: y0 }, { x: q.x, y: q.y - 2 }, "rgba(255,190,60,.62)", 1.5, 7); ctx.restore();
+        var f = (ph * .45 + k * .37) % 1;
+        K.glow(ctx, q.x, y0 + f * (q.y - y0 - 4), 2, "rgba(255,214,110,.95)", 2.6);
+      });
+      ctx.restore();
+      /* 이름표 */
+      var box = [0, W];
+      I.label(ctx, XS, BD - 11, zS, "시에네 · 우물 바닥까지 햇빛", -64, 34, "#ffe7b0", box);
+      K.pill(ctx, "알렉산드리아 · 막대", ob.mid.x + 54, ob.mid.y - 34, { s: 12, c: "#ffe7b0", box: box });
+      K.line(ctx, ob.mid, { x: ob.mid.x + 50, y: ob.mid.y - 38 }, "rgba(20,25,40,.75)", 1.2);
+      I.label(ctx, (XA + tx) / 2, YO, surf((XA + tx) / 2), "그림자 " + s.toFixed(1) + " cm", 58, 40, KC.yellow, box);
+      I.label(ctx, 270, 63, surf(270), "나일강", -30, -36, "#bfe6ff", box);
+      I.label(ctx, XS, BD, zS * .3, "땅에 수직인 선 → 아래로 이으면 지구 중심", -40, 46, "#ffffff", box);
+      var mid = I.P((XS + XA) / 2, BD, 0);
+      K.pill(ctx, "두 도시 사이 약 800 km", mid.x - 40, mid.y + 26, { s: 11.5, c: KC.ink, a: "center", box: box });
+      K.pill(ctx, "☀ 하짓날 정오 · 나란한 햇빛", 470, 22, { s: 11.5, c: KC.yellow, box: box });
+      /* 큰 글자 */
+      var line2 = "그림자 " + s.toFixed(1) + " cm → 둘레 약 " + Math.round(C).toLocaleString() + " km";
+      if (ok) { K.bigText(ctx, "막대 그림자로 잰 지구", 22, 50, 27, "#ffd35a"); K.bigText(ctx, line2, 22, 84, 17, "#ffffff"); }
+      else if (C > 41000) { K.bigText(ctx, "이대로면 지구가 너무 크다", 22, 50, 26, "#ffffff"); K.bigText(ctx, line2, 22, 84, 17, "#ffd35a"); }
+      else { K.bigText(ctx, "이대로면 지구가 너무 작다", 22, 50, 26, "#ffffff"); K.bigText(ctx, line2, 22, 84, 17, "#ffd35a"); }
+      K.warn(ctx, 14, DH - 12, "⚠ 땅의 굽음과 막대의 기울기는 1.5배 과장 · 거리는 줄임");
+    }
+    function drawBottom(th, C, ok) {
+      var y0 = DH + 8, h = H - y0, i;
       /* ── 왼쪽: 지구의 단면 ── */
-      var LW = 470, cx = 214, cy = 318, R = 214;
-      K.stage(ctx, 0, 0, LW, H, "space", { seed: 6 });
-      ctx.save(); ctx.beginPath(); ctx.roundRect(0, 0, LW, H, 14); ctx.clip();
-      var at = ctx.createRadialGradient(cx, cy, R - 4, cx, cy, R + 22); at.addColorStop(0, "rgba(120,190,255,.45)"); at.addColorStop(1, "rgba(120,190,255,0)");
-      ctx.fillStyle = at; ctx.beginPath(); ctx.arc(cx, cy, R + 22, 0, 6.2832); ctx.fill();
-      var eg = ctx.createRadialGradient(cx - 60, cy - 140, 20, cx, cy, R);
+      var LW = 444, ex = th * EXG * Math.PI / 180, cx = 214, cy = H - 14, R = 150;
+      K.stage(ctx, 0, y0, LW, h, "space", { seed: 6 });
+      ctx.save(); ctx.beginPath(); ctx.roundRect(0, y0, LW, h, 14); ctx.clip();
+      var at = ctx.createRadialGradient(cx, cy, R - 4, cx, cy, R + 20); at.addColorStop(0, "rgba(120,190,255,.45)"); at.addColorStop(1, "rgba(120,190,255,0)");
+      ctx.fillStyle = at; ctx.beginPath(); ctx.arc(cx, cy, R + 20, 0, 6.2832); ctx.fill();
+      var eg = ctx.createRadialGradient(cx - 50, cy - 110, 16, cx, cy, R);
       eg.addColorStop(0, "#3f8fe0"); eg.addColorStop(.7, "#1a4f9a"); eg.addColorStop(1, "#0d2c66");
       ctx.fillStyle = eg; ctx.beginPath(); ctx.arc(cx, cy, R, 0, 6.2832); ctx.fill();
-      /* 이집트 땅(두 도시 사이) */
-      ctx.strokeStyle = "#c9a35f"; ctx.lineWidth = 9; ctx.beginPath(); ctx.arc(cx, cy, R - 4, -Math.PI / 2 - .18, -Math.PI / 2 + ex + .14); ctx.stroke();
-      ctx.strokeStyle = "rgba(255,255,255,.08)"; ctx.lineWidth = 1;
-      for (i = 1; i < 4; i++) { ctx.beginPath(); ctx.arc(cx, cy, R * i / 4, 0, 6.2832); ctx.stroke(); }
+      ctx.strokeStyle = "#c9a35f"; ctx.lineWidth = 7; ctx.beginPath(); ctx.arc(cx, cy, R - 3, -Math.PI / 2 - .14, -Math.PI / 2 + ex + .12); ctx.stroke();
       ctx.restore();
-      /* 나란한 햇빛 */
-      for (i = 0; i < 9; i++) {
-        var rx = 34 + i * 50, dy = R * R - (rx - cx) * (rx - cx), yEnd = dy > 0 ? cy - Math.sqrt(dy) - 4 : H;
-        ctx.save(); ctx.shadowColor = KC.yellow; ctx.shadowBlur = 6;
-        K.arrow(ctx, { x: rx, y: 44 }, { x: rx, y: Math.min(yEnd, 300) }, "rgba(255,211,107,.75)", 1.6, 8); ctx.restore();
+      for (i = 0; i < 7; i++) {
+        var rx = 40 + i * 52, dy = R * R - (rx - cx) * (rx - cx), yEnd = dy > 0 ? cy - Math.sqrt(dy) - 4 : H - 8;
+        K.arrow(ctx, { x: rx, y: y0 + 34 }, { x: rx, y: Math.min(yEnd, H - 8) }, "rgba(255,211,107,.7)", 1.4, 7);
       }
-      K.pill(ctx, "나란한 햇빛 (하짓날 정오)", 16, 28, { s: 13, c: KC.yellow });
       var S = { x: cx, y: cy - R }, A = { x: cx + R * Math.sin(ex), y: cy - R * Math.cos(ex) };
-      /* 중심각 */
       K.line(ctx, { x: cx, y: cy }, S, "rgba(255,255,255,.6)", 1.3, [4, 4]); K.line(ctx, { x: cx, y: cy }, A, "rgba(255,255,255,.6)", 1.3, [4, 4]);
-      K.wedge(ctx, cx, cy, -Math.PI / 2, -Math.PI / 2 + ex, 46, "rgba(127,211,255,.35)", KC.blue);
-      K.pill(ctx, "중심각 = " + th.toFixed(2) + "°", cx + 40, cy - 54, { s: 11.5, c: KC.blue, box: [0, LW] });
-      K.pill(ctx, "지구 중심", cx - 10, cy - 8, { s: 10.5, a: "right", c: KC.mute });
-      /* 시에네의 우물 */
-      ctx.fillStyle = "#1b1208"; ctx.fillRect(S.x - 5, S.y - 1, 10, 18);
-      K.glow(ctx, S.x, S.y + 14, 2.6, "rgba(255,226,150,.95)", 3);
-      K.pill(ctx, "시에네 · 그림자 없음", S.x - 14, S.y - 14, { s: 11.5, a: "right", c: "#ffe7b0", box: [0, LW] });
-      /* 알렉산드리아의 막대와 그림자 */
-      var ux = Math.sin(ex), uy = -Math.cos(ex);
-      ctx.strokeStyle = "rgba(10,6,2,.85)"; ctx.lineWidth = 4; ctx.beginPath(); ctx.moveTo(A.x, A.y); ctx.lineTo(A.x + Math.cos(ex) * 14, A.y + Math.sin(ex) * 14); ctx.stroke();
-      obelisk(A.x, A.y, ux, uy, 34, 3.5);
-      var top = { x: A.x + ux * 34, y: A.y + uy * 34 };
-      K.line(ctx, { x: top.x, y: top.y - 44 }, top, "rgba(255,211,107,.95)", 1.6);
-      K.wedge(ctx, top.x, top.y, -Math.PI / 2, -Math.PI / 2 + ex, 30, "rgba(127,211,255,.35)", KC.blue);
-      K.pill(ctx, "알렉산드리아", A.x + 18, A.y + 26, { s: 11.5, c: "#ffe7b0", box: [0, LW] });
-      K.pill(ctx, "두 도시 사이 800 km", (S.x + A.x) / 2 + 10, Math.min(S.y, A.y) - 64, { s: 11, a: "center", c: KC.ink, box: [0, LW] });
-      K.warn(ctx, 14, H - 12, "⚠ 각은 3배로 과장해 그림");
-
+      K.wedge(ctx, cx, cy, -Math.PI / 2, -Math.PI / 2 + ex, 44, "rgba(127,211,255,.35)", KC.blue);
+      K.glow(ctx, S.x, S.y, 3, "rgba(255,226,150,.95)", 3); K.glow(ctx, A.x, A.y, 3, "rgba(255,226,150,.95)", 3);
+      K.pill(ctx, "지구 단면으로 보면", 14, y0 + 22, { s: 12.5, c: KC.blue });
+      K.pill(ctx, "시에네", S.x - 12, S.y - 8, { s: 11, a: "right", c: "#ffe7b0", box: [0, LW] });
+      K.pill(ctx, "알렉산드리아", A.x + 12, A.y - 4, { s: 11, c: "#ffe7b0", box: [0, LW] });
+      K.pill(ctx, "중심각 " + th.toFixed(2) + "°", cx + 52, cy - 38, { s: 11.5, c: KC.blue, box: [0, LW] });
+      K.pill(ctx, "지구 중심", cx - 12, cy - 4, { s: 10.5, a: "right", c: KC.mute, box: [0, LW] });
+      K.t(ctx, "각은 1.5배로 그림", LW - 12, y0 + 22, { s: 10.5, a: "right", c: KC.mute });
       /* ── 오른쪽: 막대 확대 ── */
-      var RX = LW + 8, RW = W - RX;
-      K.stage(ctx, RX, 0, RW, H, "sky", { seed: 2 });
-      var gy = 280, bx = RX + 150, L = 200, sh = s / 100 * L;
-      ctx.save(); ctx.beginPath(); ctx.roundRect(RX, 0, RW, H, 14); ctx.clip();
+      var RX = LW + 8, RW = W - RX, gy = H - 36, bx = RX + 180, L = 140, sh = s / 100 * L;
+      K.stage(ctx, RX, y0, RW, h, "sky", { seed: 2 });
+      ctx.save(); ctx.beginPath(); ctx.roundRect(RX, y0, RW, h, 14); ctx.clip();
       var sd = ctx.createLinearGradient(0, gy, 0, H); sd.addColorStop(0, "#e2bf7c"); sd.addColorStop(1, "#a77c3e");
       ctx.fillStyle = sd; ctx.fillRect(RX, gy, RW, H - gy);
-      var Rr = K.rng(9); ctx.fillStyle = "rgba(120,80,30,.25)";
-      for (i = 0; i < 70; i++) ctx.fillRect(RX + Rr() * RW, gy + 4 + Rr() * (H - gy - 4), 2, 1);
       ctx.restore();
-      var tip = { x: bx + sh, y: gy }, tp = { x: bx, y: gy - L };
-      var k = (tp.y - 40) / L, sun = { x: tp.x - sh * k, y: 40 };
-      K.sun(ctx, sun.x, sun.y, 13);
+      var tip = { x: bx + sh, y: gy }, tp = { x: bx, y: gy - L }, ky = y0 + 24, k = (tp.y - ky) / L, sun = { x: tp.x - sh * k, y: ky };
+      K.sun(ctx, sun.x, sun.y, 10);
       K.line(ctx, sun, tip, "rgba(255,170,40,.95)", 1.8, [6, 4]);
-      ctx.fillStyle = "rgba(40,25,10,.75)"; ctx.beginPath(); ctx.moveTo(bx, gy - 1); ctx.lineTo(tip.x, gy - 1); ctx.lineTo(tip.x, gy + 5); ctx.lineTo(bx, gy + 5); ctx.closePath(); ctx.fill();
-      obelisk(bx, gy, 0, -1, L, 9);
-      K.wedge(ctx, tp.x, tp.y, Math.PI / 2 - th * Math.PI / 180, Math.PI / 2, 70, "rgba(255,140,80,.35)", "#ff8a50");
-      K.pill(ctx, "햇빛과 막대의 각 " + th.toFixed(2) + "°", tp.x + 22, tp.y + 40, { s: 12, c: "#ffb08a", box: [RX, W] });
-      K.pill(ctx, "막대 1 m", bx - 16, gy - L / 2, { s: 11.5, a: "right", c: KC.ink, box: [RX, W] });
-      K.bracket(ctx, bx, Math.max(tip.x, bx + 2), gy + 18, "#3a2408", null, false);
-      K.pill(ctx, "그림자 " + s.toFixed(1) + " cm", bx + 4, gy + 46, { s: 12, c: KC.yellow, box: [RX, W] });
-      K.pill(ctx, "알렉산드리아 · 막대 확대", RX + 16, 28, { s: 13, c: KC.blue, box: [RX, W] });
-      var C = circ(), ok = C >= 39000 && C <= 41000;
+      ctx.fillStyle = "rgba(40,25,10,.75)"; ctx.fillRect(bx, gy - 1, Math.max(1, sh), 6);
+      obelisk(bx, gy, 0, -1, L, 7);
+      K.wedge(ctx, tp.x, tp.y, Math.PI / 2 - th * Math.PI / 180, Math.PI / 2, 56, "rgba(255,140,80,.35)", "#ff8a50");
+      K.pill(ctx, "햇빛과 막대의 각 " + th.toFixed(2) + "°", tp.x + 22, tp.y + 34, { s: 11.5, c: "#ffb08a", box: [RX, W] });
+      K.pill(ctx, "막대 1 m", bx - 14, gy - L / 2, { s: 11, a: "right", c: KC.ink, box: [RX, W] });
+      K.pill(ctx, "그림자 " + s.toFixed(1) + " cm", bx + Math.max(sh, 4) + 12, gy + 20, { s: 11.5, c: KC.yellow, box: [RX, W] });
+      K.pill(ctx, "알렉산드리아 막대 확대", RX + 14, y0 + 22, { s: 12.5, c: KC.blue, box: [RX, W] });
+      K.pill(ctx, "막대 끝의 각 = 중심각 (엇각)", W - 14, y0 + 22, { s: 11, a: "right", c: KC.ink, box: [RX, W] });
+    }
+    function paint() {
+      var th = ang(), C = circ(), ok = C >= 39000 && C <= 41000;
+      ctx.clearRect(0, 0, W, H);
+      drawModel(th, C, ok);
+      drawBottom(th, C, ok);
+      return ok;
+    }
+    function draw() {
+      var ok = paint(), C = circ(), th = ang();
       readout("er-read", [
         ["햇빛과 막대의 각", th.toFixed(2) + "°", "y", "= 두 도시의 중심각"],
         ["지구 둘레", Math.round(C).toLocaleString() + " km", ok ? "g" : "b", "= 800 km × 360 ÷ " + th.toFixed(2)]
       ], ok ? [true, "오늘날 값(약 40,000 km)과 가깝습니다"] : [false, C > 41000 ? "너무 큽니다 · 그림자가 짧아요" : "너무 작습니다 · 그림자가 길어요"]);
       return ok;
     }
+    var pbtn = $("er-play");
+    function pLabel() { if (pbtn) pbtn.textContent = playing ? "⏸ 햇빛 멈추기" : "▶ 햇빛 흐름 보기"; }
+    if (pbtn) pbtn.addEventListener("click", function () { playing = !playing; pLabel(); paint(); });
+    pLabel();
+    K.animate(canvas, function (dt) { if (!playing) return; ph += dt / 1000; paint(); }, 24);
     function update() {
       var ok = draw();
       $("er-info").innerHTML = "그림자 " + s.toFixed(1) + " cm → 햇빛이 막대와 이루는 각 <b>" + ang().toFixed(2) + "°</b>. 두 도시가 지구 중심에서 벌어진 각도와 같으므로, 지구 둘레는 약 <b>" + Math.round(circ()).toLocaleString() + " km</b>. " + (ok ? "오늘날 값(약 40,000 km)과 가깝습니다!" : "");

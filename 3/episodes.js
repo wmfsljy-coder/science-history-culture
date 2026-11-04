@@ -983,42 +983,135 @@ function actx() {
     var got = window.sthState("noiseGot") || { a: false, q: false };
     function Lp(rr) { return 107 - 20 * Math.log(rr) / Math.LN10 - 11; }
     var rot = 0.4, wph = 0, play = null;
+    /* ── 블록 모형: 뒷산 능선의 발전기에서 가장 가까운 집까지 땅을 잘라 냈다(x = 발전기 → 마을, 가로 거리는 비율대로) ── */
+    var DH = 480;
+    var I = K.iso({ ox: 150, oy: 130, s: 0.68, L: 820, D: 150 });
+    var BL = I.L, BD = I.D, BASE = 34, TX = 72, TY = 80, SC = 0.48;
+    function hX(rr) { return TX + rr * SC; }                     /* 거리 rr m → 블록 x (1 m = 0.48 그림 단위) */
+    function hill(x, y) { var a = (x - 55) / 125; return 62 * Math.exp(-a * a) * (0.78 + 0.22 * Math.cos((y - 70) / 55)); }
+    function zOf(x, y) { return BASE + hill(x, y) + 2.6 * Math.sin(x / 47 + y / 31) * Math.cos(y / 23); }
+    function colOf(x, y, z, light) {
+      var m = z - BASE, c;
+      if (m > 34) c = "#3f6e3a";                                         /* 능선 숲 */
+      else if (m > 12) c = "#5f8f44";                                    /* 풀밭 비탈 */
+      else c = (Math.floor(y / 30) + Math.floor(x / 120)) % 2 ? "#a8b866" : "#c9bb72";   /* 골짜기 논밭 */
+      return K.tint(c, light);
+    }
+    var TREES = (function () {
+      var R = K.rng(23), out = [[22, 24], [118, 138], [150, 26], [28, 132], [190, 118], [100, 16], [60, 142], [205, 50]];
+      for (var k = 0; k < 18; k++) out.push([250 + R() * 560, 8 + R() * 134]);
+      return out;
+    })();
+    var VILLAGE = [[46, -40], [78, 34], [112, -14], [68, 64], [140, 44], [150, -50]];
+    function ring(R, a) {                                                 /* 땅 위로 번지는 소리 고리 */
+      var on = false, t, x, y, p;
+      ctx.beginPath();
+      for (t = 0; t <= 6.2832 + 1e-6; t += 0.02) {
+        x = TX + R * Math.cos(t); y = TY + R * Math.sin(t);
+        if (x < 0 || x > BL || y < 0 || y > BD) { on = false; continue; }
+        p = I.P(x, y, zOf(x, y) + 1.5);
+        if (on) ctx.lineTo(p.x, p.y); else { ctx.moveTo(p.x, p.y); on = true; }
+      }
+      ctx.strokeStyle = "rgba(255,190,90," + (a * .35).toFixed(3) + ")"; ctx.lineWidth = 7; ctx.stroke();
+      ctx.strokeStyle = "rgba(255,120,30," + a.toFixed(3) + ")"; ctx.lineWidth = 2.6; ctx.stroke();
+    }
+    function turbine() {
+      var zb = zOf(TX, TY), b = I.P(TX, TY, zb), h = I.P(TX, TY, zb + 82), s = I.s;
+      var tg = ctx.createLinearGradient(b.x - 6, 0, b.x + 6, 0); tg.addColorStop(0, "#9aa4b8"); tg.addColorStop(.5, "#ffffff"); tg.addColorStop(1, "#7a8498");
+      ctx.fillStyle = "rgba(0,0,0,.18)"; ctx.beginPath(); ctx.ellipse(b.x + 4, b.y, 9, 3, 0, 0, 6.2832); ctx.fill();
+      ctx.fillStyle = tg; ctx.beginPath(); ctx.moveTo(b.x - 4.5, b.y); ctx.lineTo(h.x - 2, h.y); ctx.lineTo(h.x + 2, h.y); ctx.lineTo(b.x + 4.5, b.y); ctx.closePath(); ctx.fill();
+      ctx.fillStyle = "#e8ecf2"; ctx.beginPath(); ctx.roundRect(h.x - 7, h.y - 4, 13, 7, 3); ctx.fill();
+      for (var i = 0; i < 3; i++) {
+        ctx.save(); ctx.translate(h.x, h.y); ctx.rotate(rot + i * 2.0944);
+        var bgr = ctx.createLinearGradient(0, -4, 0, 4); bgr.addColorStop(0, "#ffffff"); bgr.addColorStop(1, "#aab4c8");
+        ctx.fillStyle = bgr; ctx.beginPath(); ctx.moveTo(0, -3); ctx.quadraticCurveTo(26, -5, 46, -1); ctx.lineTo(46, 1); ctx.quadraticCurveTo(26, 3, 0, 3); ctx.closePath(); ctx.fill();
+        ctx.restore();
+      }
+      K.planet(ctx, h.x, h.y, 4.5, "#ffffff", "#7a8498");
+      return h;
+    }
+    function drawModel(L, ok) {
+      var i, hx = hX(r), zh = zOf(hx, TY);
+      K.studio(ctx, 0, 0, W, DH, { x: I.P(BL / 2, BD / 2, 0).x, y: I.P(BL, BD, 0).y - 46, rx: 360, ry: 62 });
+      ctx.save(); ctx.beginPath(); ctx.roundRect(0, 0, W, DH, 14); ctx.clip();
+      I.field(ctx, zOf, colOf, 48, 10);
+      /* 앞면·오른쪽 면: 겉흙과 바위 단면 */
+      ["front", "right"].forEach(function (side) {
+        var zf = side === "front" ? function (u) { return zOf(u, BD); } : function (u) { return zOf(BL, u); };
+        I.face(ctx, side, function (Lw) {
+          I.profile(ctx, side, zf, 0);
+          var g = ctx.createLinearGradient(0, 0, 0, 100); g.addColorStop(0, "#6c6a66"); g.addColorStop(.45, "#8a7458"); g.addColorStop(1, "#6b5038");
+          ctx.fillStyle = g; ctx.fill();
+          ctx.save(); I.profile(ctx, side, zf, 0); ctx.clip();
+          var R = K.rng(side === "front" ? 41 : 43);
+          for (var k = 0; k < Lw * 1.4; k++) { ctx.fillStyle = R() > .5 ? "rgba(255,255,255,.16)" : "rgba(40,28,18,.25)"; ctx.fillRect(R() * Lw, R() * 110, 1.8, 1.8); }
+          ctx.strokeStyle = "rgba(40,30,20,.28)"; ctx.lineWidth = 1;
+          for (var y2 = 8; y2 < 30; y2 += 7) { ctx.beginPath(); ctx.moveTo(0, y2); ctx.lineTo(Lw, y2 + 2); ctx.stroke(); }
+          ctx.fillStyle = "#3e2c1e"; ctx.beginPath();                    /* 겉흙 띠 */
+          for (var u = 0; u <= Lw; u += 4) ctx.lineTo(u, zf(u));
+          for (u = Lw; u >= 0; u -= 4) ctx.lineTo(u, zf(u) - 5);
+          ctx.closePath(); ctx.fill();
+          ctx.restore();
+        });
+        I.shade(ctx, side, zf);
+      });
+      /* 앞면 아래쪽: 거리 자 (발전기 → 가장 가까운 집) */
+      I.face(ctx, "front", function () {
+        ctx.strokeStyle = "rgba(255,255,255,.9)"; ctx.lineWidth = 2.2;
+        ctx.beginPath(); ctx.moveTo(TX, 8); ctx.lineTo(TX, 20); ctx.moveTo(TX, 14); ctx.lineTo(hx, 14); ctx.moveTo(hx, 8); ctx.lineTo(hx, 20); ctx.stroke();
+      });
+      I.edges(ctx, zOf(BL, BD), zOf(BL, BD));
+      /* 소리 고리: 멀어질수록 넓게 퍼지며 흐려진다 */
+      for (i = 0; i < 5; i++) { var RR = 18 + ((wph + i / 5) % 1) * 700; ring(RR, 0.95 * Math.pow(1 - RR / 740, 1.1)); }
+      /* 집 앞 빛: 기준 안이면 초록, 넘으면 빨강 */
+      var gp = I.P(hx, TY, zh + 1);
+      var gl = ctx.createRadialGradient(gp.x, gp.y, 2, gp.x, gp.y, 30);
+      gl.addColorStop(0, ok ? "rgba(63,211,163,.75)" : "rgba(255,90,110,.75)"); gl.addColorStop(1, "rgba(0,0,0,0)");
+      ctx.fillStyle = gl; ctx.beginPath(); ctx.ellipse(gp.x, gp.y, 30, 13, 0, 0, 6.2832); ctx.fill();
+      /* 먼 것부터 그린다: 나무·발전기·집 */
+      var items = [];
+      TREES.forEach(function (t, k) {
+        if (Math.abs(t[0] - hx) < 26 && Math.abs(t[1] - TY) < 26) return;
+        if (Math.abs(t[0] - TX) < 18 && Math.abs(t[1] - TY) < 18) return;
+        var near = false; VILLAGE.forEach(function (v2) { if (Math.abs(t[0] - hx - v2[0]) < 18 && Math.abs(t[1] - TY - v2[1]) < 18) near = true; });
+        if (near) return;
+        items.push({ k: t[0] + t[1], f: function () { I.tree(ctx, t[0], t[1], zOf(t[0], t[1]), 0.75 + (k % 3) * .12); } });
+      });
+      var hub = null;
+      items.push({ k: TX + TY, f: function () { hub = turbine(); } });
+      VILLAGE.forEach(function (v2, k) {
+        var x = hx + v2[0], y = TY + v2[1];
+        if (x > BL - 16 || y < 10 || y > BD - 14) return;
+        items.push({ k: x + y, f: function () { I.house(ctx, x - 9, y - 9, zOf(x, y), 18, 18, 13, ["#3f6fb5", "#d08a2e", "#7a5a9a", "#c0553f", "#3f8f7a", "#b5843f"][k]); } });
+      });
+      items.push({ k: hx + TY, f: function () { I.house(ctx, hx - 11, TY - 11, zh, 22, 22, 16, "#c0553f"); } });
+      items.sort(function (a, b) { return a.k - b.k; }).forEach(function (o) { o.f(); });
+      ctx.restore();
+      /* 이름표 */
+      var box = [0, W];
+      I.label(ctx, TX, TY, zOf(TX, TY) + 40, "풍력 발전기 · 107 dB(A)", -46, -14, "#bfe6ff", box);
+      I.label(ctx, hx, TY, zh + 22, "가장 가까운 집 · 집 앞 " + L.toFixed(1) + " dB", 34, -40, ok ? "#7ff0c4" : "#ff9aa8", box);
+      var mp = I.P((TX + hx) / 2, BD, 14);
+      K.pill(ctx, "거리 " + r + " m", mp.x, mp.y + 22, { a: "center", s: 12, c: "#ffffff", box: box });
+      /* 큰 글자 */
+      var h1, h2 = "집 앞 " + L.toFixed(1) + " dB · 밤 기준 45 dB";
+      if (!ok) h1 = L > 50 ? "집 앞까지 날개 소리" : "기준까지 조금 남았다";
+      else if (r <= 380) h1 = "밤에도 잠을 지킨다";
+      else h1 = "조용하다, 더 가까이는?";
+      K.bigText(ctx, h1, W - 22, 52, 28, ok ? "#ffd35a" : "#ffffff", "right");
+      K.bigText(ctx, h2, W - 22, 86, 18, ok ? "#ffffff" : "#ff9aa8", "right");
+      K.pill(ctx, "주황 고리 = 퍼져 나가는 소리 (멀수록 흐림)", W - 22, 116, { a: "right", s: 11, c: "#ffc27a", box: box });
+      K.warn(ctx, W - 14, DH - 18, "⚠ 산 높이·발전기·집 크기는 과장 · 가로 거리는 비율대로", "right");
+    }
     function draw() {
       ctx.clearRect(0, 0, W, H);
-      var L = Lp(r), ok = L <= 45 + 1e-9, i;
-      /* ── 왼쪽: 발전기와 집 ── */
-      var LW = 480, gy = 272, tx = 66, hy = 104;
-      K.stage(ctx, 0, 0, LW, H, "night", { seed: 7 });
-      ctx.save(); ctx.beginPath(); ctx.roundRect(0, 0, LW, H, 14); ctx.clip();
-      var sk = ctx.createLinearGradient(0, 0, 0, gy); sk.addColorStop(0, "#101a40"); sk.addColorStop(.7, "#3a3a6a"); sk.addColorStop(1, "#7a5a6a"); ctx.fillStyle = sk; ctx.fillRect(0, 0, LW, gy);
-      ctx.fillStyle = "#1e2a26"; ctx.beginPath(); ctx.moveTo(0, gy); for (i = 0; i <= 16; i++) ctx.lineTo(i * 32, gy - 16 - Math.abs(Math.sin(i * .9)) * 22); ctx.lineTo(LW, gy); ctx.closePath(); ctx.fill();
-      var gd = ctx.createLinearGradient(0, gy, 0, H); gd.addColorStop(0, "#2a3a22"); gd.addColorStop(1, "#141c10"); ctx.fillStyle = gd; ctx.fillRect(0, gy, LW, H - gy);
-      /* 소리 물결 */
-      for (i = 0; i < 5; i++) { var rr = ((wph + i / 5) % 1) * 420; ctx.strokeStyle = "rgba(255,211,107," + (0.35 * (1 - rr / 420)) + ")"; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(tx, hy, rr, -0.9, 0.9); ctx.stroke(); }
-      ctx.restore();
-      /* 탑과 날개 */
-      var tg = ctx.createLinearGradient(tx - 6, 0, tx + 6, 0); tg.addColorStop(0, "#9aa4b8"); tg.addColorStop(.5, "#f2f5fb"); tg.addColorStop(1, "#7a8498");
-      ctx.fillStyle = tg; ctx.beginPath(); ctx.moveTo(tx - 7, gy); ctx.lineTo(tx - 3, hy); ctx.lineTo(tx + 3, hy); ctx.lineTo(tx + 7, gy); ctx.closePath(); ctx.fill();
-      for (i = 0; i < 3; i++) {
-        var a = rot + i * 2.0944;
-        ctx.save(); ctx.translate(tx, hy); ctx.rotate(a);
-        var bgr = ctx.createLinearGradient(0, -5, 0, 5); bgr.addColorStop(0, "#ffffff"); bgr.addColorStop(1, "#aab4c8");
-        ctx.fillStyle = bgr; ctx.beginPath(); ctx.moveTo(0, -4); ctx.quadraticCurveTo(40, -7, 72, -1); ctx.lineTo(72, 1); ctx.quadraticCurveTo(40, 4, 0, 4); ctx.closePath(); ctx.fill(); ctx.restore();
-      }
-      K.planet(ctx, tx, hy, 6, "#f2f5fb", "#6a7488");
-      /* 집 */
-      var hx = tx + 34 + (r - 100) / 1400 * 340, hw = 36;
-      ctx.fillStyle = "#c8a070"; ctx.fillRect(hx - hw / 2, gy - 28, hw, 28);
-      ctx.fillStyle = "#8a3a2a"; ctx.beginPath(); ctx.moveTo(hx - hw / 2 - 5, gy - 28); ctx.lineTo(hx, gy - 48); ctx.lineTo(hx + hw / 2 + 5, gy - 28); ctx.closePath(); ctx.fill();
-      ctx.fillStyle = "rgba(255,220,140,.9)"; ctx.fillRect(hx - 10, gy - 20, 8, 8); ctx.fillStyle = "#5a3a20"; ctx.fillRect(hx + 4, gy - 18, 8, 18);
-      K.bracket(ctx, tx, hx, gy + 14, KC.mute, r + " m", false);
-      K.pill(ctx, "집 앞 " + L.toFixed(1) + " dB", hx, gy - 60, { s: 12, a: "center", c: ok ? KC.green : KC.red, box: [0, LW] });
-      K.pill(ctx, "풍력 발전기 · 107 dB(A)", 16, 28, { s: 13, c: KC.blue });
-      /* ── 오른쪽: 거리에 따른 소음 ── */
-      var RX = LW + 8;
-      K.stage(ctx, RX, 0, W - RX, H, "lab", { seed: 5 });
-      K.pill(ctx, "거리에 따른 집 앞 소음", RX + 16, 28, { s: 13, c: KC.blue });
-      var g = K.chart(ctx, { x: RX + 4, y: 48, w: W - RX - 10, h: H - 54, x0: 100, x1: 1500, y0: 30, y1: 70, xt: 7, yt: 4, xl: "거리(m)", yl: "소음(dB)" });
+      var L = Lp(r), ok = L <= 45 + 1e-9;
+      drawModel(L, ok);
+      /* ── 아래: 거리에 따른 소음 ── */
+      var y0 = DH + 8;
+      K.stage(ctx, 0, y0, W, H - y0, "lab", { seed: 5 });
+      K.pill(ctx, "거리에 따른 집 앞 소음", 16, y0 + 24, { s: 12.5, c: KC.blue });
+      var g = K.chart(ctx, { x: 4, y: y0 + 30, w: W - 12, h: H - y0 - 34, pb: 30, pt: 8, x0: 100, x1: 1500, y0: 30, y1: 70, xt: 7, yt: 4, xl: "거리(m)", yl: "소음(dB)" });
       ctx.save(); ctx.strokeStyle = KC.red; ctx.setLineDash([5, 4]); ctx.lineWidth = 1.4; ctx.beginPath(); ctx.moveTo(g.L, g.Y(45)); ctx.lineTo(g.R, g.Y(45)); ctx.stroke(); ctx.restore();
       K.pill(ctx, "밤 기준 45 dB", g.R - 4, g.Y(45) - 9, { s: 10.5, a: "right", c: KC.red });
       var pts = []; for (var q = 100; q <= 1500; q += 10) pts.push([q, Lp(q)]);

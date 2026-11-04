@@ -791,54 +791,152 @@ function parch(ctx, x, y, w, h, seed) {
     var got = window.sthState("tpGot") || { a: false, b: false };
     var REF = [["걷기 (하루 8시간씩)", 100], ["1905년 경부선 직통 급행", 14], ["1936년 특급 열차", 6.75], ["1970년 고속버스", 5], ["2004년 KTX", 2.67]];
     var el = 0, playing = !REDUCE;
-    function vehicle(x, y, kind, tt) {
-      ctx.save(); ctx.translate(x, y);
+    /* ── 잘라 보는 모형: 서울(왼쪽 뒤) → 부산(오른쪽 앞)으로 이어진 땅 블록과 경부선 ──
+       x = 노선 방향(0~L), y = 깊이(0 뒤 ~ D 앞), z = 높이(그림 단위). 철길은 앞쪽 골짜기(y = YR)를 따라간다. */
+    var MH = 420;                                            /* 모형 칸 높이(아래는 시간 막대) */
+    var I = K.iso({ ox: 352, oy: 136, s: 0.62, L: 700, D: 170 });
+    var L = I.L, D = I.D, ZB = 54, YR = D - 30, RX0 = 34, RX1 = L - 56;
+    var STN = [[RX0, "서울"], [RX0 + (RX1 - RX0) * 0.38, "대전"], [RX0 + (RX1 - RX0) * 0.76, "대구"], [RX1, "부산"]];
+    function mtn(x) {                                        /* 노선 방향의 산줄기 높이(소백산맥 쪽이 가장 높다) */
+      var a = (x - 330) / 120, b = (x - 520) / 70;
+      return 78 * Math.exp(-a * a) + 34 * Math.exp(-b * b) + 14 + 8 * Math.sin(x / 37) * Math.sin(x / 23);
+    }
+    function hgt(x, y) {                                     /* 땅 높이(해수면 0) */
+      var back = Math.max(0, Math.min(1, (YR - 12 - y) / 80));   /* 철길에서 멀어질수록 산이 높아진다 */
+      var h = 4 + 3 * Math.sin(x / 41 + y / 29) + mtn(x) * back * back;
+      var r = Math.hypot((x - L) / 120, y / 95);                /* 부산 앞바다: 오른쪽 뒤 모서리가 바다 */
+      if (r < 1) h = Math.min(h, 4 - (1 - r) * 26);
+      return h;
+    }
+    function zOf(x, y) { return ZB + hgt(x, y); }
+    function railZ(x) { return ZB + 5 + 3 * Math.sin(x / 41 + YR / 29) * 0.4 + Math.max(0, mtn(x) - 14) * 0.18; }
+    function landCol(x, y, z, light) {
+      var m = z - ZB, c;
+      if (m < -0.5) c = "#c9b58a";                            /* 바다 밑 모래 */
+      else if (m < 6) c = "#9cbd62";                          /* 들판 */
+      else if (m < 30) c = "#79a552";                         /* 언덕 */
+      else if (m < 62) c = "#5b8c43";                         /* 숲 */
+      else c = "#8b8a74";                                     /* 높은 산 바위 */
+      return K.tint(c, light);
+    }
+    function kindOf() { return sp < 10 ? "walk" : sp < 45 ? "steam" : sp < 200 ? "elec" : "ktx"; }
+    var KNAME = { walk: "🚶 걸어서", steam: "🚂 증기 기관차", elec: "🚃 디젤·전기 열차", ktx: "🚄 고속 열차" };
+
+    function drawTrain(xh, kind, tt) {
+      var zr = railZ(xh);
       if (kind === "walk") {
-        var sw = Math.sin(tt / 120) * 5;
-        ctx.strokeStyle = "#e8d6b0"; ctx.lineWidth = 3; ctx.lineCap = "round";
-        ctx.beginPath(); ctx.moveTo(0, -18); ctx.lineTo(0, -6); ctx.moveTo(0, -6); ctx.lineTo(-sw, 4); ctx.moveTo(0, -6); ctx.lineTo(sw, 4); ctx.moveTo(0, -15); ctx.lineTo(7, -9); ctx.stroke();
-        ctx.fillStyle = "#e8d6b0"; ctx.beginPath(); ctx.arc(0, -23, 4.5, 0, 6.2832); ctx.fill();
-        ctx.fillStyle = "#8a5a33"; ctx.fillRect(-9, -18, 6, 10);
-      } else {
-        var L = kind === "ktx" ? 92 : 78, c0 = kind === "steam" ? "#3a3f48" : kind === "ktx" ? "#f2f5fb" : "#2f6fb0", c1 = kind === "steam" ? "#15181d" : kind === "ktx" ? "#9aa8c0" : "#183c66";
-        var bg = ctx.createLinearGradient(0, -24, 0, 0); bg.addColorStop(0, c0); bg.addColorStop(1, c1);
-        ctx.fillStyle = bg; ctx.beginPath();
-        if (kind === "ktx") { ctx.moveTo(-L, 0); ctx.lineTo(-L, -20); ctx.lineTo(-18, -20); ctx.quadraticCurveTo(10, -18, 14, 0); ctx.closePath(); }
-        else ctx.roundRect(-L, -22, L + 6, 22, 4);
-        ctx.fill();
-        if (kind === "steam") { ctx.fillStyle = "#22262c"; ctx.fillRect(-14, -34, 9, 13); ctx.fillStyle = "#b03a2e"; ctx.fillRect(-L, -10, L + 6, 3); }
-        if (kind === "ktx") { ctx.fillStyle = "#2a62d8"; ctx.fillRect(-L, -8, L + 12, 3); }
-        ctx.fillStyle = kind === "steam" ? "rgba(255,210,120,.85)" : "rgba(170,220,255,.85)";
-        for (var w = 0; w < (kind === "ktx" ? 6 : 5); w++) ctx.fillRect(-L + 8 + w * 13, -17, 8, 6);
-        ctx.fillStyle = "#111"; [-L + 10, -L + 28, -22, -6].forEach(function (wx) { ctx.beginPath(); ctx.arc(wx, 1, 4, 0, 6.2832); ctx.fill(); });
-        if (kind === "steam") { for (var q = 0; q < 4; q++) { var a = ((tt / 600 + q / 4) % 1); ctx.fillStyle = "rgba(220,220,230," + (0.5 * (1 - a)) + ")"; ctx.beginPath(); ctx.arc(-10 - a * 50, -40 - a * 18, 5 + a * 10, 0, 6.2832); ctx.fill(); } }
+        I.person(ctx, xh, YR, zr, "#c0553f", 1.5);
+        var p = I.P(xh - 2, YR - 2, zr + 14); ctx.fillStyle = "#8a5a33"; ctx.beginPath(); ctx.roundRect(p.x - 7, p.y - 4, 8, 8, 2); ctx.fill();
+        return;
       }
+      var n = kind === "steam" ? 4 : kind === "elec" ? 5 : 6, len = kind === "ktx" ? 26 : 22, i;
+      xh = Math.max(xh, 6 + n * (len + 2));                  /* 출발 전에도 열차 전체가 블록 위에 있게 */
+      var CS = { steam: ["#4b4f57", "#2a2d33", "#1b1d22"], elec: ["#7fa6d8", "#2f6fb0", "#1e4c80"], ktx: ["#ffffff", "#e9edf5", "#b9c3d6"] };
+      for (i = n - 1; i >= 0; i--) {
+        var x1 = xh - i * (len + 2), x0 = x1 - len, z0 = railZ(x0) + 1.5, loco = i === 0;
+        var cc = CS[kind];
+        if (kind === "steam" && !loco) cc = ["#8a5a3a", "#6a3f26", "#4a2b19"];
+        I.box(ctx, x0, YR - 6, z0, x1, YR + 6, z0 + (loco && kind === "ktx" ? 10 : 12), cc[0], cc[1], cc[2]);
+        /* 창문 줄 */
+        var w0 = I.P(x0 + 3, YR + 6, z0 + 8), w1 = I.P(x1 - 3, YR + 6, z0 + 8);
+        ctx.strokeStyle = kind === "steam" ? "rgba(255,210,120,.9)" : "rgba(190,230,255,.95)"; ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.moveTo(w0.x, w0.y); ctx.lineTo(w1.x, w1.y); ctx.stroke();
+        if (kind === "ktx") { var s0 = I.P(x0, YR + 6, z0 + 3), s1 = I.P(x1, YR + 6, z0 + 3); ctx.strokeStyle = "#2a62d8"; ctx.lineWidth = 1.6; ctx.beginPath(); ctx.moveTo(s0.x, s0.y); ctx.lineTo(s1.x, s1.y); ctx.stroke(); }
+        if (kind === "steam" && loco) {
+          I.box(ctx, x1 - 7, YR - 2, z0 + 12, x1 - 3, YR + 2, z0 + 19, "#2a2d33", "#1b1d22", "#111");
+          for (var q = 0; q < 5; q++) {
+            var a = ((tt / 700 + q / 5) % 1), sp0 = I.P(x1 - 5 - a * 34, YR - a * 6, z0 + 20 + a * 26);
+            ctx.fillStyle = "rgba(235,235,240," + (0.6 * (1 - a)).toFixed(2) + ")"; ctx.beginPath(); ctx.arc(sp0.x, sp0.y, 3 + a * 8, 0, 6.2832); ctx.fill();
+          }
+        }
+      }
+    }
+    function drawModel(t, u, tt) {
+      var kind = kindOf(), xh = RX0 + (RX1 - RX0) * u + (kind === "walk" ? 0 : 6), box = [0, W], wz = ZB;
+      K.studio(ctx, 0, 0, W, MH, { x: I.P(L, D, 0).x - 170, y: I.P(L, D, 0).y - 20, rx: 340, ry: 46 });
+      ctx.save(); ctx.beginPath(); ctx.roundRect(0, 0, W, MH, 14); ctx.clip();
+      /* 땅 + 바다(칸마다) */
+      I.field(ctx, zOf, landCol, 70, 17, function (c, x0, y0, x1, y1, zMax, zMin) {
+        if (wz > zMin + 0.2) {
+          var depth = wz - zMin, al = Math.min(.8, .35 + depth / 40);
+          I.quad(c, I.P(x0, y0, wz), I.P(x1, y0, wz), I.P(x1, y1, wz), I.P(x0, y1, wz), "rgba(60,140,210," + al.toFixed(2) + ")");
+        }
+      });
+      /* 앞면·오른쪽 면: 땅속 단면 */
+      ["front", "right"].forEach(function (side) {
+        var zf = function (uu) { return side === "front" ? zOf(uu, D) : zOf(L, uu); };
+        I.face(ctx, side, function (Lw) {
+          I.profile(ctx, side, zf, 0);
+          var g = ctx.createLinearGradient(0, 0, 0, 160); g.addColorStop(0, "#5e4a36"); g.addColorStop(.5, "#8a6d4c"); g.addColorStop(1, "#b89466");
+          ctx.fillStyle = g; ctx.fill();
+          ctx.save(); I.profile(ctx, side, zf, 0); ctx.clip();
+          var R = K.rng(side === "front" ? 51 : 57);
+          for (var k2 = 0; k2 < Lw * 1.2; k2++) { ctx.fillStyle = R() > .5 ? "rgba(255,255,255,.16)" : "rgba(40,25,10,.22)"; ctx.fillRect(R() * Lw, R() * 150, 1.6, 1.6); }
+          ctx.strokeStyle = "rgba(50,30,15,.25)"; ctx.lineWidth = 1;
+          for (var yy = 10; yy < 150; yy += 13) { ctx.beginPath(); ctx.moveTo(0, yy); ctx.lineTo(Lw, yy + 4 * Math.sin(yy)); ctx.stroke(); }
+          ctx.restore();
+        });
+      });
+      I.water(ctx, wz, function (uu, side) { return side === "front" ? zOf(uu, D) : zOf(L, uu); }, { surface: false });
+      I.shade(ctx, "front", function (uu) { return Math.max(zOf(uu, D), wz); });
+      I.shade(ctx, "right", function (uu) { return Math.max(zOf(L, uu), wz); });
+      I.edges(ctx, zOf(L, D), zOf(L, D));
+      /* 도시: 서울은 높은 건물, 부산은 항구, 대전·대구는 작은 마을 */
+      [[12, 30, 20], [26, 52, 34], [14, 70, 26], [40, 34, 44], [46, 62, 28], [62, 46, 22]].forEach(function (b, i) {
+        var z0 = zOf(b[0] + 5, b[1] + 5);
+        I.box(ctx, b[0], b[1], z0, b[0] + 10, b[1] + 10, z0 + b[2], "#e6ebf2", ["#c9d2df", "#d7c9b6", "#c0cbe0"][i % 3], "#9aa6ba");
+      });
+      [[STN[1][0] - 10, 96], [STN[1][0] + 8, 104], [STN[2][0] - 8, 98], [STN[2][0] + 10, 108], [RX1 - 30, 112], [RX1 - 12, 100]].forEach(function (h, i) {
+        I.house(ctx, h[0], h[1], zOf(h[0] + 4, h[1] + 4), 10, 9, 7, ["#c0553f", "#3f6fb5", "#d08a2e"][i % 3]);
+      });
+      [[L - 70, 40, "#e2533f"], [L - 50, 18, "#2f6fb0"]].forEach(function (s) { I.box(ctx, s[0], s[1], wz, s[0] + 16, s[1] + 6, wz + 4, "#f1f1f1", s[2], "#555"); });
+      /* 나무 */
+      var TR = K.rng(91);
+      for (var tI = 0; tI < 26; tI++) { var tx = 90 + TR() * (L - 200), ty = 8 + TR() * (YR - 40); if (hgt(tx, ty) > 8 && hgt(tx, ty) < 64) I.tree(ctx, tx, ty, zOf(tx, ty), 0.7 + TR() * .3); }
+      /* 철길: 침목 + 레일 두 줄 */
+      var xx;
+      for (xx = RX0 - 10; xx <= RX1 + 14; xx += 7) { var a1 = I.P(xx, YR - 6, railZ(xx)), a2 = I.P(xx, YR + 6, railZ(xx)); ctx.strokeStyle = "#6b5236"; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(a1.x, a1.y); ctx.lineTo(a2.x, a2.y); ctx.stroke(); }
+      [-3, 3].forEach(function (o) {
+        ctx.strokeStyle = "#d8dde6"; ctx.lineWidth = 1.6; ctx.beginPath();
+        for (xx = RX0 - 10; xx <= RX1 + 14; xx += 6) { var p = I.P(xx, YR + o, railZ(xx) + .6); if (xx === RX0 - 10) ctx.moveTo(p.x, p.y); else ctx.lineTo(p.x, p.y); }
+        ctx.stroke();
+      });
+      /* 역 승강장 */
+      STN.forEach(function (s) { I.box(ctx, s[0] - 9, YR - 16, railZ(s[0]), s[0] + 9, YR - 8, railZ(s[0]) + 3, "#d9c7a0", "#b9a67e", "#9a8862"); });
+      /* 지나온 길(노란 띠) */
+      var xe = RX0 + (RX1 - RX0) * u;
+      if (u > 0.002) {
+        ctx.save(); ctx.strokeStyle = "rgba(255,211,107,.85)"; ctx.lineWidth = 4; ctx.lineCap = "round"; ctx.beginPath();
+        for (xx = RX0; xx <= xe; xx += 5) { var pp = I.P(Math.min(xx, xe), YR + 9, railZ(xx) + .5); if (xx === RX0) ctx.moveTo(pp.x, pp.y); else ctx.lineTo(pp.x, pp.y); }
+        ctx.stroke(); ctx.restore();
+      }
+      drawTrain(xh, kind, tt);
       ctx.restore();
+      /* 이름표 */
+      I.label(ctx, STN[0][0], YR - 12, railZ(STN[0][0]) + 3, "서울", -36, -34, "#f4f0e6", box);
+      I.label(ctx, STN[1][0], YR - 12, railZ(STN[1][0]) + 3, "대전", -30, 42, "#f4f0e6", box);
+      I.label(ctx, STN[2][0], YR - 12, railZ(STN[2][0]) + 3, "대구", -30, 42, "#f4f0e6", box);
+      I.label(ctx, STN[3][0], YR - 12, railZ(STN[3][0]) + 3, "부산", 30, 24, "#f4f0e6", box);
+      I.label(ctx, 330, 30, zOf(330, 30), "소백산맥 — 철길은 골짜기를 따라 넘는다", 50, -46, "#e8e2cf", box);
+      K.pill(ctx, "지금 탈것: " + KNAME[kind], 22, 116, { s: 12, c: KC.yellow, box: box });
+      var fp = I.P(L / 2, D, 0);
+      K.pill(ctx, "서울 → 부산 약 400 km", fp.x - 40, fp.y + 22, { s: 11.5, a: "center", c: "#ffffff", box: box });
+      /* 큰 제목 */
+      var rt = 2 * t, ok = rt <= 6 + 1e-9;
+      if (kind === "walk") { K.bigText(ctx, "걸어서 가는 먼 길", 22, 50, 28, "#ffffff"); K.bigText(ctx, "편도 " + t.toFixed(0) + "시간 · 하루 8시간씩 약 " + Math.ceil(t / 8) + "일", 22, 84, 17, "#ffd35a"); }
+      else if (ok) { K.bigText(ctx, "아침에 가서 저녁에 온다", 22, 50, 28, "#ffd35a"); K.bigText(ctx, "평균 " + sp + " km/h · 왕복 " + rt.toFixed(1) + "시간 — 하루 생활권", 22, 84, 17, "#ffffff"); }
+      else { K.bigText(ctx, t > 10 ? "기차 안에서 하룻밤" : "하루에 다녀오기엔 멀다", 22, 50, 28, "#ffffff"); K.bigText(ctx, "평균 " + sp + " km/h · 편도 " + t.toFixed(1) + "시간", 22, 84, 17, "#ffd35a"); }
+      K.warn(ctx, W - 14, 28, "⚠ 높이는 크게 과장 · 실제 노선은 굽이져 있음", "right");
+      K.pill(ctx, "출발 후 " + (u * t).toFixed(1) + "시간", W - 16, 56, { s: 12, a: "right", c: u >= 1 ? KC.green : KC.ink });
     }
     function draw() {
       ctx.clearRect(0, 0, W, H);
-      var t = 400 / sp, rt = 2 * t, ok = rt <= 6 + 1e-9, i;
-      /* ── 위: 서울에서 부산까지 ── */
-      var TH = 150, x0 = 96, x1 = 826, ty = 120;
-      K.stage(ctx, 0, 0, W, TH, "night", { seed: 21 });
-      ctx.save(); ctx.beginPath(); ctx.roundRect(0, 0, W, TH, 14); ctx.clip();
-      var sk = ctx.createLinearGradient(0, 0, 0, TH); sk.addColorStop(0, "#0e1638"); sk.addColorStop(.75, "#3a3a6a"); sk.addColorStop(1, "#6a4a5a"); ctx.fillStyle = sk; ctx.fillRect(0, 0, W, TH);
-      ctx.fillStyle = "#1e2244"; ctx.beginPath(); ctx.moveTo(0, ty);
-      for (i = 0; i <= 30; i++) ctx.lineTo(i * 30, ty - 14 - Math.abs(Math.sin(i * 1.3)) * 30 - Math.abs(Math.sin(i * .4)) * 14);
-      ctx.lineTo(W, ty); ctx.closePath(); ctx.fill();
-      ctx.fillStyle = "#14182e"; ctx.fillRect(0, ty, W, TH - ty);
-      ctx.restore();
-      ctx.strokeStyle = "#6b5a44"; ctx.lineWidth = 2; for (i = x0 - 30; i < x1 + 30; i += 12) { ctx.beginPath(); ctx.moveTo(i, ty + 2); ctx.lineTo(i + 4, ty + 8); ctx.stroke(); }
-      ctx.strokeStyle = "#c8d0e0"; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(x0 - 40, ty + 3); ctx.lineTo(x1 + 40, ty + 3); ctx.stroke();
-      [[x0, "서울"], [x1, "부산"]].forEach(function (s) { ctx.fillStyle = "#d8b06a"; ctx.fillRect(s[0] - 2, ty - 40, 4, 40); K.pill(ctx, s[1], s[0], ty - 46, { s: 12, a: "center", c: KC.yellow }); });
+      var t = 400 / sp, rt = 2 * t, ok = rt <= 6 + 1e-9;
       var u = Math.min(1, el / Math.max(1500, Math.min(12000, 1500 + t * 260)));
-      var kind = sp < 10 ? "walk" : sp < 45 ? "steam" : sp < 200 ? "elec" : "ktx";
-      vehicle(x0 + (x1 - x0) * u + (kind === "walk" ? 0 : 10), ty, kind, el);
-      K.pill(ctx, "서울 → 부산 400 km · 평균 " + sp + " km/h", 16, 28, { s: 13, c: KC.blue });
-      K.pill(ctx, "출발 후 " + (u * t).toFixed(1) + "시간", W - 16, 28, { s: 12, a: "right", c: u >= 1 ? KC.green : KC.ink });
+      drawModel(t, u, el);
 
       /* ── 아래: 탈것별 편도 시간(로그 눈금) ── */
-      var BY = TH + 8, BH = H - BY, bx0 = 200, bx1 = W - 30;
+      var BY = MH + 8, BH = H - BY, bx0 = 200, bx1 = W - 30;
       K.stage(ctx, 0, BY, W, BH, "lab", { seed: 3 });
       function X(h) { return bx0 + Math.log(h) / Math.log(120) * (bx1 - bx0); }
       [1, 3, 10, 30, 100].forEach(function (h) { K.line(ctx, { x: X(h), y: BY + 14 }, { x: X(h), y: H - 26 }, "rgba(160,175,255,.2)", 1, [3, 4]); K.t(ctx, h + "시간", X(h), H - 10, { s: 10.5, a: "center", c: KC.mute }); });
