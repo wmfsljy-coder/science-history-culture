@@ -33,21 +33,45 @@ window.sthLab({
     task: "태양 고도 차이를 구하고, 지구 둘레 = 거리 × 360 ÷ 고도 차이 로 계산해 슬라이더로 맞추세요(± 1,000 km).",
     build: function (stage, api) {
       var H = api.h, cv = api.canvas(270), ctx = cv.ctx, W = cv.W, g = 20000;
-      function draw() {
-        H.paper(ctx, W, cv.H);
-        var cx = 200, cy = 330, R = 230;
-        ctx.save(); ctx.strokeStyle = H.v("--line"); ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(cx, cy, R, Math.PI * 1.15, Math.PI * 1.85); ctx.stroke(); ctx.restore();
-        [[0, NA, EA, "--coral-700"], [-DANG * 3, NB, EB, "--brand-700"]].forEach(function (p) {
-          var a = (-90 + p[0]) * Math.PI / 180, x = cx + R * Math.cos(a), y = cy + R * Math.sin(a), nx = Math.cos(a), ny = Math.sin(a);
-          H.line(ctx, [[x, y], [x + nx * 40, y + ny * 40]], H.v(p[3]), 3);
-          H.text(ctx, p[1] + " " + p[2].toFixed(2) + "°", x + nx * 46, y + ny * 46 - 4, { s: 11.5, w: "800", a: "center", c: H.v(p[3]) });
-        });
-        for (var k = 0; k < 4; k++) H.arrow(ctx, 40 + k * 90, 4, 40 + k * 90, 32, H.v("--amber-700"), 2, 7);
-        H.text(ctx, "햇빛(거의 나란함)", 400, 24, { s: 11, w: "800", c: H.v("--amber-700") });
-        H.text(ctx, "※ 그림의 각도는 3배로 키움", 20, cv.H - 8, { s: 10, c: H.v("--mist") });
-        H.rows(ctx, 520, 60, [["태양 고도 차이", DANG.toFixed(2) + "°"], ["두 도시 사이 거리", Math.round(DKM) + " km"], ["내 답 (지구 둘레)", g.toLocaleString() + " km", null, true]], 58);
+        function draw() {
+        var K = window.sthKit, SP = window.sthSP19, LT = K.LT, CH = cv.H;
+        ctx.clearRect(0, 0, W, CH);
+        K.studio(ctx, 0, 0, W, CH);
+        /* 둥근 지구의 한 조각(모래빛 공) + 두 도시의 돌기둥 — 각은 3배로 키움 */
+        var cx = 300, cy = 620, R = 480;
+        ctx.save(); ctx.beginPath(); ctx.roundRect(0, 0, W, CH, 14); ctx.clip();
+        var hg = ctx.createRadialGradient(cx, cy, R, cx, cy, R + 26); hg.addColorStop(0, "rgba(120,190,255,.45)"); hg.addColorStop(1, "rgba(120,190,255,0)");
+        ctx.fillStyle = hg; ctx.beginPath(); ctx.arc(cx, cy, R + 26, 0, 6.2832); ctx.fill();
+        var eg = ctx.createRadialGradient(cx - 90, cy - R + 30, 20, cx, cy - R * .4, R * .9); eg.addColorStop(0, "#f8e7b8"); eg.addColorStop(.45, "#e0c082"); eg.addColorStop(1, "#b08850");
+        ctx.fillStyle = eg; ctx.beginPath(); ctx.arc(cx, cy, R, 0, 6.2832); ctx.fill();
+        ctx.strokeStyle = "rgba(40,110,190,.75)"; ctx.lineWidth = 5; ctx.beginPath(); ctx.arc(cx, cy, R - 4, -Math.PI / 2 - .5, -Math.PI / 2 + .08); ctx.stroke();
+        ctx.restore();
+        for (var k = 0; k < 5; k++) K.arrow(ctx, { x: 60 + k * 90, y: 4 }, { x: 60 + k * 90, y: 50 }, LT.yellow, 2.2, 9);
+        K.pill(ctx, "햇빛 (거의 나란함)", 412, 66, { s: 11.5, c: "#ffe3a0" });
+        function obelisk(deg, name, el, col) {
+          var a = (-90 + deg) * Math.PI / 180, nx = Math.cos(a), ny = Math.sin(a), bx = cx + R * nx, by = cy + R * ny, hh = 46, w = 7;
+          ctx.save(); ctx.translate(bx, by); ctx.rotate(a + Math.PI / 2);
+          ctx.fillStyle = "rgba(0,0,0,.18)"; ctx.beginPath(); ctx.ellipse(6, 0, 14, 3, 0, 0, 6.2832); ctx.fill();
+          var og = ctx.createLinearGradient(-w, 0, w, 0); og.addColorStop(0, "#f2dfb4"); og.addColorStop(1, "#a88456");
+          ctx.fillStyle = og; ctx.beginPath(); ctx.moveTo(-w, 0); ctx.lineTo(-w * .7, -hh); ctx.lineTo(0, -hh - 9); ctx.lineTo(w * .7, -hh); ctx.lineTo(w, 0); ctx.closePath(); ctx.fill();
+          ctx.restore();
+          ctx.save(); ctx.setLineDash([4, 4]); ctx.strokeStyle = "rgba(20,40,90,.45)"; ctx.lineWidth = 1.2; ctx.beginPath(); ctx.moveTo(bx, by); ctx.lineTo(cx + (R - 200) * nx, cy + (R - 200) * ny); ctx.stroke(); ctx.restore();
+          K.pill(ctx, name + " · 태양 고도 " + el.toFixed(2) + "°", bx + nx * (deg ? 104 : 70), by + ny * (deg ? 104 : 70) - 6, { s: 11.5, a: "center", c: col, box: [0, 540] });
+          return { x: bx + nx * (hh + 9), y: by + ny * (hh + 9), a: a };
+        }
+        obelisk(0, NA, EA, "#ffc2b0");
+        var tb = obelisk(-DANG * 3, NB, EB, "#bfe6ff");
+        K.wedge(ctx, tb.x, tb.y, -Math.PI / 2, tb.a, 30, "rgba(245,159,0,.35)", LT.orange);
+        K.pill(ctx, "차이 " + DANG.toFixed(2) + "°", tb.x + 18, tb.y + 10, { s: 11, c: "#ffe3a0", box: [0, 540] });
+        K.warn(ctx, 16, CH - 12, "⚠ 각도는 3배로 키움");
+        SP.card(ctx, 560, 14, 326, CH - 28, "하짓날 정오 · 두 도시", [
+          ["태양 고도 차이", DANG.toFixed(2) + "°", LT.orange],
+          ["두 도시 사이 거리", Math.round(DKM) + " km", LT.blue],
+          null,
+          ["내 답 (지구 둘레)", g.toLocaleString() + " km"]
+        ], ["고도 차 : 360° = 거리 : 둘레", null], { top: 64, gap: 32 });
       }
-      cv.canvas._redraw = draw;
+    cv.canvas._redraw = draw;
       api.slider({ label: "지구의 둘레", min: 10000, max: 80000, step: 100, value: 20000, fmt: function (x) { return x.toLocaleString() + " km"; }, onInput: function (x) { g = x; api.changed(); draw(); } });
       api.info("고도 차이(°) : 360° = 두 도시 사이 거리 : 지구 둘레. " + SRC1
         + "<div data-map='{\"id\":\"aswan\",\"name\":\"아스완(옛 시에네)과 나일강\",\"lat\":24.09,\"lng\":32.90,\"zoom\":11,\"ask\":\"아스완은 북회귀선(북위 23.44°) 바로 북쪽에 있습니다. 하짓날 정오에 해가 거의 머리 위에 오는 까닭을 위치와 연결해 적어 보세요.\"}'></div>");
@@ -76,16 +100,36 @@ window.sthLab({
     task: "가장 먼 거리와 가장 가까운 거리를 읽고 이심률을 슬라이더로 맞추세요(± 0.005).",
     build: function (stage, api) {
       var H = api.h, cv = api.canvas(300), ctx = cv.ctx, W = cv.W, e = 0;
-      function draw() {
-        H.paper(ctx, W, cv.H);
-        var cx = 230, cy = 150, sc = 80;
-        ctx.save(); ctx.strokeStyle = H.v("--line"); ctx.setLineDash([4, 4]); ctx.beginPath(); ctx.arc(cx, cy, 1.524 * sc, 0, Math.PI * 2); ctx.stroke(); ctx.restore();
-        H.line(ctx, M.map(function (r) { return [cx + r[0] * sc, cy - r[1] * sc]; }), H.v("--coral-700"), 2.2);
-        H.dot(ctx, cx, cy, 8, "#f5b400"); H.text(ctx, "태양", cx + 10, cy + 4, { s: 11, w: "800" });
-        H.text(ctx, "점선 = 같은 크기의 원(태양 한가운데)", 20, 20, { s: 10.5, c: H.v("--mist") });
-        H.rows(ctx, 500, 50, [["가장 가까울 때", RMIN.toFixed(3) + " au"], ["가장 멀 때", RMAX.toFixed(3) + " au"], ["내 답 (이심률)", e.toFixed(3), null, true]], 62);
+        function draw() {
+        var K = window.sthKit, SP = window.sthSP19, LT = K.LT, CH = cv.H;
+        ctx.clearRect(0, 0, W, CH);
+        K.studio(ctx, 0, 0, W, CH, { x: 250, y: 280, rx: 230, ry: 20 });
+        /* 태양계 모형 궤도판(비스듬히 본 모습) 위의 화성 실제 궤도 */
+        var cx = 250, cy = 160, sc = 84, SY = .55;
+        function S(x, y) { return { x: cx + x * sc, y: cy - y * sc * SY }; }
+        SP.cyl(ctx, cx, cy, 160, 160 * SY, 12, "navy", { top: "#1d2b55" });
+        ctx.save(); ctx.strokeStyle = "rgba(255,255,255,.5)"; ctx.setLineDash([4, 4]); ctx.lineWidth = 1.2; ctx.beginPath(); ctx.ellipse(cx, cy, 1.524 * sc, 1.524 * sc * SY, 0, 0, 6.2832); ctx.stroke(); ctx.restore();
+        ctx.save(); ctx.strokeStyle = "#ff8a5c"; ctx.lineWidth = 2.6; ctx.shadowColor = "#ff8a5c"; ctx.shadowBlur = 6; ctx.beginPath();
+        M.forEach(function (r, i) { var p = S(r[0], r[1]); if (i) ctx.lineTo(p.x, p.y); else ctx.moveTo(p.x, p.y); }); ctx.stroke(); ctx.restore();
+        var pmin = M.reduce(function (m0, r) { return r[2] < m0[2] ? r : m0; }, M[0] || [1, 0, 1]), pmax = M.reduce(function (m0, r) { return r[2] > m0[2] ? r : m0; }, M[0] || [1, 0, 1]);
+        var q1 = S(pmin[0], pmin[1]), q2 = S(pmax[0], pmax[1]);
+        K.line(ctx, S(0, 0), q1, "rgba(127,240,196,.9)", 1.6); K.line(ctx, S(0, 0), q2, "rgba(255,211,107,.9)", 1.6);
+        K.planet(ctx, q1.x, q1.y, 5, "#a8f0d0", "#1a5a40"); K.planet(ctx, q2.x, q2.y, 5, "#ffe08a", "#7a5200");
+        ctx.fillStyle = "#c9962f"; ctx.fillRect(cx - 2, cy - 18, 4, 18); K.sun(ctx, cx, cy - 20, 8); K.planet(ctx, cx, cy - 20, 7, "#fff2b0", "#f08c00");
+        K.pill(ctx, "가장 가까울 때", q1.x, q1.y + (q1.y > cy ? 22 : -10), { s: 11, a: "center", c: "#7ff0c4", box: [0, 470] });
+        K.pill(ctx, "가장 멀 때", q2.x, q2.y + (q2.y > cy ? 22 : -10), { s: 11, a: "center", c: "#ffe08a", box: [0, 470] });
+        K.pill(ctx, "태양", cx + 12, cy - 30, { s: 11, c: "#ffe3a0" });
+        K.pill(ctx, "빨간 선 = 실제 궤도 · 점선 = 태양이 한가운데인 원", 16, CH - 12, { s: 11, c: K.C.ink });
+        SP.card(ctx, 500, 14, 386, CH - 28, "화성의 실제 궤도 (2020~2023)", [
+          ["가장 가까울 때", RMIN.toFixed(3) + " au", LT.green],
+          ["가장 멀 때", RMAX.toFixed(3) + " au", LT.orange],
+          ["먼 거리 − 가까운 거리", (RMAX - RMIN).toFixed(3) + " au"],
+          null,
+          ["내 답 (이심률 e)", e.toFixed(3), LT.blue]
+        ], ["e = (먼 − 가까운) ÷ (먼 + 가까운)", null], { top: 64, gap: 32 });
+        K.bigText(ctx, "화성 궤도는 원일까?", 22, 44, 22, "#ffffff");
       }
-      cv.canvas._redraw = draw;
+    cv.canvas._redraw = draw;
       api.slider({ label: "이심률 e", min: 0, max: 0.3, step: 0.001, value: 0, fmt: function (x) { return x.toFixed(3); }, onInput: function (x) { e = x; api.changed(); draw(); } });
       api.info("빨간 곡선이 화성의 실제 궤도입니다. 점선 원과 견주면 태양이 한가운데가 아니라 한쪽으로 치우쳐 있습니다. " + SRC2);
       draw();

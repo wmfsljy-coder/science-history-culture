@@ -31,22 +31,33 @@ window.sthLab({
     task: "두 관측값과 오차 막대를 보고, 관측과 맞는 이론을 고르세요.",
     build: function (stage, api) {
       var H = api.h, cv = api.canvas(260), ctx = cv.ctx, W = cv.W, pick = "none";
-      function draw() {
-        H.paper(ctx, W, cv.H);
-        var x0 = 80, x1 = 620, y0 = 30;
-        function X(v) { return x0 + v / 2.5 * (x1 - x0); }
-        [0, 0.5, 1, 1.5, 2, 2.5].forEach(function (v) { H.text(ctx, v.toFixed(1) + "″", X(v), 220, { s: 10, a: "center", c: H.v("--mist") }); });
-        [[NEWTON, "뉴턴 예측", "--brand-700"], [EINSTEIN, "아인슈타인 예측", "--coral-700"]].forEach(function (t) { H.dash(ctx, X(t[0]), y0, X(t[0]), 205, H.v(t[2]), 2); H.text(ctx, t[1] + " " + t[0] + "″", X(t[0]), y0 - 8, { s: 11, w: "800", a: "center", c: H.v(t[2]) }); });
-        EC.forEach(function (e, i) {
-          var y = 80 + i * 70;
-          H.line(ctx, [[X(e[1] - 2 * e[2]), y], [X(e[1] + 2 * e[2]), y]], H.v("--ink"), 2);
-          H.dot(ctx, X(e[1]), y, 7, H.v("--amber-700"));
-          H.text(ctx, e[0] + " " + e[1] + " ± " + e[2].toFixed(2) + "″", X(e[1]), y - 14, { s: 11, w: "800", a: "center" });
+        function draw() {
+        var K = window.sthKit, SP = window.sthSP19, LT = K.LT, CH = cv.H;
+        ctx.clearRect(0, 0, W, CH);
+        K.studio(ctx, 0, 0, W, CH);
+        var cw = 610;
+        K.card(ctx, 10, 10, cw, CH - 20, "1919년 일식 원정대의 측정값 (태양 가장자리)");
+        var g = SP.chart(ctx, { x: 18, y: 50, w: cw - 20, h: CH - 72, x0: 0, x1: 2.5, y0: 0, y1: 3, xt: 5, yt: 3, yf: function () { return ""; }, xf: function (v) { return v.toFixed(1) + "″"; }, xl: "휘는 각도", pl: 20 });
+        [[NEWTON, "뉴턴 예측", LT.blue], [EINSTEIN, "아인슈타인 예측", LT.orange]].forEach(function (t) {
+          ctx.save(); ctx.setLineDash([6, 4]); ctx.strokeStyle = t[2]; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(g.X(t[0]), g.T); ctx.lineTo(g.X(t[0]), g.B); ctx.stroke(); ctx.restore();
+          SP.lbl(ctx, t[1] + " " + t[0] + "″", g.X(t[0]) + 6, g.T + 14, { s: 11, c: t[2] });
         });
-        H.text(ctx, "가로 막대 = 보고한 오차(확률 오차)의 두 배 범위", x0, 245, { s: 10, c: H.v("--mist") });
-        H.rows(ctx, 660, 60, [["내 판단", ({ none: "아직", n: "뉴턴", e: "아인슈타인", b: "둘 다 아님" })[pick], null, true]], 60);
+        EC.forEach(function (e, i) {
+          var y = g.Y(2 - i * 1.1), xa = g.X(e[1] - 2 * e[2]), xb = g.X(e[1] + 2 * e[2]);
+          ctx.strokeStyle = LT.ink; ctx.lineWidth = 2.4; ctx.beginPath(); ctx.moveTo(xa, y); ctx.lineTo(xb, y); ctx.moveTo(xa, y - 6); ctx.lineTo(xa, y + 6); ctx.moveTo(xb, y - 6); ctx.lineTo(xb, y + 6); ctx.stroke();
+          K.planet(ctx, g.X(e[1]), y, 7, "#ffd27a", "#a85a00");
+          SP.lbl(ctx, e[0] + " " + e[1] + " ± " + e[2].toFixed(2) + "″", g.X(e[1]), y - 14, { s: 11, a: "center" });
+        });
+        SP.lbl(ctx, "가로 막대 = 보고한 오차(확률 오차)의 두 배 범위", 30, CH - 22, { s: 10, c: LT.mute, w: "600" });
+        /* 작은 망원경 미니어처 */
+        var tx = 760, ty = 70;
+        ctx.save(); ctx.translate(tx, ty); ctx.rotate(-.45);
+        var tg = ctx.createLinearGradient(0, -10, 0, 10); tg.addColorStop(0, "#f7de8e"); tg.addColorStop(.5, "#c9962f"); tg.addColorStop(1, "#7a5010");
+        ctx.fillStyle = tg; ctx.fillRect(-60, -10, 110, 20); ctx.fillStyle = "#3d4452"; ctx.fillRect(50, -12, 10, 24); ctx.fillRect(-66, -7, 8, 14); ctx.restore();
+        ctx.strokeStyle = "#5a3a1e"; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(tx, ty + 6); ctx.lineTo(tx - 22, ty + 56); ctx.moveTo(tx, ty + 6); ctx.lineTo(tx + 22, ty + 56); ctx.moveTo(tx, ty + 6); ctx.lineTo(tx + 2, ty + 60); ctx.stroke();
+        SP.card(ctx, 636, 134, 250, CH - 146, null, [["내 판단", ({ none: "아직", n: "뉴턴", e: "아인슈타인", b: "둘 다 아님" })[pick], pick === "none" ? LT.mute : LT.blue]], null, { top: 40 });
       }
-      cv.canvas._redraw = draw;
+    cv.canvas._redraw = draw;
       api.seg({ label: "관측과 맞는 이론", value: "none", options: [{ v: "n", t: "뉴턴" }, { v: "e", t: "아인슈타인" }, { v: "b", t: "둘 다 아님" }], onPick: function (x) { pick = x; api.changed(); draw(); } });
       api.info("관측값의 오차 범위 안에 어느 예측선이 들어오는지 보세요. " + SRC1);
       draw();
@@ -75,17 +86,38 @@ window.sthLab({
     task: "펌프를 골라 그 펌프가 가장 가까운 사망자 수를 보고, 브로드 가 펌프의 비율을 맞추세요(± 3 %).",
     build: function (stage, api) {
       var H = api.h, cv = api.canvas(320), ctx = cv.ctx, W = cv.W, k = BROAD, g = 0;
-      function draw() {
-        H.paper(ctx, W, cv.H);
-        var x0 = 30, y0 = 20, sc = 14;
-        function X(x) { return 40 + (x - 8) * 42; }
-        function Y(y) { return 20 + (19 - y) * 20; }
-        S.deaths.forEach(function (d, i) { H.box(ctx, X(d[0]) - 1.5, Y(d[1]) - 1.5, 3, 3, NEAR[i] === k ? H.v("--rose-700") : H.v("--mist"), 0.85); });
-        S.pumps.forEach(function (p, i) { H.dot(ctx, X(p[1]), Y(p[2]), i === k ? 8 : 5, i === k ? H.v("--amber-700") : H.v("--brand")); });
+        function draw() {
+        var K = window.sthKit, SP = window.sthSP19, LT = K.LT, CH = cv.H;
+        ctx.clearRect(0, 0, W, CH);
+        K.studio(ctx, 0, 0, W, CH, { x: 320, y: 300, rx: 300, ry: 20 });
+        /* 소호 거리 블록 모형: 실제 사망자(검은 막대)와 펌프(쇠기둥) */
+        function WX(x) { return (x - 8) * 46; }
+        function WY(y) { return (19 - y) * 22; }
+        var I = K.iso({ ox: 300, oy: 34, s: 0.5, L: 620, D: 330 }), Z = 10;
+        SP.box(ctx, I, 0, 0, 0, I.L, I.D, Z, ["#c9c2b2", "#8d8676", "#6f6a5e"], { edge: false });
+        I.shade(ctx, "front", function () { return Z; }); I.shade(ctx, "right", function () { return Z; });
+        ctx.strokeStyle = "rgba(255,255,255,.55)"; ctx.lineWidth = 1;
+        for (var gx = 60; gx < I.L; gx += 60) { var a1 = I.P(gx, 0, Z), b1 = I.P(gx, I.D, Z); ctx.beginPath(); ctx.moveTo(a1.x, a1.y); ctx.lineTo(b1.x, b1.y); ctx.stroke(); }
+        for (var gy = 55; gy < I.D; gy += 55) { var a2 = I.P(0, gy, Z), b2 = I.P(I.L, gy, Z); ctx.beginPath(); ctx.moveTo(a2.x, a2.y); ctx.lineTo(b2.x, b2.y); ctx.stroke(); }
+        var items = S.deaths.map(function (d, i) { return { x: WX(d[0]), y: WY(d[1]), t: 0, hot: NEAR[i] === k }; });
+        S.pumps.forEach(function (p, i) { items.push({ x: WX(p[1]), y: WY(p[2]), t: 1, i: i }); });
+        items = items.filter(function (it) { return it.x >= 2 && it.x <= I.L - 2 && it.y >= 2 && it.y <= I.D - 2; });
+        items.sort(function (p, q) { return (p.x + p.y) - (q.x + q.y); });
+        items.forEach(function (it) {
+          if (it.t === 0) I.box(ctx, it.x - 2.5, it.y - 2.5, Z, it.x + 2.5, it.y + 2.5, Z + 9, it.hot ? "#ff8a8a" : "#4a4a55", it.hot ? "#d9363e" : "#22222a", it.hot ? "#a8262c" : "#121218");
+          else { SP.icyl(ctx, I, it.x, it.y, Z, 6, it.i === k ? 40 : 28, it.i === k ? "brass" : "iron"); }
+        });
+        S.pumps.forEach(function (p, i) { if (i !== k) return; var tp = I.P(WX(p[1]), WY(p[2]), Z + 44); K.pill(ctx, "고른 펌프 · " + p[0], tp.x + 8, tp.y - 6, { s: 11.5, c: "#ffe08a", box: [0, 616] }); });
+        K.pill(ctx, "빨간 막대 = 고른 펌프가 가장 가까운 사망자", 16, CH - 12, { s: 11, c: "#ffb3bd" });
         var n = NEAR.filter(function (q) { return q === k; }).length;
-        H.rows(ctx, 640, 40, [["고른 펌프", S.pumps[k] ? S.pumps[k][0] : "", "--amber-700"], ["가장 가까운 사망자", n + " 명"], ["내 답 (브로드 가 비율)", g + " %", null, true]], 56);
+        SP.card(ctx, 626, 14, 260, CH - 28, "존 스노의 지도 (1854)", [
+          ["고른 펌프", S.pumps[k] ? S.pumps[k][0] : "", "#b86e00"],
+          ["가장 가까운 사망자", n + " 명"],
+          null,
+          ["내 답 (브로드 가 비율)", g + " %", LT.blue]
+        ], null, { top: 62, gap: 32 });
       }
-      cv.canvas._redraw = draw;
+    cv.canvas._redraw = draw;
       api.slider({ label: "펌프", min: 0, max: Math.max(0, S.pumps.length - 1), step: 1, value: k, fmt: function (x) { return S.pumps[x] ? S.pumps[x][0] : ""; }, onInput: function (x) { k = x; draw(); } });
       api.slider({ label: "브로드 가 펌프의 비율", min: 0, max: 100, step: 1, value: 0, fmt: function (x) { return x + " %"; }, onInput: function (x) { g = x; api.changed(); draw(); } });
       api.info("파란 점 = 펌프, 작은 네모 = 사망자(빨강 = 고른 펌프가 가장 가까운 사람). " + SRC2

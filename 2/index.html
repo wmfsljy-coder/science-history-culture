@@ -42,13 +42,14 @@
         <section class="scene" data-title="런던의 편집국">
           <div class="story narr"><div class="who">📰</div><div class="say"><span class="name">이야기</span>1919년 11월 런던. 제1차 세계대전이 끝난 지 1년, 영국 왕립 학회가 특별 발표를 예고했습니다. 영국 천문학자 <span data-view="who:아서 스탠리 에딩턴">에딩턴</span>의 원정대가 개기 일식 때 태양 근처 별들의 사진을 찍어 왔다는 소식입니다. 적국이었던 독일 출신 과학자 <span data-view="who:알베르트 아인슈타인">아인슈타인</span>의 이론을 시험한 관측이었습니다.</div></div>
           <div class="story"><div class="who">🧑‍💼</div><div class="say"><span class="name">편집장</span>“<span data-view="who:아이작 뉴턴">뉴턴</span>이 틀렸다는 기사를 써도 될까? 사진 몇 장으로 200년 된 이론이 무너질 수 있나?”</div></div>
+          <figure class="hero-art"><img src="img/eclipse-1919.webp" alt="열대 섬의 숲속 공터를 블록처럼 잘라 낸 모형. 지붕이 열린 나무 관측 오두막 안에 긴 망원경이 가로로 놓여 있고, 그 끝의 둥근 평면거울이 하늘의 빛을 망원경으로 보낸다. 오두막 안 두 사람은 뒷모습으로 유리 사진 건판을 살핀다. 위쪽 하늘은 어둑해졌고, 달에 완전히 가려진 검은 태양 둘레로 흰 코로나가 빛나며 그 가까이에 별 몇 개가 보인다." width="900" height="900" loading="lazy"><figcaption><b>해가 가려진 몇 분 동안, 태양 곁의 별을 찍었습니다</b> 1919년 5월 29일 개기 일식 때 영국 원정대는 아프리카의 프린시페섬과 브라질의 소브랄에서 태양 근처 별들의 사진을 찍었습니다. 몇 달 전 밤하늘에서 찍은 같은 별들의 자리와 견주면, 별빛이 태양 곁을 지나며 휘었는지 알 수 있습니다. 뉴턴과 아인슈타인의 예측 가운데 어느 쪽에 맞았는지는 다음 장면에서 따져 봅니다. <span class="art-note">⚠ 오두막과 장비의 모습은 단순하게 꾸민 것이고, 크기는 실제 비율이 아닙니다.</span></figcaption></figure>
           <div class="gate loose" id="g1"></div>
         </section>
 
         <section class="scene" data-title="일식 사진 판정 — 별빛은 얼마나 휘었나">
           <div class="story"><div class="who">🔭</div><div class="say"><span class="name">원정대 천문학자</span>“태양 가장자리를 스치는 별빛이 휘는 각도를 <span data-view="law:고전역학">뉴턴 역학</span>으로 계산하면 <b>0.87초</b>, 아인슈타인의 <span data-view="law:일반 상대성이론">일반 상대성 이론</span>으로 계산하면 <b>1.75초</b>예요(1초 = 1°의 3600분의 1). 태양에서 멀어질수록 휘는 각도는 거리에 반비례해 줄어들지요. 사진 속 별 다섯 개의 측정값에 가장 잘 맞는 곡선을 찾아 주세요.”</div></div>
           <div class="stage-card">
-            <div class="canvas-wrap stage"><canvas id="c-defl" width="900" height="360"></canvas></div>
+            <div class="canvas-wrap studio"><canvas id="c-defl" width="900" height="360"></canvas></div>
             <div class="sim-side">
               <div class="readout" id="df-read"></div>
               <div class="ctrl-group">
@@ -65,7 +66,7 @@
         <section class="scene" data-title="주머니 속 상대성 이론 — 위성 시계의 오차">
           <div class="story"><div class="who">🛰️</div><div class="say"><span class="name">위성 항법 기술자</span>“100년 뒤, 상대성 이론은 휴대 전화 지도 속에 있어요. 위성의 시계는 중력이 약한 높은 곳에서 빨리 가고, 빠르게 움직여서 늦게 가요. 둘을 합치면 하루에 <b>약 38 마이크로초</b> 빨라져요. 위치는 빛이 오는 시간으로 계산하니, 시계 오차가 곧 거리 오차가 되지요. 보정하지 않으면 며칠 만에 지도가 쓸모없어질까요?”</div></div>
           <div class="stage-card">
-            <div class="canvas-wrap stage"><canvas id="c-gps" width="900" height="340"></canvas></div>
+            <div class="canvas-wrap studio"><canvas id="c-gps" width="900" height="340"></canvas></div>
             <div class="sim-side">
               <div class="readout" id="gp-read"></div>
               <div>
@@ -120,13 +121,14 @@
         <section class="scene" data-title="가까이 보면 점, 멀리서 보면 색">
           <div class="story narr"><div class="who">🖼️</div><div class="say"><span class="name">이야기</span>미술관의 <span data-view="who:조르주 쇠라">쇠라</span> 그림 앞. 가까이 다가가면 빨강, 노랑, 파랑의 작은 점들만 보이는데, 몇 걸음 물러서면 강가의 햇살과 잔디가 살아납니다. 옆 전시실에는 <span data-view="who:안토니 가우디">가우디</span>가 성당을 설계할 때 쓴, 추를 매단 사슬 모형이 거꾸로 매달려 있습니다.</div></div>
           <div class="story"><div class="who">👦</div><div class="say"><span class="name">초등학생 관람객</span>“화가랑 건축가가 과학을 공부했다고요? 예술은 느낌으로 하는 거 아니에요?”</div></div>
+          <figure class="hero-art"><img src="img/dots-chains.webp" alt="미술관 전시실 두 칸을 이어 붙인 모형. 왼쪽 벽에는 강가 공원을 그린 점묘화가 걸려 있고, 그 앞의 커다란 놋쇠 돋보기 속에는 빨강·노랑·파랑의 작은 물감 점들이 따로따로 보인다. 오른쪽 방 천장의 나무판에는 사슬 여러 가닥이 아래로 늘어져 매달려 있고 사슬에 작은 모래주머니가 달려 있다. 바닥의 거울에는 이 사슬이 위로 솟은 아치처럼 비친다." width="900" height="900" loading="lazy"><figcaption><b>점묘화와 가우디의 사슬 모형에는 과학 원리가 숨어 있습니다</b> 점묘화는 가까이 다가가면 서로 다른 색의 작은 점들뿐인데, 멀리서 보면 점의 빛이 눈 속에서 섞여 새로운 색으로 보입니다. 가우디는 사슬에 추를 매달아 늘어뜨린 모양을 거울로 뒤집어 보며, 무게를 잘 버티는 아치의 곡선을 찾았습니다. 두 예술가가 기댄 과학 원리를 이 이야기에서 직접 확인합니다. <span class="art-note">⚠ 두 전시실을 한 장면에 모아 상상해서 꾸민 그림입니다.</span></figcaption></figure>
           <div class="gate loose" id="g2"></div>
         </section>
 
         <section class="scene" data-title="점묘법 — 눈 속에서 섞이는 색">
           <div class="story"><div class="who">🎨</div><div class="say"><span class="name">신인상주의 화가</span>“물감을 팔레트에서 섞으면 색이 탁해져. 그래서 우리는 순수한 색을 작은 점으로 나란히 찍고, 섞는 일은 <b>보는 사람의 눈</b>에 맡겼지. 빨강 점과 노랑 점의 비율을 바꿔 멀리서 <b>주황</b>으로 보이게 해 봐.”</div></div>
           <div class="stage-card">
-            <div class="canvas-wrap stage"><canvas id="c-dots" width="900" height="330"></canvas></div>
+            <div class="canvas-wrap studio"><canvas id="c-dots" width="900" height="330"></canvas></div>
             <div class="sim-side">
               <div class="readout" id="dt-read"></div>
               <div>
@@ -149,7 +151,7 @@
         <section class="scene" data-title="거꾸로 매단 사슬 — 가우디의 아치">
           <div class="story"><div class="who">⛓️</div><div class="say"><span class="name">가우디의 조수</span>“양 끝을 잡고 늘어뜨린 사슬은 오직 <b>당기는 힘</b>만 받아 스스로 안정한 곡선(현수선)을 만들어. 이것을 뒤집으면 오직 <b>누르는 힘</b>만 받는 가장 튼튼한 아치가 되지. 폭 20 m 인 아치의 높이를 <b>10 m</b>로 만들려면 곡선의 매개변수 a를 얼마로 해야 할까?”</div></div>
           <div class="stage-card">
-            <div class="canvas-wrap stage"><canvas id="c-cat" width="900" height="340"></canvas></div>
+            <div class="canvas-wrap studio"><canvas id="c-cat" width="900" height="340"></canvas></div>
             <div class="sim-side">
               <div class="readout" id="ct-read"></div>
               <div class="ctrl-group">
@@ -197,13 +199,14 @@
         <section class="scene" data-title="소호 거리의 여름">
           <div class="story narr"><div class="who">🏚️</div><div class="say"><span class="name">이야기</span>1854년 8월 말, <span data-place=51.5132,-0.1367,17,r>런던 소호</span>. 열흘 사이에 500명 넘게 콜레라로 숨졌습니다. 사람들은 썩은 공기, 곧 ‘나쁜 기운(<span data-view="law:미아즈마">미아스마</span>)’이 병을 옮긴다고 믿었습니다. 세균이 병을 일으킨다는 사실은 아직 널리 받아들여지지 않았습니다.</div></div>
           <div class="story"><div class="who">👨‍⚕️</div><div class="say"><span class="name">의사 <span data-view="who:존 스노 (의사)">존 스노</span></span>“나는 병이 공기가 아니라 무언가를 통해 사람 몸속으로 들어온다고 생각하네. 그걸 어떻게 증명하지?”</div></div>
+          <figure class="hero-art"><img src="img/broad-street-pump.webp" alt="1854년 런던 소호의 거리 모퉁이를 블록처럼 잘라 낸 모형. 벽돌 연립 주택 앞 자갈길에 검은 무쇠 손 펌프가 서 있고, 사람들이 양동이를 들고 줄을 서 있다. 블록 앞면 단면에는 펌프 아래 벽돌 우물과 그 바로 옆의 오물 구덩이가 드러나 있고, 구덩이에서 스며 나온 갈색 오염수가 흙을 지나 우물물 쪽으로 번진다. 높은 모자를 쓴 사람이 펌프 손잡이를 살피고 있다." width="900" height="900" loading="lazy"><figcaption><b>소호의 펌프 우물 바로 곁에는 오물 구덩이가 있었습니다</b> 1854년 소호의 사람들은 브로드 거리의 펌프에서 마실 물을 길었습니다. 당시에는 나쁜 공기(미아스마)가 병을 옮긴다고 믿었지만, 뒤에 이 우물이 가까운 오물 구덩이에서 스며든 물로 오염되었다는 사실이 밝혀졌습니다. 의사 존 스노가 그 전에 어떤 자료로 범인을 좁혀 갔는지 이 이야기에서 따라가 봅니다. <span class="art-note">⚠ 땅속 단면은 이해를 돕기 위해 과장해서 그렸습니다.</span></figcaption></figure>
           <div class="gate loose" id="g3"></div>
         </section>
 
         <section class="scene" data-title="사망자 지도 — 어느 펌프일까">
           <div class="story"><div class="who">🗺️</div><div class="say"><span class="name">존 스노</span>“사망자가 나온 집을 <span data-view="commons:Snow-cholera-map-1.jpg|퍼블릭 도메인|존 스노가 직접 그린 소호의 콜레라 사망자 지도(1854)">지도</span>에 점으로 찍었네. 동네 사람들은 가장 가까운 공동 펌프에서 물을 길어. 사망자 집마다 가장 가까운 펌프를 따져, 어느 펌프 주변에 사망자가 몰려 있는지 세어 보게. 손잡이를 떼어 낼 펌프를 고르면 되네.”</div></div>
           <div class="stage-card">
-            <div class="canvas-wrap stage"><canvas id="c-snow" width="900" height="300"></canvas></div>
+            <div class="canvas-wrap studio"><canvas id="c-snow" width="900" height="300"></canvas></div>
             <div class="sim-side">
               <div class="readout" id="sn-read"></div>
               <div class="ctrl-group">
@@ -220,7 +223,7 @@
         <section class="scene" data-title="유행을 멈추는 접종률 — 집단 면역 계산">
           <div class="story"><div class="who">📊</div><div class="say"><span class="name">방역 당국 분석가</span>“감염자 한 명이 평균 몇 명에게 옮기는지를 <b>기초감염재생산수(R0)</b>라고 해요. 인구의 일부가 면역을 가지면 실제로 옮기는 수는 R0 × (면역 없는 사람의 비율)로 줄어들지요. 이 값이 <b>1 이하</b>가 되면 유행이 번지지 못해요. 두 감염병에 필요한 접종률을 찾아 주세요.”</div></div>
           <div class="stage-card">
-            <div class="canvas-wrap stage"><canvas id="c-herd" width="900" height="330"></canvas></div>
+            <div class="canvas-wrap studio"><canvas id="c-herd" width="900" height="330"></canvas></div>
             <div class="sim-side">
               <div class="readout" id="hd-read"></div>
               <div>
@@ -307,7 +310,7 @@
         <section class="scene" data-title="처방대로 먹어야 하는 까닭 — 항생제와 내성균">
           <div class="story"><div class="who">💊</div><div class="say"><span class="name">약사</span>“항생제는 20세기의 가장 큰 빛 가운데 하나지만, 잘못 쓰면 그림자가 돼요. 몸속 세균 100만 마리 가운데 50마리는 약에 강한 <b>내성균</b>이에요. 약을 먹는 날수를 바꿔 보면서, 세균이 모두 사라지는 가장 짧은 기간을 찾고, 도중에 끊으면 무슨 일이 생기는지도 보세요.”</div></div>
           <div class="stage-card">
-            <div class="canvas-wrap stage"><canvas id="c-abx" width="900" height="340"></canvas></div>
+            <div class="canvas-wrap studio"><canvas id="c-abx" width="900" height="340"></canvas></div>
             <div class="sim-side">
               <div class="readout" id="ab-read"></div>
               <div>

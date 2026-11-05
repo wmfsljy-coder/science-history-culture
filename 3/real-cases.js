@@ -37,19 +37,29 @@ window.sthLab({
     task: "세계 전체 ÷ 우리나라 를 슬라이더로 맞추세요(± 1 배).",
     build: function (stage, api) {
       var H = api.h, cv = api.canvas(270), ctx = cv.ctx, W = cv.W, g = 1;
-      function draw() {
-        H.paper(ctx, W, cv.H);
-        var x0 = 110, x1 = 560, y0 = 30, rh = 34;
+        function draw() {
+        var K = window.sthKit, SP = window.sthSP19, LT = K.LT, CH = cv.H;
+        ctx.clearRect(0, 0, W, CH);
+        K.studio(ctx, 0, 0, W, CH, { x: 780, y: 250, rx: 90, ry: 10 });
+        K.card(ctx, 10, 10, 610, CH - 20, Y + "년 전기 생산 가운데 풍력의 비율");
+        var x0 = 110, x1 = 560, y0 = 48, rh = 34;
         ORDER.forEach(function (c, i) {
-          var v = get(c, Y, 1) || 0, y = y0 + i * rh, w = v / 32 * (x1 - x0);
-          H.text(ctx, NAME[c], x0 - 8, y + 16, { s: 12, w: "800", a: "right", c: c === "South Korea" ? H.v("--ink") : H.v("--mist") });
-          H.box(ctx, x0, y + 4, Math.max(2, w), 20, c === "South Korea" ? H.v("--coral-700") : H.v("--brand"), 0.85);
-          H.text(ctx, v.toFixed(1) + "%", x0 + Math.max(2, w) + 6, y + 18, { s: 11, w: "800" });
+          var v = get(c, Y, 1) || 0, y = y0 + i * rh, kr = c === "South Korea";
+          K.t(ctx, NAME[c], x0 - 10, y + 16, { s: 12, w: "900", a: "right", c: kr ? LT.ink : LT.mute });
+          K.bar(ctx, x0, y + 6, x1 - x0, v / 32, kr ? LT.red : LT.blue);
+          K.t(ctx, v.toFixed(1) + "%", x0 + Math.max(5, v / 32 * (x1 - x0)) + 6, y + 16, { s: 11, w: "900", c: kr ? LT.red : LT.ink });
         });
-        H.text(ctx, Y + "년 전기 생산 가운데 풍력의 비율", x0, y0 - 12, { s: 11, w: "700", c: H.v("--mist") });
-        H.rows(ctx, 660, 50, [["내 답 (몇 배)", g + " 배", null, true]], 60);
+        /* 작은 풍력 발전기 미니어처 */
+        var tx = 780, ty = 54;
+        SP.cyl(ctx, tx, 240, 26, 8, 6, "stone");
+        var tg = ctx.createLinearGradient(tx - 5, 0, tx + 5, 0); tg.addColorStop(0, "#c5cedb"); tg.addColorStop(.5, "#ffffff"); tg.addColorStop(1, "#9aa5b4");
+        ctx.fillStyle = tg; ctx.beginPath(); ctx.moveTo(tx - 6, 236); ctx.lineTo(tx - 3, ty + 4); ctx.lineTo(tx + 3, ty + 4); ctx.lineTo(tx + 6, 236); ctx.closePath(); ctx.fill();
+        ctx.fillStyle = "#e6ebf2"; ctx.beginPath(); ctx.roundRect(tx - 6, ty - 6, 22, 12, 4); ctx.fill();
+        for (var b = 0; b < 3; b++) { var an = -Math.PI / 2 + b * 2.094 + .3; ctx.save(); ctx.translate(tx - 4, ty); ctx.rotate(an); ctx.fillStyle = "#f8f9fb"; ctx.beginPath(); ctx.moveTo(0, -3); ctx.quadraticCurveTo(40, -6, 70, 0); ctx.quadraticCurveTo(40, 4, 0, 3); ctx.closePath(); ctx.fill(); ctx.strokeStyle = "rgba(20,40,90,.25)"; ctx.lineWidth = 1; ctx.stroke(); ctx.restore(); }
+        K.planet(ctx, tx - 4, ty, 5, "#ffffff", "#8a96a8");
+        SP.card(ctx, 640, 150, 246, CH - 162, null, [["내 답 (몇 배)", g + " 배", LT.blue]], null, { top: 34 });
       }
-      cv.canvas._redraw = draw;
+    cv.canvas._redraw = draw;
       api.slider({ label: "세계 전체는 우리나라의 몇 배", min: 1, max: 40, step: 1, value: 1, fmt: function (x) { return x + " 배"; }, onInput: function (x) { g = x; api.changed(); draw(); } });
       api.info(SRC
         + "<div data-link='{\"id\":\"owid-mix\",\"title\":\"나라별 전기 생산 구성\",\"src\":\"Our World in Data\",\"url\":\"https://ourworldindata.org/grapher/electricity-mix?country=~KOR\",\"ask\":\"(그래프가 비율(%)이 아닌 발전량으로 보이면 보기 설정에서 비율로 바꿔 보세요.) 우리나라 전기 생산에서 비율이 가장 큰 에너지원 세 가지와 그 비율을 적고, 10년 전과 비교해 가장 크게 늘어난 것과 줄어든 것을 적어 오세요.\"}'></div>");
@@ -79,21 +89,34 @@ window.sthLab({
     build: function (stage, api) {
       var H = api.h, cv = api.canvas(270), ctx = cv.ctx, W = cv.W, g = 1;
       var K = (O.by["South Korea"] || []).filter(function (r) { return r[0] >= 2005 && r[4] != null; });
-      function draw() {
-        H.paper(ctx, W, cv.H);
-        var x0 = 60, x1 = 600, y0 = 26, y1 = cv.H - 36, bw = (x1 - x0) / Math.max(1, K.length), mx = Math.max.apply(null, K.map(function (r) { return r[4]; })) * 1.12 || 1;
+        function draw() {
+        var KT = window.sthKit, SP = window.sthSP19, LT = KT.LT, CH = cv.H;
+        ctx.clearRect(0, 0, W, CH);
+        KT.studio(ctx, 0, 0, W, CH);
+        KT.card(ctx, 10, 10, 610, CH - 20, "우리나라 태양광 발전량 (TWh)");
+        var x0 = 60, x1 = 600, y0 = 44, y1 = CH - 40, bw = (x1 - x0) / Math.max(1, K.length), mx = Math.max.apply(null, K.map(function (r) { return r[4]; })) * 1.12 || 1, DX = 6, DY = -5;
         function Yv(v) { return y1 - v / mx * (y1 - y0); }
-        H.axes(ctx, x0, y0, x1, y1);
-        [0, 10, 20, 30, 40].forEach(function (v) { if (v < mx) H.text(ctx, v, x0 - 6, Yv(v) + 4, { s: 10, a: "right", c: H.v("--mist") }); });
+        ctx.strokeStyle = LT.grid; ctx.lineWidth = 1;
+        [0, 10, 20, 30, 40].forEach(function (v) { if (v < mx) { ctx.beginPath(); ctx.moveTo(x0, Yv(v)); ctx.lineTo(x1, Yv(v)); ctx.stroke(); KT.t(ctx, String(v), x0 - 6, Yv(v) + 4, { s: 10, w: "600", a: "right", c: LT.mute }); } });
         K.forEach(function (r, i) {
-          var on = r[0] === 2015 || r[0] === Y;
-          H.box(ctx, x0 + i * bw + 3, Yv(r[4]), bw - 6, y1 - Yv(r[4]), on ? H.v("--amber-700") : H.v("--brand"), 0.85);
-          if (r[0] % 5 === 0) H.text(ctx, r[0], x0 + i * bw + bw / 2, y1 + 15, { s: 10, a: "center", c: H.v("--mist") });
+          var on = r[0] === 2015 || r[0] === Y, xx = x0 + i * bw + 3, w = bw - 8, top = Yv(r[4]), cc = SP.mt(on ? "yellow" : "blue");
+          SP.poly(ctx, [{ x: xx + w, y: y1 }, { x: xx + w + DX, y: y1 + DY }, { x: xx + w + DX, y: top + DY }, { x: xx + w, y: top }], cc[2]);
+          SP.poly(ctx, [{ x: xx, y: top }, { x: xx + w, y: top }, { x: xx + w + DX, y: top + DY }, { x: xx + DX, y: top + DY }], cc[0]);
+          ctx.fillStyle = cc[1]; ctx.fillRect(xx, top, w, y1 - top);
+          if (r[0] % 5 === 0) KT.t(ctx, String(r[0]), xx + w / 2, y1 + 15, { s: 10, w: "600", a: "center", c: LT.mute });
         });
-        H.text(ctx, "우리나라 태양광 발전량 (TWh)", x0 + 6, y0 - 10, { s: 11, w: "700", c: H.v("--mist") });
-        H.rows(ctx, 640, 30, [["2015년", S0.toFixed(2) + " TWh"], [Y + "년", S1.toFixed(2) + " TWh"], ["내 답 (몇 배)", g.toFixed(1) + " 배", null, true]], 62);
+        KT.line(ctx, { x: x0, y: y1 }, { x: x1, y: y1 }, LT.line, 1.5);
+        /* 작은 태양광 패널 미니어처 */
+        var px = 690, py = 60;
+        ctx.fillStyle = "#6d7788"; ctx.fillRect(px + 60, py + 40, 5, 40);
+        SP.poly(ctx, [{ x: px, y: py + 40 }, { x: px + 120, y: py + 40 }, { x: px + 150, y: py }, { x: px + 30, y: py }], "#1f3a6e");
+        ctx.strokeStyle = "rgba(200,225,255,.6)"; ctx.lineWidth = 1;
+        for (var q = 1; q < 6; q++) { ctx.beginPath(); ctx.moveTo(px + q * 20, py + 40); ctx.lineTo(px + 30 + q * 20, py); ctx.stroke(); }
+        for (q = 1; q < 3; q++) { ctx.beginPath(); ctx.moveTo(px + q * 10, py + 40 - q * 13.3); ctx.lineTo(px + 120 + q * 10, py + 40 - q * 13.3); ctx.stroke(); }
+        SP.poly(ctx, [{ x: px, y: py + 40 }, { x: px + 120, y: py + 40 }, { x: px + 120, y: py + 45 }, { x: px, y: py + 45 }], "#c5cedb");
+        SP.card(ctx, 640, 120, 246, CH - 132, null, [["2015년", S0.toFixed(2) + " TWh"], [Y + "년", S1.toFixed(2) + " TWh", "#b86e00"], ["내 답 (몇 배)", g.toFixed(1) + " 배", LT.blue]], null, { top: 30, gap: 30 });
       }
-      cv.canvas._redraw = draw;
+    cv.canvas._redraw = draw;
       api.slider({ label: "몇 배가 되었나", min: 1, max: 20, step: 0.1, value: 1, fmt: function (x) { return x.toFixed(1) + " 배"; }, onInput: function (x) { g = x; api.changed(); draw(); } });
       api.info(SRC);
       draw();
@@ -123,19 +146,31 @@ window.sthLab({
       var H = api.h, cv = api.canvas(300), ctx = cv.ctx, W = cv.W, d = zI("03-22");
       var x0 = 60, x1 = 640, y0 = 20, y1 = 262, a0 = zI("03-15"), a1 = zI("04-15"), n = ZGY.length || 1, bh = (y1 - y0) / n;
       function X(i) { return x0 + (i - a0) / (a1 - a0) * (x1 - x0); }
-      function draw() {
-        H.paper(ctx, W, cv.H); H.axes(ctx, x0, y0, x1, y1);
-        H.box(ctx, X(d), y0, X(d + 10) - X(d), y1 - y0, H.v("--amber-700"), 0.12);
-        H.dash(ctx, X(d), y0, X(d), y1, H.v("--amber-700"), 1.6);
-        ["03-15", "03-22", "04-01", "04-08", "04-15"].forEach(function (md) { H.text(ctx, zD(zI(md)), X(zI(md)), y1 + 15, { s: 10, a: "center", c: H.v("--mist") }); });
-        ZGY.forEach(function (g, i) {
-          var ok = g.open <= d && g.full >= d && g.full <= d + 9, y = y0 + i * bh + 2;
-          H.box(ctx, X(g.open), y, X(g.full) - X(g.open), bh - 4, ok ? H.v("--green-700") : H.v("--coral-700"), 0.75);
-          H.text(ctx, g.y, x0 - 6, y + bh / 2 + 3, { s: 9, a: "right", c: H.v("--mist") });
+        function draw() {
+        var K = window.sthKit, SP = window.sthSP19, LT = K.LT, CH = cv.H;
+        ctx.clearRect(0, 0, W, CH);
+        K.studio(ctx, 0, 0, W, CH, { x: 780, y: 120, rx: 70, ry: 8 });
+        K.card(ctx, 10, 6, 652, CH - 12, null);
+        ctx.fillStyle = "rgba(255,255,255,.85)"; ctx.fillRect(x0, y0, x1 - x0, y1 - y0);
+        ctx.fillStyle = "rgba(245,159,0,.16)"; ctx.fillRect(X(d), y0, X(d + 10) - X(d), y1 - y0);
+        ctx.save(); ctx.setLineDash([5, 4]); ctx.strokeStyle = "#d9a400"; ctx.lineWidth = 1.6; ctx.beginPath(); ctx.moveTo(X(d), y0); ctx.lineTo(X(d), y1); ctx.stroke(); ctx.restore();
+        K.line(ctx, { x: x0, y: y1 }, { x: x1, y: y1 }, LT.line, 1.5); K.line(ctx, { x: x0, y: y0 }, { x: x0, y: y1 }, LT.line, 1.5);
+        ["03-15", "03-22", "04-01", "04-08", "04-15"].forEach(function (md) { K.t(ctx, zD(zI(md)), X(zI(md)), y1 + 15, { s: 10, w: "600", a: "center", c: LT.mute }); });
+        ZGY.forEach(function (gq, i) {
+          var ok = gq.open <= d && gq.full >= d && gq.full <= d + 9, y = y0 + i * bh + 2, w = X(gq.full) - X(gq.open);
+          var gg = ctx.createLinearGradient(0, y, 0, y + bh - 4); gg.addColorStop(0, ok ? "#ffc9de" : "#e3e9f1"); gg.addColorStop(1, ok ? "#e64980" : "#8a96a8");
+          ctx.fillStyle = gg; ctx.beginPath(); ctx.roundRect(X(gq.open), y, w, Math.max(2, bh - 4), 3); ctx.fill();
+          K.t(ctx, String(gq.y), x0 - 6, y + bh / 2 + 3, { s: 9, w: "600", a: "right", c: LT.mute });
         });
-        H.rows(ctx, 680, 34, [["개막일", zD(d) + " ~ " + zD(d + 9), "--amber-700"], ["두 바람을 채운 해", zOk(d) + " / " + n + "해", null, true], ["초록", "채움"], ["빨강", "못 채움"]], 50);
+        /* 작은 벚나무 미니어처 */
+        var tx = 780, ty = 110;
+        ctx.fillStyle = "#6b4a2e"; ctx.fillRect(tx - 4, ty - 40, 8, 40);
+        [[0, -58, 30], [-22, -46, 22], [22, -46, 22], [-10, -72, 20], [14, -70, 18]].forEach(function (c0) { var gb = ctx.createRadialGradient(tx + c0[0] - 6, ty + c0[1] - 6, 2, tx + c0[0], ty + c0[1], c0[2]); gb.addColorStop(0, "#ffe3ee"); gb.addColorStop(1, "#f06595"); ctx.fillStyle = gb; ctx.beginPath(); ctx.arc(tx + c0[0], ty + c0[1], c0[2], 0, 6.2832); ctx.fill(); });
+        SP.card(ctx, 676, 140, 210, CH - 152, null, [["개막일", zD(d) + "~", "#b86e00"], ["끝", zD(d + 9)], ["두 바람을 채운 해", zOk(d) + " / " + n + "해", LT.blue]], null, { top: 30, gap: 30 });
+        K.t(ctx, "■ 분홍 = 축제 기간에 개화와 만개", 690, CH - 34, { s: 10, w: "800", c: "#c2255c" });
+        K.t(ctx, "■ 회색 = 못 채움", 690, CH - 18, { s: 10, w: "800", c: LT.mute });
       }
-      cv.canvas._redraw = draw;
+    cv.canvas._redraw = draw;
       api.slider({ label: "개막일", min: zI("03-15"), max: zI("04-08"), step: 1, value: d, fmt: function (i) { return zD(i); }, onInput: function (i) { d = i; api.changed(); draw(); } });
       api.info("막대 왼쪽 끝 = 개화(꽃이 피기 시작), 오른쪽 끝 = 만개. 노란 칸이 열흘 축제입니다. 개막 날이 막대 안에 있고, 막대 오른쪽 끝이 노란 칸 안에 있으면 초록. " + SRC_Z);
       draw();

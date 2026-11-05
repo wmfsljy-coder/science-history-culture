@@ -42,13 +42,14 @@
         <section class="scene" data-title="해마다 찾아오는 물">
           <div class="story narr"><div class="who">🏺</div><div class="say"><span class="name">이야기</span>기원전 2500년 무렵의 이집트. 해마다 여름이면 <span data-place=26.5,31.8,7,sv>나일강</span>이 넘쳐 들판을 덮고, 물이 빠지면 검고 기름진 흙이 남습니다. 범람은 한 해 농사의 시작이지만, 준비 없이 맞으면 마을과 곡식 창고가 물에 잠깁니다.</div></div>
           <div class="story"><div class="who">👳</div><div class="say"><span class="name">마을 촌장</span>“서기관님, 올해 물은 언제 옵니까? 씨앗을 언제 옮기고 둑은 언제 쌓아야 하지요?”</div></div>
+          <figure class="hero-art"><img src="img/nile-sirius.webp" alt="고대 이집트 나일강 골짜기를 블록처럼 잘라 낸 모형. 강물이 둑을 넘어 초록 들판으로 번지기 시작했고, 흙벽돌 마을과 둥근 곡식 창고는 높은 둔덕 위에 있다. 뒤쪽 사막 가장자리에는 피라미드 두 개가 서 있고, 앞쪽 돌 단 위의 서기관이 뒷모습으로 동쪽 지평선을 바라본다. 해 뜨기 전 주황빛 지평선 바로 위에 푸르스름한 별 하나가 빛난다. 블록 옆면에는 검은 나일강 흙이 켜켜이 쌓여 있다." width="900" height="900" loading="lazy"><figcaption><b>물이 넘치기 시작하는 새벽, 동쪽 하늘에 시리우스가 돌아옵니다</b> 한동안 해에 가려 보이지 않던 시리우스가 해 뜨기 직전 동쪽 지평선 위에 다시 나타날 무렵, 나일강은 해마다 둑을 넘기 시작했습니다. 해마다 같은 하늘의 신호를 기록해 두면 물이 올 때를 미리 알 수 있습니다. 그런데 이 신호를 365일 달력에 적어 가면 무슨 일이 생기는지는 다음 장면에서 따져 봅니다. <span class="art-note">⚠ 마을·강·피라미드를 한 블록에 모아 그렸고, 크기는 실제 비율이 아닙니다.</span></figcaption></figure>
           <div class="gate loose" id="g1"></div>
         </section>
 
         <section class="scene" data-title="새벽의 시리우스 — 365일 달력의 어긋남">
           <div class="story"><div class="who">📜</div><div class="say"><span class="name">신전의 천문 사제</span>“범람 무렵이면 한동안 보이지 않던 <b>시리우스</b>가 해 뜨기 직전 동쪽 하늘에 다시 나타난다네. 이 날을 새해로 삼아 1년을 <b>365일</b>로 세었지. 그런데 시리우스가 돌아오는 주기는 사실 <b>365¼일</b>쯤이야. 해가 갈수록 달력의 새해와 시리우스의 새벽은 얼마나 벌어질까?”</div></div>
           <div class="stage-card">
-            <div class="canvas-wrap stage"><canvas id="c-sir" width="900" height="340"></canvas></div>
+            <div class="canvas-wrap studio"><canvas id="c-sir" width="900" height="340"></canvas></div>
             <div class="sim-side">
               <div class="readout" id="sir-read"></div>
               <div class="ctrl-group">
@@ -70,7 +71,7 @@
         <section class="scene" data-title="밧줄 당기는 사람들 — 매듭 12개로 만드는 직각">
           <div class="story"><div class="who">🧵</div><div class="say"><span class="name">측량사</span>“물이 빠지면 밭 경계가 모두 지워져. 우리는 같은 간격으로 매듭 12개를 지은 밧줄 고리로 땅을 다시 재지. 세 꼭짓점을 어느 매듭에 두느냐에 따라 삼각형 모양이 달라져. 어떻게 나눠야 모서리가 딱 <b>직각</b>이 될까?”</div></div>
           <div class="stage-card">
-            <div class="canvas-wrap stage"><canvas id="c-rope" width="900" height="330"></canvas></div>
+            <div class="canvas-wrap studio"><canvas id="c-rope" width="900" height="330"></canvas></div>
             <div class="sim-side">
               <div class="readout" id="rp-read"></div>
               <div>
@@ -150,7 +151,7 @@
         <section class="scene" data-title="월식의 그림자 — 원판일까, 공일까">
           <div class="story"><div class="who">🧓</div><div class="say"><span class="name">아리스토텔레스의 두루마리</span>“월식 때 달에 비친 지구의 그림자 가장자리는 <b>언제나 둥글다</b>. 월식은 달이 하늘 어디에 있든 일어나니, 지구는 어느 쪽에서 보아도 둥근 물체여야 한다.” — 이 주장을 모형으로 시험해 보세요.</div></div>
           <div class="stage-card">
-            <div class="canvas-wrap stage"><canvas id="c-ecl" width="900" height="320"></canvas></div>
+            <div class="canvas-wrap studio"><canvas id="c-ecl" width="900" height="320"></canvas></div>
             <div class="sim-side">
               <div class="readout" id="ec-read"></div>
               <div>
@@ -198,6 +199,7 @@
         <section class="scene" data-title="암흑시대라는 이름표">
           <div class="story narr"><div class="who">🕯️</div><div class="say"><span class="name">이야기</span>전시관 입구에 누군가 ‘중세 = 과학의 암흑시대’라는 이름표를 붙여 두었습니다. 같은 시기 바그다드에서는 수많은 학자가 그리스·인도의 책을 번역하고 있었고, 조선에서는 해시계와 물시계, <span data-view="commons:Rain Gauge 측우기.jpg|CC BY-SA 4.0|위키미디어 공용 기여자">측우기</span>가 만들어지고 있었습니다.</div></div>
           <div class="story"><div class="who">🧑‍🎓</div><div class="say"><span class="name">관람객</span>“중세에는 종교 때문에 과학이 멈춰 있었던 거 아니에요?”</div></div>
+          <figure class="hero-art"><img src="img/wisdom-joseon.webp" alt="두 블록을 이어 붙인 모형. 왼쪽은 아치와 서가가 있는 바그다드 ‘지혜의 집’ 안뜰로, 두루마리와 책이 가득한 책장, 탁자 위 놋쇠 아스트롤라베, 책을 옮겨 적는 학자들이 있다. 오른쪽은 기와지붕이 있는 조선 궁궐 마당으로, 네모난 돌 받침 위의 청동 원통 측우기와 돌 받침 위의 반구 모양 해시계(앙부일구)가 놓여 있다." width="900" height="900" loading="lazy"><figcaption><b>같은 ‘중세’, 바그다드에서는 번역이, 한양에서는 관측이 한창이었습니다</b> 9세기 바그다드의 ‘지혜의 집’에서는 그리스·인도의 책을 아랍어로 옮기며 수학과 천문학을 키웠습니다. 15세기 조선에서는 측우기로 비의 양을 재고 앙부일구로 시각을 알렸습니다. 이런 시대를 ‘과학의 암흑시대’라고 불러도 되는지 이 이야기에서 따져 봅니다. <span class="art-note">⚠ 수백 년, 수천 km 떨어진 두 곳을 한 장면에 나란히 모아 그렸습니다.</span></figcaption></figure>
           <div class="gate loose" id="g3"></div>
         </section>
 
@@ -210,7 +212,7 @@
         <section class="scene" data-title="알콰리즈미의 정사각형 — 방정식을 그림으로 풀기">
           <div class="story"><div class="who">🧮</div><div class="say"><span class="name">알콰리즈미의 책</span>“‘어떤 수의 제곱에 그 수의 10배를 더하면 39가 된다. 그 수는?’ 정사각형 하나(x²)와 가로 x·세로 5 인 직사각형 두 개(10x)를 붙여 보라. 모서리의 빈칸 5 × 5 = 25를 채우면 큰 정사각형이 된다.” — 이 방법이 오늘날 <b>대수학(algebra)</b>의 뿌리입니다.</div></div>
           <div class="stage-card">
-            <div class="canvas-wrap stage"><canvas id="c-alg" width="900" height="340"></canvas></div>
+            <div class="canvas-wrap studio"><canvas id="c-alg" width="900" height="340"></canvas></div>
             <div class="sim-side">
               <div class="readout" id="al-read"></div>
               <div>
@@ -232,7 +234,7 @@
         <section class="scene" data-title="우리 하늘의 시각 — 칠정산이 필요했던 까닭">
           <div class="story"><div class="who">👑</div><div class="say"><span class="name">세종</span>“명나라의 역법은 <span data-place=38.7,121.7,5,rv>베이징</span>의 하늘에 맞춘 것이다. 그 책대로 일식·월식 시각을 알리면 한양에서는 번번이 어긋나지 않느냐. 관측자를 <b>한양</b>으로 옮겨, 베이징 기준의 예보와 몇 분이나 차이 나는지 계산해 보아라.”</div></div>
           <div class="stage-card">
-            <div class="canvas-wrap stage"><canvas id="c-chil" width="900" height="330"></canvas></div>
+            <div class="canvas-wrap studio"><canvas id="c-chil" width="900" height="330"></canvas></div>
             <div class="sim-side">
               <div class="readout" id="ch-read"></div>
               <div class="ctrl-group">
@@ -275,13 +277,14 @@
         <section class="scene" data-title="케플러의 편지">
           <div class="story narr"><div class="who">✉️</div><div class="say"><span class="name">이야기</span>1604년 <span data-place=50.0908,14.4005,14,r>프라하</span>. 케플러는 <span data-view="who:튀코 브라헤">티코 브라헤</span>가 20년 넘게 맨눈으로 기록한 화성 관측 자료를 붙잡고 있습니다. 원 궤도를 조합한 가장 좋은 모형도 몇몇 관측값과 <b>8분</b>(1°의 8/60) 차이가 났습니다. 보름달 지름의 4분의 1쯤 되는 아주 작은 차이입니다. (뒤의 화면처럼 태양을 한가운데 둔 단순한 원은 이보다 훨씬 크게 어긋납니다. 케플러는 원의 중심을 비켜 놓는 등 원 모형을 다듬어 오차를 8분까지 줄였지만, 끝내 그 8분을 없애지 못했습니다.)</div></div>
           <div class="story"><div class="who">🧑‍🔬</div><div class="say"><span class="name">케플러의 조수</span>“선생님, 8분쯤은 관측 실수로 보고 넘어가면 안 될까요? 천체는 완전한 원을 그린다고 모두가 2천 년 동안 믿어 왔잖아요.”</div></div>
+          <figure class="hero-art"><img src="img/kepler-study.webp" alt="1600년 무렵 천문학자의 연구실을 블록처럼 잘라 낸 모형. 벽에는 커다란 놋쇠 사분의가 걸려 있고, 나무 받침 위에 놋쇠 혼천의가 있다. 책상에는 숫자를 손으로 적은 관측표 더미와 펼친 공책, 깃펜, 촛불이 있고, 큰 종이에는 한쪽 끝 가까이에 태양을 찍은 빨간 타원 궤도가 그려져 있다. 책상 앞 학자는 뒷모습이고, 창밖 밤하늘에는 붉은 화성이 떠 있다." width="900" height="900" loading="lazy"><figcaption><b>20년 치 관측표 속 화성은 원 궤도에서 8분 어긋났습니다</b> 티코 브라헤는 망원경 없이 커다란 놋쇠 사분의와 혼천의로 행성의 위치를 각도 몇 분 안팎까지 기록했습니다. 케플러는 이 기록 속 화성의 위치가 원 궤도 모형과 8분 어긋나는 것을 그냥 넘기지 않았습니다. 그 작은 차이를 믿은 결과가 무엇이었는지 아래 장면들에서 확인합니다. <span class="art-note">⚠ 연구실의 모습은 상상해서 꾸민 것입니다.</span></figcaption></figure>
           <div class="gate loose" id="g4"></div>
         </section>
 
         <section class="scene" data-title="화가의 공방 — 원근법의 수학">
           <div class="story"><div class="who">🎨</div><div class="say"><span class="name">피렌체의 화가</span>“르네상스 화가들은 눈에 보이는 세계를 그대로 옮기려고 수학을 공부했어. 멀리 있는 것은 거리에 반비례해서 작게 보이지. 높이가 같은 두 번째 기둥을 어디에 세워야 그림 속에서 첫 기둥(10 m 앞)의 <b>절반</b>, 또 <b>3분의 1</b> 크기로 보일까?”</div></div>
           <div class="stage-card">
-            <div class="canvas-wrap stage"><canvas id="c-persp" width="900" height="300"></canvas></div>
+            <div class="canvas-wrap studio"><canvas id="c-persp" width="900" height="340"></canvas></div>
             <div class="sim-side">
               <div class="readout" id="ps-read"></div>
               <div class="ctrl-group">
@@ -297,7 +300,7 @@
         <section class="scene" data-title="원을 버릴 것인가 — 화성 궤도의 이심률">
           <div class="story"><div class="who">🧑‍🔬</div><div class="say"><span class="name">케플러</span>“하느님이 우주를 조화롭게 만들었다면, 그 조화는 관측값과 맞아야 한다. 원(이심률 0)에서 시작해 궤도를 조금씩 찌그러뜨려 보자. 티코의 기록과 가장 크게 어긋나는 차이가 <b>10분</b> 아래로 떨어지는 타원을 찾아라.”</div></div>
           <div class="stage-card">
-            <div class="canvas-wrap stage"><canvas id="c-kep" width="900" height="340"></canvas></div>
+            <div class="canvas-wrap studio"><canvas id="c-kep" width="900" height="340"></canvas></div>
             <div class="sim-side">
               <div class="readout" id="kp-read"></div>
               <div>

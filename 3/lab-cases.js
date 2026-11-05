@@ -31,24 +31,35 @@ window.sthLab({
       var S = 0, aud = "empty", V = 2400, SURF = 1160;
       function A() { return 0.02 * (SURF - S) + 0.8 * S + (aud === "full" ? 150 : 0); }
       function rt() { return 0.161 * V / A(); }
-      function draw() {
-        H.paper(ctx, W, cv.H);
-        H.text(ctx, "잔향 시간 = 0.161 × 부피 ÷ 흡음력 (세이빈의 식)", 40, 26, { s: 13.5, w: "900" });
-        var x0 = 60, y0 = 60, w = 380, h = 200;
-        H.box(ctx, x0, y0, w, h, H.v("--card-2"), 1);
-        var pw = Math.min(w, S / 400 * w);
-        H.box(ctx, x0, y0, pw, 14, H.v("--teal"), 0.8);
-        H.text(ctx, "흡음 패널 " + S + " m²", x0 + 4, y0 + 30, { s: 11, w: "800", c: H.v("--teal-700") });
-        if (aud === "full") for (var i = 0; i < 60; i++) H.text(ctx, "🧑", x0 + 20 + (i % 15) * 23, y0 + 110 + Math.floor(i / 15) * 22, { s: 14 });
-        H.text(ctx, "🎻", x0 + w / 2, y0 + 80, { s: 22, a: "center" });
-        var t = rt(), ok = aud === "full" && t >= 1.5 && t <= 2.0;
-        H.rows(ctx, 500, 70, [
-          ["흡음력 (m²)", A().toFixed(0)],
-          ["잔향 시간", t.toFixed(2) + " 초", ok ? "--green-700" : (t >= 1.5 && t <= 2.0 ? "--amber-700" : "--rose-700"), true],
-          ["음악회 기준", "1.5~2.0 초 · 강연은 0.8~1.2 초"]
-        ], 62);
+        function draw() {
+        var K = window.sthKit, SP = window.sthSP19, LT = K.LT, CH = cv.H, t = rt(), ok = aud === "full" && t >= 1.5 && t <= 2.0;
+        ctx.clearRect(0, 0, W, CH);
+        K.studio(ctx, 0, 0, W, CH, { x: 250, y: 280, rx: 230, ry: 16 });
+        /* 잘라 낸 공연장 모형: 바닥 · 뒷벽 · 왼쪽 벽, 벽의 흡음 패널(청록) */
+        var I = K.iso({ ox: 250, oy: 120, s: 0.62, L: 300, D: 220 }), Z = 10, WH = 120;
+        SP.box(ctx, I, 0, 0, 0, I.L, I.D, Z, "wood", { grain: true });
+        I.quad(ctx, I.P(0, 0, Z), I.P(I.L, 0, Z), I.P(I.L, 0, Z + WH), I.P(0, 0, Z + WH), "#e9e2d6");
+        I.quad(ctx, I.P(0, 0, Z), I.P(0, I.D, Z), I.P(0, I.D, Z + WH), I.P(0, 0, Z + WH), "#d8cfc0");
+        var cover = Math.min(1, S / 400), pw = I.L * cover, pd = I.D * Math.max(0, cover - .5) * 2;
+        if (pw > 0) I.quad(ctx, I.P(0, 0, Z + 20), I.P(pw, 0, Z + 20), I.P(pw, 0, Z + WH - 14), I.P(0, 0, Z + WH - 14), "rgba(12,133,153,.8)");
+        if (pd > 0) I.quad(ctx, I.P(0, 0, Z + 20), I.P(0, pd, Z + 20), I.P(0, pd, Z + WH - 14), I.P(0, 0, Z + WH - 14), "rgba(12,133,153,.65)");
+        ctx.strokeStyle = "rgba(255,255,255,.35)"; ctx.lineWidth = 1;
+        for (var k = 20; k < pw; k += 20) { var a1 = I.P(k, 0, Z + 20), b1 = I.P(k, 0, Z + WH - 14); ctx.beginPath(); ctx.moveTo(a1.x, a1.y); ctx.lineTo(b1.x, b1.y); ctx.stroke(); }
+        SP.box(ctx, I, 20, 20, Z, 280, 70, Z + 10, "dark");
+        I.person(ctx, 150, 45, Z + 10, "#7048e8", 2.4);
+        var vp = I.P(150, 45, Z + 34); ctx.fillStyle = "#8a4a18"; ctx.beginPath(); ctx.ellipse(vp.x + 7, vp.y, 6, 3, -.5, 0, 6.2832); ctx.fill();
+        if (aud === "full") for (var i = 0; i < 48; i++) I.person(ctx, 26 + (i % 12) * 22, 104 + Math.floor(i / 12) * 28, Z, ["#e8590c", "#1c7ed6", "#0f9f76", "#c2255c"][i % 4], 1.6);
+        else for (var j = 0; j < 48; j++) { var sp0 = I.P(26 + (j % 12) * 22, 104 + Math.floor(j / 12) * 28, Z); ctx.fillStyle = "#a8323a"; ctx.fillRect(sp0.x - 3, sp0.y - 5, 6, 5); }
+        I.label(ctx, pw > 10 ? pw / 2 : 40, 0, Z + WH - 30, "흡음 패널 " + S + " m²", -30, -20, "#9ff0e0", [0, 470]);
+        K.pill(ctx, aud === "full" ? "관객이 가득 참 (흡음 +150 m²)" : "빈 객석", 16, CH - 12, { s: 11, c: K.C.ink });
+        SP.card(ctx, 480, 14, 406, CH - 28, "잔향 시간 = 0.161 × 부피 ÷ 흡음력", [
+          ["공연장 부피", V.toLocaleString() + " m³"],
+          ["흡음력", A().toFixed(0) + " m²", LT.blue],
+          ["잔향 시간", t.toFixed(2) + " 초", ok ? LT.green : (t >= 1.5 && t <= 2.0 ? "#b86e00" : LT.red)],
+          ["음악회 기준", "1.5~2.0 초 (강연 0.8~1.2 초)", LT.mute]
+        ], [ok ? "관객이 찼을 때 음악회에 알맞다" : "아직 기준 밖이거나 빈 객석", ok], { top: 62, gap: 32 });
       }
-      cv.canvas._redraw = draw;
+    cv.canvas._redraw = draw;
       api.seg({ label: "관객", value: "empty", options: [{ v: "empty", t: "빈 강당" }, { v: "full", t: "관객이 가득 참" }], onPick: function (x) { aud = x; draw(); } });
       api.slider({ label: "흡음 패널 넓이 (흡음률 0.8)", min: 0, max: 400, step: 10, value: 0, fmt: function (x) { return x + " m²"; }, onInput: function (x) { S = x; draw(); } });
       api.info("콘크리트는 소리를 2%만 흡수하고 흡음 패널은 80%를 흡수합니다. 관객 한 명 한 명도 소리를 흡수합니다.");
@@ -89,26 +100,43 @@ window.sthLab({
       function lat() { return 2 + r + frame() / 2; }
       function okSet(h, rr) { var f = 1000 / h; return rr <= f && 2 + rr + f / 2 <= 20; }
       function best() { var b = 0; [60, 90, 120].forEach(function (h) { for (var rr = 2; rr <= 20; rr++) if (okSet(h, rr) && rr > b) b = rr; }); return b; }
-      function draw() {
-        H.paper(ctx, W, cv.H);
-        H.text(ctx, "한 장면이 만들어지는 시간표 (ms)", 40, 26, { s: 13.5, w: "900" });
-        var x0 = 60, x1 = 560, y = 90, sc = (x1 - x0) / 40;
-        for (var k = 0; k * frame() <= 40; k++) { H.dash(ctx, x0 + k * frame() * sc, 60, x0 + k * frame() * sc, 200, H.v("--line")); }
-        H.text(ctx, "점선 = 화면이 바뀌는 순간 (" + frame().toFixed(1) + " ms마다)", x0, 222, { s: 11, c: H.v("--mist") });
-        H.box(ctx, x0, y, 2 * sc, 26, H.v("--violet"), 0.8); H.text(ctx, "센서", x0 + 2, y - 6, { s: 10.5, c: H.v("--mist") });
-        H.box(ctx, x0 + 2 * sc, y, r * sc, 26, r <= frame() ? H.v("--teal") : H.v("--rose"), 0.8);
-        H.text(ctx, "렌더링 " + r + " ms", x0 + 2 * sc + 4, y + 18, { s: 11, w: "800", c: "#fff" });
-        H.box(ctx, x0 + (2 + r) * sc, y + 34, frame() / 2 * sc, 20, H.v("--amber"), 0.8);
-        H.text(ctx, "화면에 나타날 때까지 (평균)", x0 + (2 + r) * sc + 4, y + 70, { s: 10.5, c: H.v("--amber-700") });
-        H.line(ctx, [[x0 + 20 * sc, 60], [x0 + 20 * sc, 200]], H.v("--rose"), 2);
-        H.text(ctx, "20 ms", x0 + 20 * sc + 4, 72, { s: 11, w: "800", c: H.v("--rose-700") });
-        H.rows(ctx, 600, 60, [
-          ["한 장면에 쓸 수 있는 시간", frame().toFixed(1) + " ms"],
-          ["화면 끊김", r <= frame() ? "없음" : "생김 (렌더링이 늦음)", r <= frame() ? "--green-700" : "--rose-700"],
-          ["움직임 → 화면 지연", lat().toFixed(1) + " ms", lat() <= 20 ? "--green-700" : "--rose-700", true]
-        ], 62);
+        function draw() {
+        var K = window.sthKit, SP = window.sthSP19, LT = K.LT, CH = cv.H, L0 = lat(), okF = r <= frame(), okL = L0 <= 20;
+        ctx.clearRect(0, 0, W, CH);
+        K.studio(ctx, 0, 0, W, CH);
+        K.card(ctx, 10, 10, 580, CH - 20, "한 장면이 만들어지는 시간표 (ms)");
+        var x0 = 40, x1 = 560, y = 104, sc = (x1 - x0) / 40;
+        ctx.fillStyle = "rgba(255,255,255,.85)"; ctx.fillRect(x0, 60, x1 - x0, 150);
+        for (var k = 0; k * frame() <= 40; k++) { ctx.save(); ctx.setLineDash([4, 4]); ctx.strokeStyle = "rgba(20,40,90,.3)"; ctx.beginPath(); ctx.moveTo(x0 + k * frame() * sc, 60); ctx.lineTo(x0 + k * frame() * sc, 210); ctx.stroke(); ctx.restore(); }
+        for (var q = 0; q <= 40; q += 10) K.t(ctx, q + " ms", x0 + q * sc, 228, { s: 10, w: "600", a: "center", c: LT.mute });
+        function blk(xa, yy, w, h, c0, lab, lc) {
+          ctx.fillStyle = "rgba(20,30,50,.15)"; ctx.beginPath(); ctx.roundRect(xa + 3, yy + 4, w, h, 6); ctx.fill();
+          var g = ctx.createLinearGradient(0, yy, 0, yy + h); g.addColorStop(0, K.tint(c0, 1.2)); g.addColorStop(1, c0);
+          ctx.fillStyle = g; ctx.beginPath(); ctx.roundRect(xa, yy, w, h, 6); ctx.fill();
+          if (lab) K.t(ctx, lab, xa + 6, yy + h - 8, { s: 11, w: "900", c: lc || "#fff" });
+        }
+        blk(x0, y, 2 * sc, 26, "#7048e8");
+        K.t(ctx, "센서", x0, y - 8, { s: 10.5, w: "800", c: LT.violet });
+        blk(x0 + 2 * sc, y, r * sc, 26, okF ? "#0c8599" : "#e03131", "렌더링 " + r + " ms");
+        blk(x0 + (2 + r) * sc, y + 36, frame() / 2 * sc, 20, "#f59f00");
+        K.t(ctx, "화면에 나타날 때까지 (평균)", x0 + (2 + r) * sc, y + 72, { s: 10.5, w: "800", c: "#b86e00" });
+        K.line(ctx, { x: x0 + 20 * sc, y: 60 }, { x: x0 + 20 * sc, y: 210 }, LT.red, 2.4);
+        K.t(ctx, "20 ms", x0 + 20 * sc + 5, 74, { s: 11, w: "900", c: LT.red });
+        K.t(ctx, "점선 = 화면이 바뀌는 순간 (" + frame().toFixed(1) + " ms마다)", x0, CH - 26, { s: 11, w: "700", c: LT.mute });
+        /* 작은 헤드셋 미니어처 */
+        var hx = 740, hy = 58;
+        ctx.strokeStyle = "#3d4452"; ctx.lineWidth = 6; ctx.beginPath(); ctx.moveTo(hx - 52, hy + 18); ctx.quadraticCurveTo(hx, hy - 30, hx + 52, hy + 18); ctx.stroke();
+        SP.poly(ctx, [{ x: hx - 56, y: hy + 6 }, { x: hx + 50, y: hy + 6 }, { x: hx + 60, y: hy - 2 }, { x: hx - 46, y: hy - 2 }], "#e6ebf2");
+        var hg = ctx.createLinearGradient(0, hy + 6, 0, hy + 50); hg.addColorStop(0, "#c9d0da"); hg.addColorStop(1, "#8a96a8");
+        ctx.fillStyle = hg; ctx.beginPath(); ctx.roundRect(hx - 56, hy + 6, 106, 44, 14); ctx.fill();
+        ctx.fillStyle = "#1c2230"; ctx.beginPath(); ctx.ellipse(hx - 24, hy + 28, 16, 12, 0, 0, 6.2832); ctx.ellipse(hx + 18, hy + 28, 16, 12, 0, 0, 6.2832); ctx.fill();
+        SP.card(ctx, 604, 112, 282, CH - 124, null, [
+          ["한 장면에 쓸 시간", frame().toFixed(1) + " ms"],
+          ["화면 끊김", okF ? "없음" : "생김", okF ? LT.green : LT.red],
+          ["움직임 → 화면 지연", L0.toFixed(1) + " ms", okL ? LT.green : LT.red]
+        ], [okF && okL ? "끊김 없이 20 ms 안" : "기준을 넘는다", okF && okL], { top: 30, gap: 30 });
       }
-      cv.canvas._redraw = draw;
+    cv.canvas._redraw = draw;
       api.seg({ label: "재생률", value: 60, options: [{ v: 60, t: "60 Hz" }, { v: 90, t: "90 Hz" }, { v: 120, t: "120 Hz" }], onPick: function (x) { hz = x; draw(); } });
       api.slider({ label: "렌더링 시간 (길수록 섬세한 그래픽)", min: 2, max: 20, step: 1, value: 16, fmt: function (x) { return x + " ms"; }, onInput: function (x) { r = x; draw(); } });
       api.info("지연 = 센서 2 ms + 렌더링 시간 + 화면이 바뀔 때까지 평균 기다리는 시간(한 장면 시간의 절반).");
@@ -164,25 +192,33 @@ window.sthLab({
         cache[key] = a; return a;
       }
       function sd(a) { var m = a.reduce(function (x, y) { return x + y; }, 0) / a.length; return Math.sqrt(a.reduce(function (s, x) { return s + (x - m) * (x - m); }, 0) / a.length); }
-      function draw() {
-        H.paper(ctx, W, cv.H);
-        var a = sim(d), s = sd(a);
-        H.text(ctx, "12번 토론 뒤 주민 의견 분포", 40, 26, { s: 13.5, w: "900" });
-        var x0 = 60, x1 = 540, y1 = 250, B = 24, hist = [];
+        function draw() {
+        var K = window.sthKit, SP = window.sthSP19, LT = K.LT, CH = cv.H, a = sim(d), s = sd(a), ok = s <= 0.2;
+        ctx.clearRect(0, 0, W, CH);
+        K.studio(ctx, 0, 0, W, CH, { x: 300, y: 282, rx: 280, ry: 14 });
+        var x0 = 60, x1 = 540, y1 = 246, B = 24, hist = [], DX = 10, DY = -8, bw = (x1 - x0) / B;
         for (var b = 0; b < B; b++) hist.push(0);
         a.forEach(function (x) { var k = Math.floor((Math.max(-1.2, Math.min(1.2, x)) + 1.2) / 2.4 * B); hist[Math.max(0, Math.min(B - 1, k))]++; });
         var mx = Math.max.apply(null, hist);
-        hist.forEach(function (c, k) { var h = c / Math.max(8, mx) * 190; H.box(ctx, x0 + k * (x1 - x0) / B + 2, y1 - h, (x1 - x0) / B - 4, h, H.v("--brand"), 0.8); });
-        H.axes(ctx, x0, 50, x1, y1);
-        H.text(ctx, "← 반대", x0, y1 + 18, { s: 11, c: H.v("--mist") });
-        H.text(ctx, "찬성 →", x1, y1 + 18, { s: 11, a: "right", c: H.v("--mist") });
-        H.rows(ctx, 590, 70, [
+        SP.poly(ctx, [{ x: x0 - 16, y: y1 }, { x: x1 + 16, y: y1 }, { x: x1 + 16 + DX, y: y1 + DY }, { x: x0 - 16 + DX, y: y1 + DY }], "#e9dcc6");
+        ctx.fillStyle = "#a8794c"; ctx.fillRect(x0 - 16, y1, x1 - x0 + 32, 10);
+        hist.forEach(function (c, k) {
+          if (!c) return;
+          var h = c / Math.max(8, mx) * 180, xx = x0 + k * bw + 2, w = bw - 6, cc = SP.mt(Math.abs(-1.2 + (k + .5) / B * 2.4) > .7 ? "red" : "blue");
+          SP.poly(ctx, [{ x: xx + w, y: y1 }, { x: xx + w + DX, y: y1 + DY }, { x: xx + w + DX, y: y1 + DY - h }, { x: xx + w, y: y1 - h }], cc[2]);
+          SP.poly(ctx, [{ x: xx, y: y1 - h }, { x: xx + w, y: y1 - h }, { x: xx + w + DX, y: y1 + DY - h }, { x: xx + DX, y: y1 + DY - h }], cc[0]);
+          ctx.fillStyle = cc[1]; ctx.fillRect(xx, y1 - h, w, h);
+        });
+        K.t(ctx, "← 반대", x0, y1 + 28, { s: 11, w: "800", c: LT.mute });
+        K.t(ctx, "찬성 →", x1, y1 + 28, { s: 11, w: "800", a: "right", c: LT.mute });
+        K.bigText(ctx, "12번 토론 뒤 의견 분포", 22, 40, 20, ok ? "#ffd35a" : "#ffffff");
+        SP.card(ctx, 590, 14, 296, CH - 28, "비슷한 의견만 추천하면?", [
           ["추천 폭", d.toFixed(1)],
           ["처음 흩어짐", sd(INIT).toFixed(2)],
-          ["12번 뒤 흩어짐", s.toFixed(2), s <= 0.2 ? "--green-700" : "--rose-700", true]
-        ], 62);
+          ["12번 뒤 흩어짐", s.toFixed(2), ok ? LT.green : LT.red]
+        ], [ok ? "의견이 가까워졌다 (0.2 이하)" : "아직 넓게 갈라져 있다", ok], { top: 62, gap: 32 });
       }
-      cv.canvas._redraw = draw;
+    cv.canvas._redraw = draw;
       api.slider({ label: "추천 폭 (의견 차이가 이 값 이하인 글만 보여 줌)", min: 0.2, max: 2.0, step: 0.1, value: 0.3, fmt: function (x) { return x.toFixed(1); }, onInput: function (x) { d = Math.round(x * 10) / 10; draw(); } });
       api.info("의견은 −1(반대)부터 +1(찬성)까지입니다. 폭이 2면 모든 글이 보이고, 0.2면 거의 같은 생각의 글만 보입니다.");
       draw();
